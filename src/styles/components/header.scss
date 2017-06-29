@@ -1,0 +1,30 @@
+header.app-header {
+	width: 200px;
+	box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.1);
+	background-color: white;
+	z-index: 100;
+	padding-top: 20px;
+
+	.links {
+		display: flex;
+		font-size: 13px;
+		font-weight: 600;
+		padding: 10px 20px;
+		border-left: solid 4px transparent;
+		transition: all 0.1s ease-in-out;
+
+		&:not(.profile):hover, &:not(.profile).active {
+			border-left-color: $color-primary;
+			background-color: rgba(red($color-primary), green($color-primary), blue($color-primary), 0.1);
+		}
+
+		.fa {
+			width: 26px;
+		}
+
+		&.profile {
+			padding-left: 46px;
+			margin-bottom: 30px;
+		}
+	}
+}

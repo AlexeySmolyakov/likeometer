@@ -1,0 +1,71 @@
+.bill-list {
+	.bill {
+		display: flex;
+		border: solid 1px #cccccc;
+		margin-bottom: 2px;
+
+		& > div:first-child {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 50px;
+		}
+
+		.user {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 50px;
+		}
+
+		.price {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 80px;
+		}
+
+		.status {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 50px;
+
+			.fa.fa-times-circle-o {
+				color: red;
+			}
+
+			.fa.fa-clock-o {
+				color: #ffb400;
+			}
+
+			.fa.fa-check-circle-o {
+				color: greenyellow;
+			}
+		}
+
+		.items {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 50px;
+		}
+
+		.date {
+			flex-grow: 0;
+			flex-shrink: 0;
+			flex-basis: 150px;
+		}
+
+		& > div {
+			flex: 1;
+			padding: 4px;
+			font-size: 13px;
+
+			&:not(:last-child) {
+				border-right: solid 1px #cccccc;
+			}
+		}
+
+		.edit {
+			flex: 0;
+			flex-basis: 20px;
+			text-align: center;
+		}
+	}
+}

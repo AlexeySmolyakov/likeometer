@@ -1,0 +1,51 @@
+html, body {
+	font-family: 'Open Sans', sans-serif;
+	font-size: 16px;
+	height: 100%;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body.app-is-on {
+	color: #333333;
+}
+
+#root {
+	height: 100%;
+}
+
+.views {
+	padding: 20px;
+	flex: 1;
+	overflow: auto;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+h2 {
+	margin-top: 0;
+	display: flex;
+	align-items: baseline;
+
+	.action {
+		margin-left: auto;
+		cursor: pointer;
+		font-size: 14px;
+	}
+}
+
+.content {
+	max-width: $max-width;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 0 $default-padding;
+}
+
+.flex {
+	display: flex;
+}

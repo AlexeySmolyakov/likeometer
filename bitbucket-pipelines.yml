@@ -1,0 +1,24 @@
+# This is a sample build configuration for Javascript (Node.js).
+# Check our guides at https://confluence.atlassian.com/x/14UWN for more examples.
+# Only use spaces to indent your .yml configuration.
+# -----
+# You can specify a custom docker image from Docker Hub as your build environment.
+image: node:8
+
+pipelines:
+  default:
+    - step:
+        script: # Modify the commands below to build your repository.
+          - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.24.6
+          - export PATH=$HOME/.yarn/bin:$PATH
+          - yarn
+          - yarn run build
+          - git clone git@bitbucket.org:letsquest/backoffice-assets.git
+          - cd backoffice-assets
+          - rm -r -f ./public
+          - cp -r ../public ./
+          - git add *
+          - git config --global user.email "bruce@waynecorp.com"
+          - git config --global user.name "Bruce Wayne"
+          - git commit -m "$BITBUCKET_BRANCH $BITBUCKET_COMMIT"
+          - git push origin master
