@@ -11,9 +11,13 @@ class Album extends React.Component {
 		const { album } = this.props;
 		const imageSrc = album.sizes.slice(-1)[0].src;
 
-		const image = new Image();
-		image.onload = () => this.setState({ isLoaded: 'is-loaded' });
-		image.src = imageSrc;
+		this.image = new Image();
+		this.image.onload = () => this.setState({ isLoaded: 'is-loaded' });
+		this.image.src = imageSrc;
+	}
+
+	componentWillUnmount () {
+		this.image.onload = null;
 	}
 
 	render () {

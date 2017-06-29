@@ -4,7 +4,7 @@ export function fetchFriends (options = {}) {
 	options = {
 		...options,
 		order: 'hints',
-		fields: 'photo_200_orig',
+		fields: 'photo_100',
 		v: VK_API_VERSION,
 	};
 

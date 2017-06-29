@@ -20,13 +20,17 @@ class Albums extends Component {
 		);
 
 		return (
-			<div className="albums">
-				{ albums }
-				<div className="album"/>
-				<div className="album"/>
-				<div className="album"/>
-				<div className="album"/>
-				<div className="album"/>
+			<div>
+				<h1>Альбомы</h1>
+
+				<div className="albums">
+					{ albums }
+					<div className="album"/>
+					<div className="album"/>
+					<div className="album"/>
+					<div className="album"/>
+					<div className="album"/>
+				</div>
 			</div>
 		);
 	}

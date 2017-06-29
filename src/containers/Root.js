@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PrivateRoute from '../components/PrivateRoute'
 import Welcome from '../components/Welcome'
 import Albums from './Albums'
+import Friends from './Friends'
 import NotFound from '../components/NotFound'
 
 import { checkAuth }from '../actions/AuthActions'
@@ -27,6 +28,7 @@ class Root extends Component {
 						<Switch>
 							<Route exact={true} path="/" component={Welcome}/>
 							<PrivateRoute path="/albums:userId" component={Albums}/>
+							<PrivateRoute path="/friends:userId?" component={Friends}/>
 							<Route component={NotFound}/>
 						</Switch>
 					</div>
