@@ -9,6 +9,8 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Root from './containers/Root'
 
+import VK from 'VK'
+
 import { Provider } from 'react-redux'
 import configureStore from './store/configureStore'
 const store = configureStore();
@@ -28,6 +30,8 @@ const render = (Component) => {
 		document.getElementById('root')
 	);
 };
+
+VK.init({ apiId: 3188729 });
 
 render(Root);
 

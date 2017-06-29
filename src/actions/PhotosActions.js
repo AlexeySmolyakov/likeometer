@@ -1,14 +1,16 @@
-import API from '../api';
-import { FETCH_BILL, FETCH_BILL_STATE } from '../constants'
+import {
+	FETCH_ALBUMS,
+	FETCH_ALBUMS_STATE,
+} from '../constants'
 
-export const fetchBills = () => {
+export const fetchAlbums = () => {
 	return (dispatch) => {
 		dispatch({
-			type: FETCH_BILL_STATE,
+			type: FETCH_ALBUMS_STATE,
 			payload: true,
 		});
 
-		API.bill.fetch({
+		API.photos.fetch({
 			query: {
 				order: { id: 'desc' },
 				page_size: 1000,

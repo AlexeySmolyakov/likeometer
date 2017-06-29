@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types';
 import { logout } from '../actions/AuthActions'
-import { saveUser } from '../actions/UserActions'
-import { USER_ROLE } from '../constants'
 
 class Profile extends Component {
 	state = {
@@ -33,17 +31,6 @@ class Profile extends Component {
 			isProcessing: true,
 		});
 
-		this.props.saveUser(this.state.user)
-		.then(response => {
-			this.setState({
-				isProcessing: false,
-			});
-		})
-		.catch(error => {
-			this.setState({
-				isProcessing: false,
-			});
-		})
 	}
 
 	render () {
@@ -84,7 +71,6 @@ class Profile extends Component {
 				<div>NAME: {user.first_name} {user.last_name}</div>
 				{user.email && <div>EMAIL: {user.email}</div>}
 				{user.phone && <div>PHONE: {user.phone}</div>}
-				<div>ADMIN: {user.role === USER_ROLE.ADMIN ? 'yes' : 'no'}</div>
 				<div>
 					<button type="button" onClick={::this.onLogoutClick}>Выход</button>
 				</div>
@@ -107,9 +93,6 @@ const mapDispatchToProps = (dispatch) => {
 		userLogout () {
 			return dispatch(logout())
 		},
-		saveUser (user) {
-			return dispatch(saveUser(user));
-		}
 	}
 };
 

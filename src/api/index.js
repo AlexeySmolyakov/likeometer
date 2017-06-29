@@ -1,13 +1,11 @@
-import * as user from './user';
 import * as auth from './auth'
-import * as bill from './bill'
-import * as company from './company'
-import * as companyCategory from './company-category'
+import * as users from './users';
+import * as photos from './photos'
+import * as friends from './friends'
 
 export default {
-	user,
 	auth,
-	bill,
-	company,
-	companyCategory,
+	users,
+	photos,
+	friends,
 }

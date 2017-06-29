@@ -6,7 +6,6 @@ const autoprefixer = require('autoprefixer');
 module.exports = {
 	entry: {
 		application: './src/index.js',
-		styleguide: './styleguide/index.js'
 	},
 
 	output: {
@@ -62,11 +61,6 @@ module.exports = {
 			template: './src/pages/index.html',
 			chunks: ['application']
 		}),
-		new HtmlWebpackPlugin({
-			template: './styleguide/index.html',
-			filename: 'styleguide.html',
-			chunks: ['styleguide']
-		}),
 	],
 
 	devtool: 'eval',
@@ -79,5 +73,9 @@ module.exports = {
 		hot: true,
 		port: 8080,
 		historyApiFallback: true
+	},
+
+	externals: {
+		VK: 'VK',
 	}
 };

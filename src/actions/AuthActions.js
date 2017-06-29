@@ -1,11 +1,21 @@
 import API from '../api';
-import { setUser } from './UserActions'
+import { fetchUser } from './UserActions'
+import { CHECKING_AUTH } from '../constants'
 
 export const checkAuth = () => {
 	return (dispatch) => {
 		return API.auth.checkAuth()
-		.then((response) => {
-			return dispatch(setUser(response.data.user || { id: 0 }))
+		.then(() => {
+			return dispatch(fetchUser())
+		})
+		.catch(error => {
+			console.warn(error)
+		})
+		.then(() => {
+			dispatch({
+				type: CHECKING_AUTH,
+				payload: false
+			});
 		})
 	}
 };

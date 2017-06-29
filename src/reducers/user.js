@@ -1,28 +1,35 @@
 import {
-	SET_USER,
-	FETCH_USER
+	CHECKING_AUTH,
+	FETCH_USER,
+	FETCH_USER_STATE,
 } from '../constants'
 
 const initialState = {
 	isFetching: false,
-	user: {
-		id: void(0)
-	}
+	user: { uid: void(0) },
+	checkingAuth: true,
 };
 
 export default function (state = initialState, action) {
 	switch (action.type) {
+
+		case CHECKING_AUTH:
+			return {
+				...state,
+				checkingAuth: action.payload
+			};
+
 		case FETCH_USER:
 			return {
 				...state,
 				isFetching: false,
-				user: action.payload
+				user: action.payload,
 			};
-		case SET_USER:
+
+		case FETCH_USER_STATE:
 			return {
 				...state,
-				isFetching: false,
-				user: action.payload
+				isFetching: action.payload,
 			};
 
 		default:

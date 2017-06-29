@@ -1,34 +1,20 @@
 import API from '../api';
-import { FETCH_USER, SET_USER } from '../constants'
+import { FETCH_USER, FETCH_USER_STATE } from '../constants'
 
-export const setUser = (user) => {
-	return {
-		type: SET_USER,
-		payload: user
-	}
-};
-
-export const fetchUser = (userId) => {
+export const fetchUser = () => {
 	return (dispatch) => {
 		dispatch({
-			type: FETCH_USER,
-			payload: {
-				isFetching: true
-			}
+			type: FETCH_USER_STATE,
+			payload: true
 		});
 
-		API.user.fetch()
-		.then((response) => {
-			console.warn(response)
-		})
-	}
-};
-
-export const saveUser = (user) => {
-	return (dispatch) => {
-		return API.user.save(user)
-		.then(response => {
-			dispatch(setUser(response.data))
+		return API.users.fetchSelf()
+		.then((user) => {
+			dispatch({
+				type: FETCH_USER,
+				payload: user,
+			});
+			return user;
 		})
 	}
 };
