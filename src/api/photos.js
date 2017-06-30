@@ -6,6 +6,7 @@ export function fetchAlbums (options = {}) {
 		need_covers: 1,
 		need_system: 1,
 		photo_sizes: 1,
+		album_ids: -7,
 		v: VK_API_VERSION,
 	};
 
