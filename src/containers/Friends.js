@@ -18,8 +18,7 @@ class Friends extends Component {
 	};
 
 	componentDidMount () {
-		if (!this.props.friends.length)
-			this.props.fetchFriends();
+		this.props.fetchFriends();
 		document.addEventListener('keydown', this.addEvent, false);
 	}
 

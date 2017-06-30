@@ -5,13 +5,23 @@ import {
 } from '../constants'
 
 export const fetchPhotos = (options) => {
-	return (dispatch) => {
+	return (dispatch, getState) => {
+		const state = getState();
+		const { owner_id, album_id } = options;
+		const key = `${owner_id}_${album_id}`;
+
+		// Should make API request?
+		if (state.photos.photos[key]) {
+			return Promise.resolve(state.photos.photos[key].items);
+		}
+
 		dispatch({
 			type: FETCH_PHOTOS_STATE,
 			payload: true,
 		});
 
-		API.photos.fetchPhotos(options)
+		// API request, returns Promise with response
+		return API.photos.fetchPhotos(options)
 		.then(response => {
 			dispatch({
 				type: FETCH_PHOTOS,
@@ -20,10 +30,18 @@ export const fetchPhotos = (options) => {
 					owner_id: options.owner_id,
 					photos: response,
 				}
-			})
+			});
+			return response.items;
 		})
 		.catch(error => {
-			console.warn('[API ERROR]', error)
+			console.warn('[API ERROR PHOTOS]', error)
+		})
+		.then(response => {
+			dispatch({
+				type: FETCH_PHOTOS_STATE,
+				payload: false,
+			});
+			return response;
 		})
 	}
 };

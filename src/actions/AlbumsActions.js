@@ -6,14 +6,21 @@ import {
 
 export const fetchAlbums = (options = {}) => {
 	return (dispatch, getState) => {
-		options.owner_id = options.owner_id || getState().user.user.uid;
+		const state = getState();
+		options.owner_id = options.owner_id || state.user.user.uid;
+
+		// Should make API request?
+		if (state.albums.albums[options.owner_id]) {
+			return Promise.resolve(state.albums.albums[options.owner_id].items);
+		}
 
 		dispatch({
 			type: FETCH_ALBUMS_STATE,
 			payload: true,
 		});
 
-		API.photos.fetchAlbums(options)
+		// API request, returns Promise with response
+		return API.photos.fetchAlbums(options)
 		.then(response => {
 			dispatch({
 				type: FETCH_ALBUMS,
@@ -21,10 +28,18 @@ export const fetchAlbums = (options = {}) => {
 					owner_id: options.owner_id,
 					albums: response,
 				}
-			})
+			});
+			return response.items;
 		})
 		.catch(error => {
-			console.warn('[API ERROR]', error)
+			console.warn('[API ERROR ALBUMS]', error)
+		})
+		.then(response => {
+			dispatch({
+				type: FETCH_ALBUMS_STATE,
+				payload: false,
+			});
+			return response;
 		})
 	}
 };

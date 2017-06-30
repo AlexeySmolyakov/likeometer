@@ -35,7 +35,7 @@ class Albums extends Component {
 			<div>
 				<h1>{ownerName}</h1>
 				<h3>
-					{albums.length} {declensionAlbums(albums.length)}
+					{albumsWithPhotos.length} {declensionAlbums(albumsWithPhotos.length)}
 				</h3>
 
 				<div className="albums">

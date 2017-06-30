@@ -7,26 +7,20 @@ import {
 export const fetchFriends = (options = {}) => {
 	return (dispatch, getState) => {
 		const state = getState();
-
 		options.user_id = options.user_id || state.user.user.uid;
+
+		// Should make API request?
+		if (state.friends.friends[options.user_id]) {
+			return Promise.resolve(state.friends.friends[options.user_id].items);
+		}
 
 		dispatch({
 			type: FETCH_FRIENDS_STATE,
 			payload: true,
 		});
 
-		if (state.friends.friends[options.user_id]) {
-			dispatch({
-				type: FETCH_FRIENDS,
-				payload: {
-					user_id: options.user_id,
-					friends: state.friends.friends[options.user_id],
-				}
-			});
-			return;
-		}
-
-		API.friends.fetchFriends(options)
+		// API request, returns Promise with response
+		return API.friends.fetchFriends(options)
 		.then(response => {
 			dispatch({
 				type: FETCH_FRIENDS,
@@ -34,10 +28,18 @@ export const fetchFriends = (options = {}) => {
 					user_id: options.user_id,
 					friends: response,
 				}
-			})
+			});
+			return response.items;
 		})
 		.catch(error => {
-			console.warn('[API ERROR]', error)
+			console.warn('[API ERROR FRIENDS]', error)
+		})
+		.then(response => {
+			dispatch({
+				type: FETCH_FRIENDS_STATE,
+				payload: false,
+			});
+			return response;
 		})
 	}
 };
