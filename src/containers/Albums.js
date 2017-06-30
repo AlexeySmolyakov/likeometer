@@ -6,18 +6,25 @@ import Album from '../components/Album'
 import Loader from '../components/Loader'
 import { fetchAlbums } from '../actions/AlbumsActions'
 import { fetchFriends } from '../actions/FriendsActions'
+import { fetchGroups } from '../actions/GroupsActions'
 import { declensionAlbums } from '../helpers'
 
 class Albums extends Component {
 	componentDidMount () {
 		const { ownerId: owner_id } = this.props.match.params;
 
-		this.props.fetchFriends();
 		this.props.fetchAlbums({ owner_id });
+
+		(owner_id > 0) ?
+			// user albums
+			this.props.fetchFriends() :
+			// group albums
+			this.props.fetchGroups();
 	}
 
 	render () {
 		const { isFetching, albums, owner } = this.props;
+		const { ownerId } = this.props.match.params;
 
 		if (isFetching) return <Loader/>;
 
@@ -26,7 +33,12 @@ class Albums extends Component {
 			<Album key={album.id} album={album}/>
 		);
 
-		const ownerName = owner ? `${owner.first_name} ${owner.last_name}` : <span>&nbsp;</span>;
+		let ownerName = <span>&nbsp;</span>;
+		if (owner) {
+			if (ownerId > 0) ownerName = `${owner.first_name} ${owner.last_name}`;
+			else ownerName = owner.name;
+			document.title = ownerName;
+		}
 
 		let placeholders = [];
 		for (let i = 0; i < 11; i++) placeholders.push(<div key={i} className="album"/>);
@@ -47,20 +59,38 @@ class Albums extends Component {
 	}
 }
 
-Albums.propTypes = {};
+Albums.propTypes = {
+	owner: PropTypes.object,
+	albums: PropTypes.array.isRequired,
+};
 Albums.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
 	const currentUserId = state.user.user.uid;
-	const ownerId = +ownProps.match.params.ownerId || currentUserId;
-	const albums = state.albums.albums[ownerId] ? state.albums.albums[ownerId].items : [];
-	const friends = state.friends.friends[currentUserId] ? state.friends.friends[currentUserId].items : [];
+	let ownerId = ownProps.match.params.ownerId || currentUserId;
 
-	const owner = friends.find(friend => friend.id === ownerId);
+	const albums = state.albums.albums;
+	const friends = state.friends.friends;
+	const groups = state.groups.groups;
+
+	const albumItems = albums[ownerId] ? albums[ownerId].items : [];
+	let owner = null;
+
+	if (ownerId > 0) {
+		// user albums
+		ownerId = +ownerId;
+		const friendItems = friends[currentUserId] ? friends[currentUserId].items : [];
+		owner = friendItems.find(item => item.id === ownerId);
+	} else {
+		// groups albums
+		ownerId = -ownerId;
+		const groupItems = groups[currentUserId] ? groups[currentUserId].items : [];
+		owner = groupItems.find(item => item.id === ownerId);
+	}
 
 	return {
 		owner,
-		albums,
+		albums: albumItems,
 		isFetching: state.albums.isFetching,
 	}
 };
@@ -72,6 +102,9 @@ const mapDispatchToProps = (dispatch) => ({
 	fetchFriends () {
 		return dispatch(fetchFriends())
 	},
+	fetchGroups () {
+		return dispatch(fetchGroups())
+	}
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Albums);

@@ -18,6 +18,7 @@ class Photos extends Component {
 
 	render () {
 		const { album = { title: '' }, photos, isFetching, myLikes } = this.props;
+		if (album.title) document.title = album.title;
 
 		if (isFetching) return <Loader/>;
 

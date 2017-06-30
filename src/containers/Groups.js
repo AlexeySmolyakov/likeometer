@@ -20,6 +20,7 @@ class Groups extends Component {
 	componentDidMount () {
 		this.props.fetchGroups();
 		document.addEventListener('keydown', this.addEvent, false);
+		document.title = 'Мои группы';
 	}
 
 	componentWillUnmount () {

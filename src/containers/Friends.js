@@ -20,6 +20,7 @@ class Friends extends Component {
 	componentDidMount () {
 		this.props.fetchFriends();
 		document.addEventListener('keydown', this.addEvent, false);
+		document.title = 'Мои друзья';
 	}
 
 	componentWillUnmount () {
