@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
 import Album from '../components/Album'
+import Loader from '../components/Loader'
 import { fetchAlbums } from '../actions/AlbumsActions'
 
 class Albums extends Component {
@@ -12,7 +13,7 @@ class Albums extends Component {
 	}
 
 	render () {
-		if (this.props.isFetching) return <div className="loader"/>;
+		if (this.props.isFetching) return <Loader/>;
 
 		const albumsWithPhotos = this.props.albums.filter(album => album.size > 0);
 		const albums = albumsWithPhotos.map(album =>

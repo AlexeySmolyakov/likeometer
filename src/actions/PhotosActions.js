@@ -1,27 +1,25 @@
+import API from '../api'
 import {
-	FETCH_ALBUMS,
-	FETCH_ALBUMS_STATE,
+	FETCH_PHOTOS,
+	FETCH_PHOTOS_STATE,
 } from '../constants'
 
-export const fetchAlbums = () => {
+export const fetchPhotos = (options) => {
 	return (dispatch) => {
 		dispatch({
-			type: FETCH_ALBUMS_STATE,
+			type: FETCH_PHOTOS_STATE,
 			payload: true,
 		});
 
-		API.photos.fetch({
-			query: {
-				order: { id: 'desc' },
-				page_size: 1000,
-				extend: 'company',
-				merge: true,
-			}
-		})
+		API.photos.fetchPhotos(options)
 		.then(response => {
 			dispatch({
-				type: FETCH_BILL,
-				payload: response.data.bill
+				type: FETCH_PHOTOS,
+				payload: {
+					album_id: options.album_id,
+					owner_id: options.owner_id,
+					photos: response,
+				}
 			})
 		})
 		.catch(error => {

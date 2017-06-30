@@ -13,3 +13,11 @@ export function declension (number, one, two, five) {
 	}
 	return five;
 }
+
+export function declensionPhotos (number) {
+	return declension(number, 'фотография', 'фотографии', 'фотографий');
+}
+
+export function declensionLikes (number) {
+	return declension(number, 'понравилась', 'понравились', 'понравились');
+}

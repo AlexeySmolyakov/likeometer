@@ -4,11 +4,14 @@ import { connect } from 'react-redux';
 
 import PrivateRoute from '../components/PrivateRoute'
 import Welcome from '../components/Welcome'
+import Photos from './Photos'
 import Albums from './Albums'
 import Friends from './Friends'
 import NotFound from '../components/NotFound'
-
 import { checkAuth }from '../actions/AuthActions'
+
+import createBrowserHistory from 'history/createBrowserHistory'
+const history = createBrowserHistory()
 
 class Root extends Component {
 	componentDidMount () {
@@ -22,12 +25,13 @@ class Root extends Component {
 		if (checkingAuth) return <div>Checking auth</div>;
 
 		return (
-			<Router>
+			<Router history={history}>
 				<div className="layout">
 					<div className="views">
 						<Switch>
 							<Route exact={true} path="/" component={Welcome}/>
-							<PrivateRoute path="/albums:userId" component={Albums}/>
+							<PrivateRoute path="/albums:userId(\d+)" component={Albums}/>
+							<PrivateRoute exact={true} path="/album:ownerId(\d+)_:albumId(\d+)" component={Photos}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>
 							<Route component={NotFound}/>
 						</Switch>

@@ -1,34 +1,22 @@
-.search {
-	position: fixed;
-	bottom: 20px;
-	left: 20px;
-	background-color: $color-primary;
-	color: white;
-	font-size: 12px;
-	font-weight: bold;
-	z-index: 10000;
-	padding: 10px;
-	border-radius: 2px;
-	box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3), -1px 0px 2px rgba(0, 0, 0, 0.3);
-	transition: opacity 0.1s ease-in-out;
-
-	&:empty {
-		opacity: 0;
+h3 {
+	.fa.fa-heart {
+		font-size: 16px;
+		margin-right: 5px;
+		margin-left: 2px;
 	}
 }
 
-.friends {
+.photos {
 	display: flex;
 	flex-wrap: wrap;
 	margin: auto;
 	max-width: 1300px;
-	justify-content: center;
 }
 
-.friend {
-	width: 116px;
-	//flex-grow: 1;
-	//flex: 1;
+.photo {
+	min-width: 200px;
+	flex-grow: 1;
+	flex: 1;
 	padding: 8px;
 
 	.wrap {
@@ -40,9 +28,7 @@
 
 	.thumb {
 		position: relative;
-		height: 100px;
-		border-radius: 50%;
-		overflow: hidden;
+		height: 150px;
 
 		background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%),
 		linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%),
@@ -60,6 +46,7 @@
 			height: 100%;
 			opacity: 0;
 			transition: opacity 0.2s ease-in-out;
+			box-shadow: rgba(0, 0, 0, 0.05) 0 0 0 1px inset;
 
 			&.is-loaded {
 				opacity: 1;
@@ -67,16 +54,37 @@
 		}
 	}
 
-	.name {
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-		min-width: 0;
-		line-height: 1.1;
-		text-align: center;
-		font-size: 14px;
-		padding: 5px;
-		color: #333333;
-		font-weight: 600;
+	.counters {
+		display: flex;
+	}
+
+	.likes, .comments {
+		line-height: normal;
+		font-size: 12px;
+		padding: 5px 2px 0;
+		color: #888;
+		font-weight: 500;
+
+		i.fa.fa-heart,
+		i.fa.fa-heart-o,
+		i.fa.fa-comment-o {
+			font-size: 11px;
+			margin-right: 5px;
+			color: $color-primary;
+		}
+
+		i.fa.fa-heart-o,
+		i.fa.fa-comment-o {
+			color: inherit;
+		}
+
+		i.fa.fa-comment-o {
+			position: relative;
+			top: -1px;
+		}
+	}
+
+	.comments {
+		margin-left: auto;
 	}
 }

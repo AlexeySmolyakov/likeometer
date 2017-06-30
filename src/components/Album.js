@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { declension } from '../helpers'
+import { declensionPhotos } from '../helpers'
+import { Link } from "react-router-dom";
 
 class Album extends React.Component {
 	state = {
@@ -26,10 +27,10 @@ class Album extends React.Component {
 		const imageSrc = album.sizes.slice(-1)[0].src;
 		const imageStyle = { backgroundImage: `url(${imageSrc})` };
 
-		const size = `${album.size} ${declension(album.size, 'фотография', 'фотографии', 'фотографий')}`;
+		const size = `${album.size} ${declensionPhotos(album.size)}`;
 
 		return (
-			<div className="album">
+			<Link className="album" to={`/album${album.owner_id}_${album.id}`}>
 				<div className="wrap">
 					<div className="thumb">
 						<div className={`image ${this.state.isLoaded}`} style={imageStyle}/>
@@ -37,7 +38,7 @@ class Album extends React.Component {
 					<div className="title" title={album.title}>{album.title}</div>
 					<div className="size">{size}</div>
 				</div>
-			</div>
+			</Link>
 		);
 	}
 }

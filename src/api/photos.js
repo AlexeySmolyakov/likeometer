@@ -16,3 +16,22 @@ export function fetchAlbums (options = {}) {
 		})
 	})
 }
+
+export function fetchPhotos (options = {}) {
+	if (!options.owner_id && !options.album_id)
+		return Promise.reject('No owner/album id specified.');
+
+	options = {
+		...options,
+		extended: 1,
+		photo_sizes: 1,
+		v: VK_API_VERSION,
+	};
+
+	return new Promise((resolve, reject) => {
+		VK.api('photos.get', options, (response) => {
+			if (response.response) resolve(response.response);
+			else reject(response.error);
+		})
+	})
+}
