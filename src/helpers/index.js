@@ -22,6 +22,10 @@ export function declensionAlbums (number) {
 	return declension(number, 'альбом', 'альбома', 'альбомов');
 }
 
+export function declensionGroups (number) {
+	return declension(number, 'группа', 'группы', 'групп');
+}
+
 export function declensionFriends (number) {
 	return declension(number, 'друг', 'друга', 'друзей');
 }
