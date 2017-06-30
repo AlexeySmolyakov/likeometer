@@ -18,6 +18,14 @@ export function declensionPhotos (number) {
 	return declension(number, 'фотография', 'фотографии', 'фотографий');
 }
 
+export function declensionAlbums (number) {
+	return declension(number, 'альбом', 'альбома', 'альбомов');
+}
+
+export function declensionFriends (number) {
+	return declension(number, 'друг', 'друга', 'друзей');
+}
+
 export function declensionLikes (number) {
 	return declension(number, 'понравилась', 'понравились', 'понравились');
 }

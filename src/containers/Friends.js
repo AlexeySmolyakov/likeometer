@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import Friend from '../components/Friend'
 import Loader from '../components/Loader'
 import { fetchFriends } from '../actions/FriendsActions'
+import { declensionFriends } from '../helpers'
 
 class Friends extends Component {
 	constructor () {
@@ -37,9 +38,9 @@ class Friends extends Component {
 	render () {
 		if (this.props.isFetching) return <Loader/>;
 
-		let friends = this.props.friends;
+		let { friends } = this.props;
 
-		if (this.state.filter) friends = this.props.friends.filter(friend => {
+		if (this.state.filter) friends = friends.filter(friend => {
 			return friend.first_name.toLowerCase().includes(this.state.filter.toLowerCase()) ||
 				friend.last_name.toLowerCase().includes(this.state.filter.toLowerCase());
 		});
@@ -55,6 +56,9 @@ class Friends extends Component {
 				<div className="search">{this.state.filter}</div>
 
 				<h1>Мои друзья</h1>
+				<h3>
+					{friends.length} {declensionFriends(friends.length)}
+				</h3>
 
 				<div className="friends">
 					{list}

@@ -20,9 +20,9 @@ export const fetchFriends = (options = {}) => {
 				type: FETCH_FRIENDS,
 				payload: {
 					user_id: options.user_id,
-					friends: state.friends.friends,
+					friends: state.friends.friends[options.user_id],
 				}
-			})
+			});
 			return;
 		}
 

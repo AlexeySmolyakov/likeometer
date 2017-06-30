@@ -30,7 +30,7 @@ class Root extends Component {
 					<div className="views">
 						<Switch>
 							<Route exact={true} path="/" component={Welcome}/>
-							<PrivateRoute path="/albums:userId(\d+)" component={Albums}/>
+							<PrivateRoute path="/albums:ownerId(\d+)" component={Albums}/>
 							<PrivateRoute exact={true} path="/album:ownerId(\d+)_:albumId(\d+)" component={Photos}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>
 							<Route component={NotFound}/>

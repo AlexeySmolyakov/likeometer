@@ -5,32 +5,42 @@ import { connect } from 'react-redux'
 import Album from '../components/Album'
 import Loader from '../components/Loader'
 import { fetchAlbums } from '../actions/AlbumsActions'
+import { fetchFriends } from '../actions/FriendsActions'
+import { declensionAlbums } from '../helpers'
 
 class Albums extends Component {
 	componentDidMount () {
-		const userId = this.props.match.params.userId;
-		this.props.fetchAlbums(userId);
+		const { ownerId: owner_id } = this.props.match.params;
+
+		this.props.fetchFriends();
+		this.props.fetchAlbums({ owner_id });
 	}
 
 	render () {
-		if (this.props.isFetching) return <Loader/>;
+		const { isFetching, albums, owner } = this.props;
 
-		const albumsWithPhotos = this.props.albums.filter(album => album.size > 0);
-		const albums = albumsWithPhotos.map(album =>
+		if (isFetching) return <Loader/>;
+
+		const albumsWithPhotos = albums.filter(album => album.size > 0);
+		const list = albumsWithPhotos.map(album =>
 			<Album key={album.id} album={album}/>
 		);
 
+		const ownerName = owner ? `${owner.first_name} ${owner.last_name}` : <span>&nbsp;</span>;
+
+		let placeholders = [];
+		for (let i = 0; i < 11; i++) placeholders.push(<div key={i} className="album"/>);
+
 		return (
 			<div>
-				<h1>Альбомы</h1>
+				<h1>{ownerName}</h1>
+				<h3>
+					{albums.length} {declensionAlbums(albums.length)}
+				</h3>
 
 				<div className="albums">
-					{ albums }
-					<div className="album"/>
-					<div className="album"/>
-					<div className="album"/>
-					<div className="album"/>
-					<div className="album"/>
+					{list}
+					{placeholders}
 				</div>
 			</div>
 		);
@@ -41,18 +51,26 @@ Albums.propTypes = {};
 Albums.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-	const uid = ownProps.match.params.userId || state.user.user.uid;
-	const albums = state.albums.albums[uid] ? state.albums.albums[uid].items : [];
+	const currentUserId = state.user.user.uid;
+	const ownerId = +ownProps.match.params.ownerId || currentUserId;
+	const albums = state.albums.albums[ownerId] ? state.albums.albums[ownerId].items : [];
+	const friends = state.friends.friends[currentUserId] ? state.friends.friends[currentUserId].items : [];
+
+	const owner = friends.find(friend => friend.id === ownerId);
 
 	return {
+		owner,
 		albums,
 		isFetching: state.albums.isFetching,
 	}
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchAlbums (owner_id) {
-		return dispatch(fetchAlbums({ owner_id }))
+	fetchAlbums (options) {
+		return dispatch(fetchAlbums(options))
+	},
+	fetchFriends () {
+		return dispatch(fetchFriends())
 	},
 });
 

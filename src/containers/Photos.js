@@ -17,7 +17,7 @@ class Photos extends Component {
 	}
 
 	render () {
-		const { album = { title: 'Фото' }, photos, isFetching, myLikes } = this.props;
+		const { album = { title: '' }, photos, isFetching, myLikes } = this.props;
 
 		if (isFetching) return <Loader/>;
 
@@ -30,7 +30,7 @@ class Photos extends Component {
 
 		return (
 			<div>
-				<h1>{album.title}</h1>
+				<h1>{album.title ? album.title : <span>&nbsp;</span>}</h1>
 				<h3>
 					{photos.length} {declensionPhotos(photos.length)}
 					{myLikes > 0 && [
