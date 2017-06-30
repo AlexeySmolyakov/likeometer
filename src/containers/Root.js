@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import PrivateRoute from '../components/PrivateRoute'
 import Welcome from '../components/Welcome'
+import Header from "../components/Header";
 import Groups from './Groups'
 import Photos from './Photos'
 import Albums from './Albums'
@@ -29,6 +30,7 @@ class Root extends Component {
 			<Router history={history}>
 				<div className="layout">
 					<div className="views">
+						<Header user={user}/>
 						<Switch>
 							<Route exact={true} path="/" component={Welcome}/>
 							<PrivateRoute path="/albums:ownerId" component={Albums}/>

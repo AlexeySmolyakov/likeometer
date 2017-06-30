@@ -29,6 +29,10 @@
 	width: 116px;
 	padding: 8px;
 
+	&:empty {
+		padding: 0 8px;
+	}
+
 	.wrap {
 		text-decoration: none;
 		position: relative;

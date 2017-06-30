@@ -15,9 +15,12 @@ h3 {
 
 .photo {
 	min-width: 200px;
-	flex-grow: 1;
 	flex: 1;
 	padding: 8px;
+
+	&:empty {
+		padding: 0 8px;
+	}
 
 	.wrap {
 		text-decoration: none;
