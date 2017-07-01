@@ -1,5 +1,3 @@
-import * as API from './base';
-
 const settings = 262150;
 
 export function login () {
