@@ -21,4 +21,6 @@ script:
   - yarn run build
 
 after_success:
-    "curl -T public/index.html --ftp-create-dirs -u $FTP_USER:$FTP_PASSWORD ftp://margaret.timeweb.ru/like-o-meter.ru/public_html/develop/"
+  - ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
+  - ssh-keyscan -H 92.53.121.171 >> ~/.ssh/known_hosts
+  - sshpass -p "$TIMEWEB_SSH_PASSWORD" scp -r ./public $TIMEWEB_SSH_LOGIN@92.53.121.171:/like-o-meter.ru/public_html/develop
