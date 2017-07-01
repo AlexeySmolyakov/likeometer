@@ -9,23 +9,45 @@ import { fetchAlbums } from '../actions/AlbumsActions'
 import { declensionPhotos } from '../helpers'
 
 class Photos extends Component {
+	state = {
+		offset: 30,
+		limit: 30,
+		loaded: false,
+	};
+
 	componentDidMount () {
 		const { ownerId: owner_id, albumId: album_id } = this.props.match.params;
 
 		this.props.fetchPhotos({ owner_id, album_id });
 		this.props.fetchAlbums({ owner_id });
+
+		const $views = document.querySelector('.views');
+		$views.addEventListener('scroll', (e) => {
+			if ($views.scrollTop + window.innerHeight >= $views.scrollHeight - 100){
+				this.setState({
+					offset: this.state.offset + this.state.limit,
+
+				});
+			}
+		}, false);
+	}
+
+	componentWillReceiveProps (nextProps, nextContext) {
+		const { album = {} } = nextProps;
+		if (album.title) document.title = album.title;
 	}
 
 	render () {
 		const { album = { title: '' }, photos, isFetching, myLikes } = this.props;
-		if (album.title) document.title = album.title;
 
 		if (isFetching) return <Loader/>;
 
 		let placeholders = [];
 		for (let i = 0; i < 5; i++) placeholders.push(<div key={i} className="photo"/>);
 
-		const list = photos.map(photo =>
+		const slicedPhotos = photos.slice(0, this.state.offset);
+
+		const list = slicedPhotos.map(photo =>
 			<Photo key={photo.id} photo={photo}/>
 		);
 

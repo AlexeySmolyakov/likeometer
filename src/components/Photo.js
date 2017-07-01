@@ -1,6 +1,5 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { declension } from '../helpers'
 import { Link } from "react-router-dom";
 
 class Photo extends React.Component {
