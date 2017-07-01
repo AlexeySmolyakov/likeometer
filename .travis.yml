@@ -19,3 +19,6 @@ install:
 
 script:
   - yarn run build
+
+after_success:
+    "curl -T public/ --ftp-create-dirs -u $FTP_USER:$FTP_PASSWORD ftp://margaret.timeweb.ru/like-o-meter.ru/public_html/develop/"
