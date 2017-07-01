@@ -26,4 +26,4 @@ after_success:
   - sudo apt-get install ssh sshpass -y
   - ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
   - ssh-keyscan -H 92.53.121.171 >> ~/.ssh/known_hosts
-  - sshpass -p "$TIMEWEB_SSH_PASSWORD" scp -r ./public $TIMEWEB_SSH_LOGIN@92.53.121.171:/
+  - sshpass -p "$TIMEWEB_SSH_PASSWORD" scp -r ./public $TIMEWEB_SSH_LOGIN@92.53.121.171:~
