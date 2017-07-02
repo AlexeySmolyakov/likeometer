@@ -11,7 +11,18 @@ header {
 		max-width: $max-width;
 		display: flex;
 		margin: auto;
-		justify-content:center;
+		justify-content: center;
+	}
+
+	.likeometer {
+		display: flex;
+		align-items: center;
+
+		img {
+			height: 14px;
+			margin-right: 20px;
+			margin-top: -2px;
+		}
 	}
 
 	.links {

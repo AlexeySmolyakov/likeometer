@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
+import likeometer from '../assets/likeometer.svg'
 
 class Header extends Component {
 	render () {
@@ -10,6 +11,9 @@ class Header extends Component {
 		return (
 			<header>
 				<div className="wrap">
+					<Link to={'/'} className="likeometer">
+						<img src={likeometer} alt="Likeometer"/>
+					</Link>
 					<NavLink className="links" to={`/albums${user.uid}`}>фото</NavLink>
 					<NavLink className="links" to='/friends'>друзья</NavLink>
 					<NavLink className="links" to='/groups'>группы</NavLink>
