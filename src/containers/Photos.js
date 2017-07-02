@@ -9,10 +9,18 @@ import { fetchAlbums } from '../actions/AlbumsActions'
 import { declensionPhotos } from '../helpers'
 
 class Photos extends Component {
+	constructor () {
+		super();
+
+		this.$views = null;
+		this.onScrollToBottom = this.onScrollToBottom.bind(this);
+	}
+
 	state = {
 		offset: 30,
 		limit: 30,
-		loaded: false,
+		completed: false,
+		loading: false,
 	};
 
 	componentDidMount () {
@@ -21,20 +29,26 @@ class Photos extends Component {
 		this.props.fetchPhotos({ owner_id, album_id });
 		this.props.fetchAlbums({ owner_id });
 
-		const $views = document.querySelector('.views');
-		$views.addEventListener('scroll', (e) => {
-			if ($views.scrollTop + window.innerHeight >= $views.scrollHeight - 100){
-				this.setState({
-					offset: this.state.offset + this.state.limit,
+		this.$views = document.querySelector('.views');
+		this.$views.addEventListener('scroll', this.onScrollToBottom, false);
+	}
 
-				});
-			}
-		}, false);
+	onScrollToBottom (e) {
+		const $views = e.target;
+		if ($views.scrollTop + window.innerHeight >= $views.scrollHeight - 100) {
+			this.setState({
+				offset: this.state.offset + this.state.limit,
+			});
+		}
 	}
 
 	componentWillReceiveProps (nextProps, nextContext) {
 		const { album = {} } = nextProps;
 		if (album.title) document.title = album.title;
+	}
+
+	componentWillUnmount () {
+		this.$views.removeEventListener('scroll', this.onScrollToBottom, false);
 	}
 
 	render () {
