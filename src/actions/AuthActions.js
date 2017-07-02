@@ -9,7 +9,7 @@ export const checkAuth = () => {
 			return dispatch(fetchUser())
 		})
 		.catch(error => {
-			console.warn(error)
+			console.warn('[API ERROR AUTH]', error)
 		})
 		.then(() => {
 			dispatch({

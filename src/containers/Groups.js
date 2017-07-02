@@ -72,7 +72,7 @@ Groups.propTypes = {};
 Groups.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-	const uid = ownProps.match.params.userId || state.user.user.uid;
+	const uid = ownProps.match.params.userId || state.user.user.id;
 	const groups = state.groups.groups[uid] ? state.groups.groups[uid].items : [];
 
 	return {

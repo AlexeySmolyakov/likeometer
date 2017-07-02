@@ -66,7 +66,7 @@ Albums.propTypes = {
 Albums.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-	const currentUserId = state.user.user.uid;
+	const currentUserId = state.user.user.id;
 	let ownerId = ownProps.match.params.ownerId || currentUserId;
 
 	const albums = state.albums.albums;

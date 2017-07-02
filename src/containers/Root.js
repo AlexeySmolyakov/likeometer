@@ -22,7 +22,7 @@ class Root extends Component {
 	render () {
 		const { user, checkingAuth } = this.props;
 
-		if (!checkingAuth && !user.uid) return <div>Landing</div>;
+		if (!checkingAuth && !user.id) return <div>Landing</div>;
 		if (checkingAuth) return <div>Checking auth</div>;
 
 		return (
@@ -31,7 +31,7 @@ class Root extends Component {
 					<div className="views">
 						<Header user={user}/>
 						<Switch>
-							<Redirect exact={true} from='/' to={`/albums${user.uid}`}/>
+							<Redirect exact={true} from='/' to={`/albums${user.id}`}/>
 							<PrivateRoute path="/albums:ownerId" component={Albums}/>
 							<PrivateRoute path="/album:ownerId([\d\-]+)_:albumId" component={Photos}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>

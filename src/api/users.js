@@ -1,13 +1,12 @@
-export function fetchSelf () {
-	return new Promise((resolve, reject) => {
-		VK.api('users.get', { fields: 'photo_200_orig' }, (response) => {
-			if (response.error) reject(response.error);
-			else resolve(response.response[0])
-		})
-	})
-}
+import { VK_API_VERSION } from '../constants'
 
 export function fetch (options = {}) {
+	options = {
+		...options,
+		fields: 'photo_200_orig',
+		v: VK_API_VERSION,
+	};
+
 	return new Promise((resolve, reject) => {
 		VK.api('users.get', options, (response) => {
 			if (response.error) reject(response.error);

@@ -8,13 +8,23 @@ export const fetchUser = () => {
 			payload: true
 		});
 
-		return API.users.fetchSelf()
-		.then((user) => {
+		return API.users.fetch()
+		.then(([user]) => {
 			dispatch({
 				type: FETCH_USER,
 				payload: user,
 			});
 			return user;
+		})
+		.catch(error => {
+			console.warn('[API ERROR USERS]', error)
+		})
+		.then(response => {
+			dispatch({
+				type: FETCH_USER_STATE,
+				payload: false,
+			});
+			return response;
 		})
 	}
 };

@@ -11,13 +11,13 @@ class Header extends Component {
 		return (
 			<header>
 				<div className="wrap">
-					<Link to={`/albums${user.uid}`} className="likeometer">
+					<Link to={`/albums${user.id}`} className="likeometer">
 						<img src={likeometer} alt="Likeometer"/>
 					</Link>
-					<NavLink className="links" to={`/albums${user.uid}`}>фото</NavLink>
+					<NavLink className="links" to={`/albums${user.id}`}>фото</NavLink>
 					<NavLink className="links" to='/friends'>друзья</NavLink>
 					<NavLink className="links" to='/groups'>группы</NavLink>
-					{user.uid ?
+					{user.id ?
 						<div className="user">
 							<div>{user.first_name}</div>
 							<div className="image" style={image}/>

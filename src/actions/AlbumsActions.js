@@ -7,7 +7,7 @@ import {
 export const fetchAlbums = (options = {}) => {
 	return (dispatch, getState) => {
 		const state = getState();
-		options.owner_id = options.owner_id || state.user.user.uid;
+		options.owner_id = options.owner_id || state.user.user.id;
 
 		// Should make API request?
 		if (state.albums.albums[options.owner_id]) {

@@ -7,7 +7,7 @@ import {
 export const fetchGroups = (options = {}) => {
 	return (dispatch, getState) => {
 		const state = getState();
-		options.user_id = options.user_id || state.user.user.uid;
+		options.user_id = options.user_id || state.user.user.id;
 
 		// Should make API request?
 		if (state.groups.groups[options.user_id]) {

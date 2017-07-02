@@ -73,7 +73,7 @@ Friends.propTypes = {};
 Friends.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
-	const uid = ownProps.match.params.userId || state.user.user.uid;
+	const uid = ownProps.match.params.userId || state.user.user.id;
 	const friends = state.friends.friends[uid] ? state.friends.friends[uid].items : [];
 
 	return {
