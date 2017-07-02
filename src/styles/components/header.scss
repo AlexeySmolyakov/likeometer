@@ -17,10 +17,10 @@ header {
 	.likeometer {
 		display: flex;
 		align-items: center;
+		width: 115px;
 
 		img {
 			height: 14px;
-			margin-right: 20px;
 			margin-top: -2px;
 		}
 	}

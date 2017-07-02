@@ -1,5 +1,14 @@
 const settings = 262150;
 
+export function checkAuth () {
+	return new Promise((resolve, reject) => {
+		VK.Auth.getLoginStatus((response) => {
+			if (response.status === 'connected') resolve(response);
+			else reject(response);
+		})
+	})
+}
+
 export function login () {
 	return new Promise((resolve, reject) => {
 		VK.Auth.login((response) => {
@@ -13,11 +22,3 @@ export function logout () {
 
 }
 
-export function checkAuth () {
-	return new Promise((resolve, reject) => {
-		VK.Auth.getLoginStatus((response) => {
-			if (response.status === 'connected') resolve(response);
-			else reject(response);
-		})
-	})
-}

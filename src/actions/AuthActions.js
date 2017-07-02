@@ -23,8 +23,17 @@ export const checkAuth = () => {
 export const login = (credentials) => {
 	return (dispatch) => {
 		return API.auth.login(credentials)
-		.then((response) => {
-			dispatch(setUser(response.user))
+		.then(response => {
+			dispatch(checkAuth());
+		})
+		.catch(error => {
+			console.warn('[API ERROR AUTH]', error)
+		})
+		.then(() => {
+			dispatch({
+				type: CHECKING_AUTH,
+				payload: false
+			});
 		})
 	}
 };
@@ -32,8 +41,8 @@ export const login = (credentials) => {
 export const logout = () => {
 	return (dispatch) => {
 		return API.auth.logout()
-		.then(() => {
-			dispatch(setUser({ id: 0 }))
+		.then(response => {
+			console.warn(response)
 		})
 	}
 };

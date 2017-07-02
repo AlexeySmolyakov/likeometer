@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { connect } from 'react-redux';
 
 import PrivateRoute from '../components/PrivateRoute'
+import Landing from './Landing'
 import Header from "../components/Header";
 import Groups from './Groups'
 import Photos from './Photos'
@@ -22,8 +23,8 @@ class Root extends Component {
 	render () {
 		const { user, checkingAuth } = this.props;
 
-		if (!checkingAuth && !user.id) return <div>Landing</div>;
-		if (checkingAuth) return <div>Checking auth</div>;
+		if (!checkingAuth && !user.id) return <Landing/>;
+		if (checkingAuth) return null;
 
 		return (
 			<Router history={history}>
@@ -57,4 +58,4 @@ const mapDispatchToProps = (dispatch) => ({
 	},
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Root)
+export default connect(mapStateToProps, mapDispatchToProps)(Root);
