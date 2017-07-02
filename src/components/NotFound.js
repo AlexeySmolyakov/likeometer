@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import image from '../assets/broken-heart.svg'
 
-function NotFound (props) {
-	console.warn()
+const NotFound = (props) => {
 	return (
-		<div>
-			<div>404 Sorry</div>
-			<div>{props.location.pathname}</div>
+		<div className="error404">
+			<img src={image} alt="Not found" className="image"/>
+			<div className="code">404</div>
 		</div>
 	);
-}
+};
 
 NotFound.propTypes = {};
 NotFound.defaultProps = {};
