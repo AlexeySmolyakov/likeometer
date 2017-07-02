@@ -10,7 +10,7 @@ h3 {
 	display: flex;
 	flex-wrap: wrap;
 	margin: auto;
-	max-width: 1300px;
+	max-width: $max-width;
 }
 
 .photo {

@@ -9,16 +9,18 @@ class Header extends Component {
 
 		return (
 			<header>
-				<NavLink className="links" to={`/albums${user.uid}`}>Мои фотографии</NavLink>
-				<NavLink className="links" to='/friends'>Мои друзья</NavLink>
-				<NavLink className="links" to='/groups'>Мои группы</NavLink>
-				{user.uid ?
-					<div className="user">
-						<div>{user.first_name}</div>
-						<div className="image" style={image}/>
-					</div> :
-					<span className="links">Вход</span>
-				}
+				<div className="wrap">
+					<NavLink className="links" to={`/albums${user.uid}`}>фото</NavLink>
+					<NavLink className="links" to='/friends'>друзья</NavLink>
+					<NavLink className="links" to='/groups'>группы</NavLink>
+					{user.uid ?
+						<div className="user">
+							<div>{user.first_name}</div>
+							<div className="image" style={image}/>
+						</div> :
+						<span className="links">Вход</span>
+					}
+				</div>
 			</header>
 		);
 	}
