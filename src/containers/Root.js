@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 import { connect } from 'react-redux';
 
 import PrivateRoute from '../components/PrivateRoute'
-import Welcome from '../components/Welcome'
 import Header from "../components/Header";
 import Groups from './Groups'
 import Photos from './Photos'
@@ -32,7 +31,7 @@ class Root extends Component {
 					<div className="views">
 						<Header user={user}/>
 						<Switch>
-							<Route exact={true} path="/" component={Welcome}/>
+							<Redirect exact={true} from='/' to={`/albums${user.uid}`}/>
 							<PrivateRoute path="/albums:ownerId" component={Albums}/>
 							<PrivateRoute path="/album:ownerId([\d\-]+)_:albumId" component={Photos}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>

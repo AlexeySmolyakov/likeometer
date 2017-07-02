@@ -11,7 +11,7 @@ class Header extends Component {
 		return (
 			<header>
 				<div className="wrap">
-					<Link to={'/'} className="likeometer">
+					<Link to={`/albums${user.uid}`} className="likeometer">
 						<img src={likeometer} alt="Likeometer"/>
 					</Link>
 					<NavLink className="links" to={`/albums${user.uid}`}>фото</NavLink>
