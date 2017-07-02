@@ -35,7 +35,7 @@ header {
 		transition: all 0.1s ease-in-out;
 		position: relative;
 
-		&.active:after {
+		&:after {
 			content: '';
 			$size: 6px;
 			width: $size;
@@ -46,7 +46,12 @@ header {
 			border-radius: 50%;
 			background-color: $color-primary;
 			position: absolute;
+			opacity: 0;
+			transition: opacity 0.1s ease-in-out;
+		}
 
+		&.active:after {
+			opacity: 1;
 		}
 	}
 

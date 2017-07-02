@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import withImageOnLoad from '../decorators/withImageOnLoad'
 import Group from '../components/Group'
+const GroupHOC = withImageOnLoad(Group);
+
 import Loader from '../components/Loader'
 import { fetchGroups } from '../actions/GroupsActions'
 import { declensionGroups } from '../helpers'
@@ -44,7 +47,11 @@ class Groups extends Component {
 			return group.name.toLowerCase().includes(this.state.filter.toLowerCase());
 		});
 		const list = groups.map(group =>
-			<Group key={group.id} group={group}/>
+			<GroupHOC
+				key={group.id}
+				group={group}
+				imageSrc={group.photo_100}
+			/>
 		);
 
 		let placeholders = [];

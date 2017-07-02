@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import withImageOnLoad from '../decorators/withImageOnLoad'
 import Friend from '../components/Friend'
+const FriendHOC = withImageOnLoad(Friend);
+
 import Loader from '../components/Loader'
 import { fetchFriends } from '../actions/FriendsActions'
 import { declensionFriends } from '../helpers'
@@ -45,7 +48,11 @@ class Friends extends Component {
 				friend.last_name.toLowerCase().includes(this.state.filter.toLowerCase());
 		});
 		const list = friends.map(friend =>
-			<Friend key={friend.id} friend={friend}/>
+			<FriendHOC
+				key={friend.id}
+				friend={friend}
+				imageSrc={friend.photo_100}
+			/>
 		);
 
 		let placeholders = [];
