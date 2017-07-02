@@ -37,7 +37,7 @@ class Albums extends Component {
 		if (owner) {
 			if (ownerId > 0) ownerName = `${owner.first_name} ${owner.last_name}`;
 			else ownerName = owner.name;
-		} else {
+		} else if (+ownerId === this.props.currentUserId) {
 			ownerName = 'Мои альбомы';
 		}
 		document.title = ownerName;
@@ -92,6 +92,7 @@ const mapStateToProps = (state, ownProps) => {
 
 	return {
 		owner,
+		currentUserId,
 		albums: albumItems,
 		isFetching: state.albums.isFetching,
 	}
