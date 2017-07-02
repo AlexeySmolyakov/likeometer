@@ -38,6 +38,8 @@ class Albums extends Component {
 			if (ownerId > 0) ownerName = `${owner.first_name} ${owner.last_name}`;
 			else ownerName = owner.name;
 			document.title = ownerName;
+		} else {
+			ownerName = 'Мои альбомы';
 		}
 
 		let placeholders = [];
