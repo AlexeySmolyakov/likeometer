@@ -2,6 +2,8 @@ import API from '../api'
 import {
 	FETCH_PHOTOS,
 	FETCH_PHOTOS_STATE,
+	FETCH_PHOTOS_BY_ID,
+	FETCH_PHOTOS_BY_ID_STATE
 } from '../constants'
 
 export const fetchPhotos = (options) => {
@@ -43,5 +45,32 @@ export const fetchPhotos = (options) => {
 			});
 			return response;
 		})
+	}
+};
+
+export const fetchPhotosById = (options) => {
+	return (dispatch, getState) => {
+		const state = getState();
+		const { photos } = options;
+
+		dispatch({
+			type: FETCH_PHOTOS_BY_ID_STATE,
+			payload: true,
+		});
+
+		return API.photos.fetchPhotosById({ photos })
+		.then(response => {
+			return response;
+		})
+		.catch(error => {
+			console.warn('[API ERROR PHOTOS_BY_ID]', error)
+		})
+		.then(response => {
+			dispatch({
+				type: FETCH_PHOTOS_BY_ID_STATE,
+				payload: false,
+			});
+			return response;
+		});
 	}
 };

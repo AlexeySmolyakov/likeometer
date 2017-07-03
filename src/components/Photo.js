@@ -9,7 +9,10 @@ const Photo = ({ photo, isLoaded, imageSrc }) => {
 
 	return (
 		<div className="photo">
-			<Link className="wrap" to={`/photo${photo.owner_id}_${photo.id}`}>
+			<Link className="wrap" to={{
+				pathname: `/photo${photo.owner_id}_${photo.id}`,
+				state: { modal: true }
+			}}>
 				<div className="thumb">
 					<div className={`image ${isLoadedClass}`} style={imageStyle}/>
 				</div>

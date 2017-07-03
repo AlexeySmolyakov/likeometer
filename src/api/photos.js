@@ -36,3 +36,22 @@ export function fetchPhotos (options = {}) {
 		})
 	})
 }
+
+export function fetchPhotosById (options = {}) {
+	if (!options.photos)
+		return Promise.reject('No photo id specified.');
+
+	options = {
+		...options,
+		extended: 1,
+		photo_sizes: 1,
+		v: VK_API_VERSION,
+	};
+
+	return new Promise((resolve, reject) => {
+		VK.api('photos.getById', options, (response) => {
+			if (response.response) resolve(response.response);
+			else reject(response.error);
+		})
+	})
+}
