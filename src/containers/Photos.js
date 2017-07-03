@@ -2,7 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import withImageOnLoad from '../decorators/withImageOnLoad'
 import Photo from '../components/Photo'
+const PhotoHOC = withImageOnLoad(Photo);
+
 import Loader from '../components/Loader'
 import { fetchPhotos } from '../actions/PhotosActions'
 import { fetchAlbums } from '../actions/AlbumsActions'
@@ -51,6 +54,12 @@ class Photos extends Component {
 		this.$views.removeEventListener('scroll', this.onScrollToBottom, false);
 	}
 
+	getPhotoSize (sizes = []) {
+		let image = sizes.find(size => size.type === 'q');
+		if (!image) image = sizes.find(size => size.type === 'x');
+		return image.src;
+	}
+
 	render () {
 		const { album = { title: '' }, photos, isFetching, myLikes } = this.props;
 
@@ -62,7 +71,11 @@ class Photos extends Component {
 		const slicedPhotos = photos.slice(0, this.state.offset);
 
 		const list = slicedPhotos.map(photo =>
-			<Photo key={photo.id} photo={photo}/>
+			<PhotoHOC
+				key={photo.id}
+				photo={photo}
+				imageSrc={this.getPhotoSize(photo.sizes)}
+			/>
 		);
 
 		return (

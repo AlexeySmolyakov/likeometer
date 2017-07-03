@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-const Group = ({ group, isLoaded }) => {
-	const imageStyle = { backgroundImage: `url(${group.photo_100})` };
+const Group = ({ group, isLoaded, imageSrc }) => {
+	const imageStyle = { backgroundImage: `url(${imageSrc})` };
 	const isLoadedClass = isLoaded ? 'is-loaded' : '';
 
 	return (
