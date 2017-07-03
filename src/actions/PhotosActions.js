@@ -49,27 +49,30 @@ export const fetchPhotos = (options) => {
 };
 
 export const fetchPhotosById = (options) => {
-	return (dispatch, getState) => {
-		const state = getState();
+	return (dispatch) => {
 		const { photos } = options;
 
-		dispatch({
-			type: FETCH_PHOTOS_BY_ID_STATE,
-			payload: true,
-		});
+		//dispatch({
+		//	type: FETCH_PHOTOS_BY_ID_STATE,
+		//	payload: true,
+		//});
 
 		return API.photos.fetchPhotosById({ photos })
 		.then(response => {
+			//dispatch({
+			//	type: FETCH_PHOTOS_BY_ID,
+			//	payload: response[0] || {}
+			//});
 			return response;
 		})
 		.catch(error => {
 			console.warn('[API ERROR PHOTOS_BY_ID]', error)
 		})
 		.then(response => {
-			dispatch({
-				type: FETCH_PHOTOS_BY_ID_STATE,
-				payload: false,
-			});
+			//dispatch({
+			//	type: FETCH_PHOTOS_BY_ID_STATE,
+			//	payload: false,
+			//});
 			return response;
 		});
 	}

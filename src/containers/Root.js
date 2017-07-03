@@ -34,7 +34,7 @@ class Root extends Component {
 						<Switch>
 							<Redirect exact={true} from='/' to={`/albums${user.id}`}/>
 							<PrivateRoute path="/albums:ownerId" component={Albums}/>
-							<PrivateRoute path="/album:ownerId([\d\-]+)_:albumId" component={Photos}/>
+							<PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={Photos}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>
 							<PrivateRoute path="/groups:userId?" component={Groups}/>
 							<Route component={NotFound}/>

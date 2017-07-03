@@ -33,3 +33,9 @@ export function declensionFriends (number) {
 export function declensionLikes (number) {
 	return declension(number, 'понравилась', 'понравились', 'понравились');
 }
+
+export function getPhotoSize (sizes = []) {
+	let image = sizes.find(size => size.type === 'q');
+	if (!image) image = sizes.find(size => size.type === 'x');
+	return image.src;
+}
