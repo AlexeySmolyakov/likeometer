@@ -58,9 +58,18 @@ class Photos extends Component {
 
 	onScrollToBottom (e) {
 		const $views = e.target;
+		if (this.state.completed) return;
+
+		const { page, ownerId, objectId } = this.props.match.params;
+		let key = `${ownerId}_${objectId}`;
+		if (page === 'photo') key = `${ownerId}_${this.state.albumId}`;
+		const photos = this.props.photos[key].items;
+
 		if ($views.scrollTop + window.innerHeight >= $views.scrollHeight - 100) {
+			const offset = this.state.offset + this.state.limit;
 			this.setState({
-				offset: this.state.offset + this.state.limit,
+				offset,
+				completed: photos.length <= offset
 			});
 		}
 	}
@@ -75,8 +84,8 @@ class Photos extends Component {
 		return photos.sort((a, b) => {
 			if (a.likes.count > b.likes.count) return -1;
 			if (a.likes.count < b.likes.count) return 1;
-			if (a.date > b.date) return -1;
-			if (a.date < b.date) return 1;
+			if (a.id > b.id) return -1;
+			if (a.id < b.id) return 1;
 			return 0;
 		});
 	}
@@ -93,7 +102,7 @@ class Photos extends Component {
 		const albumPhotos = photos[key] ? this.sortAlbumPhotos(photos[key].items) : [];
 		const album = albums[ownerId].items.find(album => album.id === this.state.albumId);
 		const albumTitle = album ? album.title : <span>&nbsp;</span>;
-		if (albumTitle) document.title = albumTitle;
+		if (album) document.title = album.title;
 		const myLikesCount = albumPhotos.reduce((prev, curr) => curr.likes.user_likes + prev, 0);
 
 		const slicedPhotos = albumPhotos.slice(0, this.state.offset);

@@ -19,3 +19,7 @@ export const FETCH_FRIENDS_STATE = 'FETCH_FRIENDS_STATE';
 
 export const FETCH_GROUPS = 'FETCH_GROUPS';
 export const FETCH_GROUPS_STATE = 'FETCH_GROUPS_STATE';
+
+export const KEY_CODE_ESC = 27;
+export const KEY_CODE_LEFT_ARROW = 37;
+export const KEY_CODE_RIGHT_ARROW = 39;

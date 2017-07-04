@@ -26,6 +26,10 @@
 	animation: load8 1.1s infinite linear;
 }
 
+.loader.white {
+	border-left: 3px solid white;
+}
+
 @-webkit-keyframes load8 {
 	0% {
 		transform: rotate(0deg);

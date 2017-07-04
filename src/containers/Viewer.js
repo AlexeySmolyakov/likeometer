@@ -1,40 +1,107 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { KEY_CODE_LEFT_ARROW, KEY_CODE_RIGHT_ARROW, KEY_CODE_ESC } from '../constants'
 
 class Viewer extends Component {
-	state = {
-		isLoaded: false
-	};
+	constructor (props) {
+		super(props);
+
+		this.image = null;
+		const { pathname, photos } = this.props;
+
+		let currentPhotoIndex = 0;
+		if (this.isPhotoPath(pathname))
+			currentPhotoIndex = photos.findIndex(
+				photo => photo.id === this.getPhotoId(pathname));
+
+		this.state = {
+			photos: photos,
+			isLoading: false,
+			currentPhotoIndex,
+		};
+
+		this.onKeyPress = this.onKeyPress.bind(this);
+	}
+
+	componentDidMount () {
+		if (this.isPhotoPath(this.props.pathname))
+			this.preloadPhoto(this.state.photos[this.state.currentPhotoIndex]);
+	}
+
+	componentWillReceiveProps (nextProps) {
+		if (this.isPhotoPath(nextProps.pathname)) {
+			const currentPhotoIndex = this.state.photos.findIndex(
+				photo => photo.id === this.getPhotoId(nextProps.pathname));
+			this.setState({ currentPhotoIndex });
+			this.preloadPhoto(this.state.photos[currentPhotoIndex]);
+		}
+	}
 
 	isPhotoPath (pathname) {
 		return /^\/photo/.test(pathname);
 	}
 
-	componentWillReceiveProps (nextProps, nextContext) {
-
+	getPhotoSrc (photo) {
+		return photo.sizes.slice(-1)[0].src;
 	}
 
-	componentWillUnmount () {
+	getPhotoId (pathname) {
+		return +pathname.match(/_(.+)/)[1];
+	}
 
+	preloadPhoto (photo) {
+		this.setState({ isLoading: true });
+		const image = new Image();
+		image.onload = () => this.setState({ isLoading: false });
+		image.src = this.getPhotoSrc(photo);
 	}
 
 	onClick () {
 		this.props.history.goBack()
 	}
 
+	onKeyPress (e) {
+		const { history } = this.props;
+		let { currentPhotoIndex, photos } = this.state;
+
+		if (e.keyCode === KEY_CODE_ESC) return history.goBack();
+
+		switch (e.keyCode) {
+			case KEY_CODE_LEFT_ARROW:
+				currentPhotoIndex--;
+				break;
+			case KEY_CODE_RIGHT_ARROW:
+				currentPhotoIndex++;
+				break;
+		}
+
+		if (currentPhotoIndex >= 0 && currentPhotoIndex < photos.length) {
+			const photo = this.state.photos[currentPhotoIndex];
+			history.replace(`/photo${photo.owner_id}_${photo.id}`)
+		}
+	}
+
 	render () {
-		const isPhoto = this.isPhotoPath(this.props.pathname);
-		if (!isPhoto) return <div className="viewer"/>;
+		const { pathname } = this.props;
+		const photo = this.state.photos[this.state.currentPhotoIndex];
 
-		const photoId = +this.props.pathname.match(/_(.+)/)[1];
-		const currentPhoto = this.props.photos.find(photo => photo.id === photoId);
+		if (!this.isPhotoPath(pathname) || !photo) {
+			document.removeEventListener('keyup', this.onKeyPress, false);
+			return <div className="viewer"/>;
+		} else {
+			document.addEventListener('keyup', this.onKeyPress, false);
+		}
 
-		if (!currentPhoto) return <div className="viewer"/>;
-		const imageSrc = currentPhoto.sizes.slice(-1)[0].src;
+		if (this.state.isLoading) return (
+			<div className="viewer show">
+				<img alt=""/>
+				<div className="loader white"/>
+			</div>
+		);
 
 		return (
-			<div className="viewer show" onClick={::this.onClick}>
-				<img src={imageSrc} alt=""/>
+			<div className="viewer show image-loaded" onClick={::this.onClick}>
+				<img src={this.getPhotoSrc(photo)} alt=""/>
 			</div>
 		);
 	}
