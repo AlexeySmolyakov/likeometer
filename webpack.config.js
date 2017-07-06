@@ -61,6 +61,8 @@ module.exports = {
 			template: './src/pages/index.html',
 			chunks: ['application']
 		}),
+
+		new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
 	],
 
 	devtool: 'eval',
