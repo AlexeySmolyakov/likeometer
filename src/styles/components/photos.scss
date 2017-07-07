@@ -29,6 +29,12 @@ h3 {
 		min-width: 0;
 	}
 
+	&.detected {
+		.counters {
+			background-color: red !important;
+		}
+	}
+
 	.thumb {
 		position: relative;
 		height: 150px;
