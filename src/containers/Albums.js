@@ -7,7 +7,7 @@ import Loader from '../components/Loader'
 import { fetchAlbums } from '../actions/AlbumsActions'
 import { fetchFriends } from '../actions/FriendsActions'
 import { fetchGroups } from '../actions/GroupsActions'
-import { declensionAlbums } from '../helpers'
+import { declensionAlbums, createPlaceholder } from '../helpers'
 
 class Albums extends Component {
 	componentDidMount () {
@@ -42,9 +42,7 @@ class Albums extends Component {
 		}
 		document.title = ownerName;
 
-		let placeholders = [];
-		for (let i = 0; i < 11; i++) placeholders.push(<div key={i} className="album"/>);
-
+		let placeholders = createPlaceholder(11, (i) => <div key={i} className="album"/>);
 		return (
 			<div>
 				<h1>{ownerName}</h1>

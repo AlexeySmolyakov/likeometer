@@ -8,7 +8,7 @@ const FriendHOC = withImageOnLoad(Friend);
 
 import Loader from '../components/Loader'
 import { fetchFriends } from '../actions/FriendsActions'
-import { declensionFriends } from '../helpers'
+import { declensionFriends, createPlaceholder } from '../helpers'
 
 class Friends extends Component {
 	constructor () {
@@ -55,9 +55,7 @@ class Friends extends Component {
 			/>
 		);
 
-		let placeholders = [];
-		for (let i = 0; i < 11; i++) placeholders.push(<div key={i} className="friend"/>);
-
+		let placeholders = createPlaceholder(11, (i) => <div key={i} className="friend"/>);
 		return (
 			<div>
 				<div className="search">{this.state.filter}</div>

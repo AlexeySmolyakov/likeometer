@@ -8,7 +8,7 @@ const GroupHOC = withImageOnLoad(Group);
 
 import Loader from '../components/Loader'
 import { fetchGroups } from '../actions/GroupsActions'
-import { declensionGroups } from '../helpers'
+import { declensionGroups, createPlaceholder } from '../helpers'
 
 class Groups extends Component {
 	constructor () {
@@ -54,9 +54,7 @@ class Groups extends Component {
 			/>
 		);
 
-		let placeholders = [];
-		for (let i = 0; i < 11; i++) placeholders.push(<div key={i} className="group"/>);
-
+		let placeholders = createPlaceholder(11, (i) => <div key={i} className="group"/>);
 		return (
 			<div>
 				<div className="search">{this.state.filter}</div>

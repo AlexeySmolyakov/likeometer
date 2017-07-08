@@ -39,3 +39,10 @@ export function getPhotoSize (sizes = []) {
 	if (!image) image = sizes.find(size => size.type === 'x');
 	return image.src;
 }
+
+export function createPlaceholder (times, element) {
+	let placeholder = [];
+	for (let i = 0; i < times; i++)
+		placeholder.push(element(i))
+	return placeholder;
+}
