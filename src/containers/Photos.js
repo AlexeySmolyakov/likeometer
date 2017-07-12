@@ -6,50 +6,66 @@ import withImageOnLoad from '../decorators/withImageOnLoad'
 import Photo from '../components/Photo'
 const PhotoHOC = withImageOnLoad(Photo);
 
-import Loader from '../components/Loader'
 import Viewer from './Viewer'
-import { fetchPhotos, fetchPhotosById } from '../actions/PhotosActions'
+import Loader from '../components/Loader'
+import { fetchAllPhotos, fetchPhotos, fetchPhotosById } from '../actions/PhotosActions'
 import { fetchAlbums } from '../actions/AlbumsActions'
-import { declensionPhotos } from '../helpers'
+import { declensionPhotos, createPlaceholder, getPhotoSrcFromSizes } from '../helpers'
 
 class Photos extends Component {
 	constructor () {
 		super();
+
+		this.state = {
+			offset: 30,
+			limit: 30,
+			completed: false,
+			albumId: 0,
+		};
+		this.albumId = 0;
+
 		this.$views = null;
 		this.onScrollToBottom = this.onScrollToBottom.bind(this);
 	}
 
-	state = {
-		offset: 30,
-		limit: 30,
-		completed: false,
-		albumId: 0,
-	};
-
 	componentDidMount () {
-		const { fetchPhotosById, fetchAlbums, fetchPhotos } = this.props;
-		let { ownerId: owner_id, objectId: album_id, page } = this.props.match.params;
-		album_id = +album_id;
-
-		// fetch albums to get album name, always
-		fetchAlbums({ owner_id });
-
-		// if photo page, getPhotoById for album_id first
-		Promise.resolve()
-		.then(() => {
-			if (page === 'photo')
-				return fetchPhotosById({ photos: `${owner_id}_${album_id}` })
-				.then(([{ owner_id, album_id }]) => ({ owner_id, album_id }));
-			else
-				return { owner_id, album_id };
-		})
-		.then(({ owner_id, album_id }) => {
-			this.setState({ albumId: album_id });
-			fetchPhotos({ owner_id, album_id });
-		});
+		this.fetchData();
 
 		this.$views = document.querySelector('.views');
 		this.$views.addEventListener('scroll', this.onScrollToBottom, false);
+	}
+
+	componentWillUpdate (prevProps) {
+		//console.warn('componentWillUpdate')
+		const isSamePath = this.props.location.pathname === prevProps.location.pathname;
+		if (!isSamePath) this.fetchData();
+	}
+
+	fetchData () {
+		//console.warn('fetch')
+
+		const { fetchAllPhotos, fetchPhotosById, fetchAlbums, fetchPhotos } = this.props;
+		let { page, ownerId: owner_id, objectId } = this.props.match.params;
+
+		if (page === 'album') {
+			fetchAlbums({ owner_id });
+			//fetchPhotos({ owner_id, album_id: objectId });
+			fetchAllPhotos({ owner_id, album_id: objectId });
+			//fetchAAA({ owner_id, album_id: objectId });
+			//this.setState({ albumId: +objectId });
+			//console.warn(page, objectId)
+			this.albumId = +objectId;
+		}
+
+		if (page === 'photo' && !this.albumId) {
+			fetchPhotosById({ photos: `${owner_id}_${objectId}` })
+			.then(([{ owner_id, album_id }]) => {
+				fetchAlbums({ owner_id });
+				fetchPhotos({ owner_id, album_id });
+				//this.setState({ albumId: album_id });
+				this.albumId = album_id;
+			});
+		}
 	}
 
 	componentWillUnmount () {
@@ -74,33 +90,27 @@ class Photos extends Component {
 		}
 	}
 
-	getPhotoSrc (sizes = []) {
-		let image = sizes.find(size => size.type === 'q');
-		if (!image) image = sizes.find(size => size.type === 'x');
-		return image.src;
-	}
-
-	sortAlbumPhotos (photos = []) {
-		return photos.sort((a, b) => {
-			if (a.likes.count > b.likes.count) return -1;
-			if (a.likes.count < b.likes.count) return 1;
-			if (a.id > b.id) return -1;
-			if (a.id < b.id) return 1;
-			return 0;
-		});
-	}
-
 	render () {
 		const { photos, albums, isFetching } = this.props;
 		const { page, ownerId, objectId } = this.props.match.params;
 
-		if (isFetching || !this.state.albumId) return <Loader/>;
-
 		let key = `${ownerId}_${objectId}`;
-		if (page === 'photo') key = `${ownerId}_${this.state.albumId}`;
+		if (page === 'photo') key = `${ownerId}_${this.albumId}`;
 
-		const albumPhotos = photos[key] ? this.sortAlbumPhotos(photos[key].items) : [];
-		const album = albums[ownerId].items.find(album => album.id === this.state.albumId);
+		const photosLoaded = photos[key] ? photos[key].items.length : 0;
+		const photosTotal = photos[key] ? photos[key].count : 0;
+
+		//console.warn(isFetching, !albums[ownerId], !photos[key], !this.albumId)
+		if (isFetching || !albums[ownerId] || !photos[key] || !this.albumId)
+			return <Loader photosLoaded={photosLoaded} photosTotal={photosTotal}/>;
+
+		//console.warn('photos', photos[key].items)
+		//console.warn('[key]', key)
+		//console.warn('photos[key].items', photos[key].items)
+
+		const albumPhotos = photos[key] ? photos[key].items : [];
+		//console.warn('albumPhotos', albumPhotos)
+		const album = albums[ownerId].items.find(album => album.id === this.albumId);
 		const albumTitle = album ? album.title : <span>&nbsp;</span>;
 		if (album) document.title = album.title;
 		const myLikesCount = albumPhotos.reduce((prev, curr) => curr.likes.user_likes + prev, 0);
@@ -110,11 +120,11 @@ class Photos extends Component {
 			<PhotoHOC
 				key={photo.id}
 				photo={photo}
-				imageSrc={this.getPhotoSrc(photo.sizes)}
+				imageSrc={getPhotoSrcFromSizes(photo.sizes, 7)}
 			/>
 		);
 
-		let placeholders = [1, 2, 3, 4, 5].map(i => <div key={i} className="photo"/>);
+		let placeholders = createPlaceholder(5, (i) => <div key={i} className="photo"/>);
 		return (
 			<div>
 				<h1>{albumTitle}</h1>
@@ -130,10 +140,10 @@ class Photos extends Component {
 					{list}
 					{placeholders}
 				</div>
-				<Viewer
-					pathname={this.props.location.pathname}
-					history={this.props.history}
-					photos={albumPhotos}/>
+				{/*<Viewer*/}
+				{/*pathname={this.props.location.pathname}*/}
+				{/*history={this.props.history}*/}
+				{/*photos={albumPhotos}/>*/}
 			</div>
 		);
 	}
@@ -146,7 +156,7 @@ Photos.propTypes = {
 };
 Photos.defaultProps = {};
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
 	const photos = state.photos.photos;
 	const albums = state.albums.albums;
 
@@ -162,6 +172,9 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+	fetchAllPhotos (options) {
+		return dispatch(fetchAllPhotos(options))
+	},
 	fetchPhotos (options) {
 		return dispatch(fetchPhotos(options))
 	},

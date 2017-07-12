@@ -34,10 +34,11 @@ export function declensionLikes (number) {
 	return declension(number, 'понравилась', 'понравились', 'понравились');
 }
 
-export function getPhotoSize (sizes = []) {
-	let image = sizes.find(size => size.type === 'q');
-	if (!image) image = sizes.find(size => size.type === 'x');
-	return image.src;
+const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'x', 'm', 's'];
+export function getPhotoSrcFromSizes (sizes = [], typeIndex = 0) {
+	const image = sizes.find(size => size.type === types[typeIndex]);
+	if (!image) return getPhotoSrcFromSizes(sizes, typeIndex + 1);
+	else return image.src;
 }
 
 export function createPlaceholder (times, element) {
@@ -45,4 +46,14 @@ export function createPlaceholder (times, element) {
 	for (let i = 0; i < times; i++)
 		placeholder.push(element(i))
 	return placeholder;
+}
+
+export function sortPhotos (photos = []) {
+	return photos.sort((a, b) => {
+		if (a.likes.count > b.likes.count) return -1;
+		if (a.likes.count < b.likes.count) return 1;
+		if (a.id > b.id) return -1;
+		if (a.id < b.id) return 1;
+		return 0;
+	});
 }

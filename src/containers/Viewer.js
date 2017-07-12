@@ -1,48 +1,87 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { KEY_CODE_LEFT_ARROW, KEY_CODE_RIGHT_ARROW, KEY_CODE_ESC } from '../constants'
+import { connect } from 'react-redux'
 
-class Viewer extends Component {
+import { getPhotoSrcFromSizes } from '../helpers'
+import { fetchPhotosById } from '../actions/PhotosActions'
+import { KEY_CODE_ESC, KEY_CODE_LEFT_ARROW, KEY_CODE_RIGHT_ARROW } from '../constants'
+
+class Viewer extends React.PureComponent {
 	constructor (props) {
 		super(props);
 
-		this.image = null;
-		const { pathname, photos } = this.props;
-
-		let currentPhotoIndex = 0;
-		if (this.isPhotoPath(pathname))
-			currentPhotoIndex = photos.findIndex(
-				photo => photo.id === this.getPhotoId(pathname));
+		this.photos = [];
+		this.currentPhotoIndex = 0;
 
 		this.state = {
-			photos: photos,
-			isLoading: false,
-			currentPhotoIndex,
+			albumId: 0,
+			photos: [],
+			preloading: false,
 		};
 
 		this.onKeyPress = this.onKeyPress.bind(this);
 	}
 
 	componentDidMount () {
-		if (this.isPhotoPath(this.props.pathname))
-			this.preloadPhoto(this.state.photos[this.state.currentPhotoIndex]);
+		this.fetchAlbumIdIfNeeded(this.props);
+
+		document.addEventListener('keyup', this.onKeyPress, false);
 	}
 
-	componentWillReceiveProps (nextProps) {
-		if (this.isPhotoPath(nextProps.pathname)) {
-			const currentPhotoIndex = this.state.photos.findIndex(
-				photo => photo.id === this.getPhotoId(nextProps.pathname));
-			this.setState({ currentPhotoIndex });
-			this.preloadPhoto(this.state.photos[currentPhotoIndex]);
+	fetchAlbumIdIfNeeded (props) {
+		if (!this.state.albumId) {
+
+			console.warn('fetchAlbumIdIfNeeded');
+
+			const { photos, fetchPhotosById } = props;
+			const ownerId = +this.props.match.params.ownerId;
+			const photoId = +this.props.match.params.photoId;
+
+			fetchPhotosById({ photos: `${ownerId}_${photoId}` })
+			.then(([{ album_id }]) => {
+				this.photos = (photos[`${ownerId}_${album_id}`] || { items: [] }).items;
+				this.setState({
+					albumId: album_id,
+					photos: (photos[`${ownerId}_${album_id}`] || { items: [] }).items,
+				});
+			})
 		}
 	}
 
-	isPhotoPath (pathname) {
-		return /^\/photo/.test(pathname);
+	componentWillUnmount () {
+		document.removeEventListener('keyup', this.onKeyPress, false);
 	}
 
-	getPhotoSrc (photo) {
-		return photo.sizes.slice(-1)[0].src;
+	componentWillReceiveProps (nextProps) {
+		console.warn('componentWillReceiveProps');
+
+		this.fetchAlbumIdIfNeeded(nextProps);
+
+		const { photos } = nextProps;
+		const albumId = this.state.albumId;
+		const ownerId = +nextProps.match.params.ownerId;
+		const photoId = +nextProps.match.params.photoId;
+		const items = (photos[`${ownerId}_${albumId}`] || { items: [] }).items;
+		this.currentPhotoIndex = this.state.photos.findIndex(photo => photo.id === photoId);
+		const photo = this.state.photos[this.currentPhotoIndex];
+		this.setState({
+			photos: items,
+			preloading: true,
+		});
+		this.preloadPhoto(photo)
+	}
+
+	shouldComponentUpdate (nextProps, nextState, nextContext) {
+		console.warn('shouldComponentUpdate');
+		return true;
+	}
+
+	componentWillUpdate (nextProps, nextState, nextContext) {
+		console.warn('componentWillUpdate')
+	}
+
+	componentDidUpdate (prevProps) {
+		console.warn('componentDidUpdate');
 	}
 
 	getPhotoId (pathname) {
@@ -50,10 +89,10 @@ class Viewer extends Component {
 	}
 
 	preloadPhoto (photo) {
-		this.setState({ isLoading: true });
+		if (!photo) return;
 		const image = new Image();
-		image.onload = () => this.setState({ isLoading: false });
-		image.src = this.getPhotoSrc(photo);
+		image.onload = () => this.setState({ preloading: false });
+		image.src = getPhotoSrcFromSizes(photo.sizes);
 	}
 
 	onClick () {
@@ -62,56 +101,59 @@ class Viewer extends Component {
 
 	onKeyPress (e) {
 		const { history } = this.props;
-		let { currentPhotoIndex, photos } = this.state;
-
-		if (e.keyCode === KEY_CODE_ESC) return history.goBack();
+		let index = this.currentPhotoIndex;
 
 		switch (e.keyCode) {
+			case KEY_CODE_ESC:
+				return history.goBack();
 			case KEY_CODE_LEFT_ARROW:
-				currentPhotoIndex--;
+				index = Math.max(0, index - 1);
 				break;
 			case KEY_CODE_RIGHT_ARROW:
-				currentPhotoIndex++;
+				index = Math.min(this.state.photos.length, index + 1);
 				break;
 		}
 
-		if (currentPhotoIndex >= 0 && currentPhotoIndex < photos.length) {
-			const photo = this.state.photos[currentPhotoIndex];
+		if (index >= 0 && index < this.state.photos.length && index !== this.currentPhotoIndex) {
+			this.currentPhotoIndex = index;
+			const photo = this.state.photos[this.currentPhotoIndex];
 			history.replace(`/photo${photo.owner_id}_${photo.id}`)
 		}
 	}
 
 	render () {
-		const { pathname } = this.props;
-		const photo = this.state.photos[this.state.currentPhotoIndex];
-
-		if (!this.isPhotoPath(pathname) || !photo) {
-			document.removeEventListener('keyup', this.onKeyPress, false);
-			return <div className="viewer"/>;
-		} else {
-			document.addEventListener('keyup', this.onKeyPress, false);
-		}
-
-		if (this.state.isLoading) return (
+		console.warn(this.state.preloading)
+		let photo = this.state.photos[this.currentPhotoIndex];
+		if (!this.state.albumId || !this.state.photos.length || this.state.preloading) return (
 			<div className="viewer show">
-				<img alt=""/>
+				{photo && <img src={getPhotoSrcFromSizes(photo.sizes)} alt=""/>}
 				<div className="loader white"/>
 			</div>
 		);
 
+		const photoId = +this.props.match.params.photoId;
+		this.currentPhotoIndex = this.state.photos.findIndex(photo => photo.id === photoId);
+		photo = this.state.photos[this.currentPhotoIndex];
+		console.warn(photo.id);
 		return (
 			<div className="viewer show image-loaded" onClick={::this.onClick}>
-				<img src={this.getPhotoSrc(photo)} alt=""/>
+				<img src={getPhotoSrcFromSizes(photo.sizes)} alt=""/>
 			</div>
 		);
 	}
 }
 
-Viewer.propTypes = {
-	history: PropTypes.object.isRequired,
-	pathname: PropTypes.string.isRequired,
-	photos: PropTypes.array.isRequired,
-};
+Viewer.propTypes = {};
 Viewer.defaultProps = {};
 
-export default Viewer;
+const mapStateToProps = (state) => ({
+	photos: state.photos.photos,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+	fetchPhotosById (options) {
+		return dispatch(fetchPhotosById(options))
+	},
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Viewer);

@@ -13,18 +13,8 @@
 	transition: opacity 0.1s ease-in-out, visibility 0s linear 0.1s;
 	visibility: hidden;
 
-	img {
-		max-width: 100%;
-		max-height: 100%;
-		opacity: 0;
-		transition: all 0.1s ease-in-out;
-		transform: scale(.98);
-	}
-
-	&.show {
-		opacity: 1;
-		visibility: visible;
-		transition: opacity 0.1s ease-in-out;
+	.loader {
+		position: fixed;
 	}
 
 	&.image-loaded {
@@ -32,5 +22,19 @@
 			opacity: 1;
 			transform: scale(1);
 		}
+	}
+
+	img {
+		max-width: 100%;
+		max-height: 100%;
+		opacity: 0;
+		transform: scale(.99);
+		transition: all 0.1s ease-in-out;
+	}
+
+	&.show {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.1s ease-in-out;
 	}
 }

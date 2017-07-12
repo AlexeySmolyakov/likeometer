@@ -5,9 +5,10 @@ import { connect } from 'react-redux';
 import PrivateRoute from '../components/PrivateRoute'
 import Landing from './Landing'
 import Header from "../components/Header";
+import Albums from './Albums'
 import Groups from './Groups'
 import Photos from './Photos'
-import Albums from './Albums'
+import Viewer from './Viewer'
 import Friends from './Friends'
 import NotFound from '../components/NotFound'
 import { checkAuth }from '../actions/AuthActions'
@@ -39,6 +40,7 @@ class Root extends Component {
 							<PrivateRoute path="/groups:userId?" component={Groups}/>
 							<Route component={NotFound}/>
 						</Switch>
+						<Route path="/photo:ownerId([\d\-]+)_:photoId([\d\-]+)" component={Viewer}/>
 					</div>
 				</div>
 			</Router>
