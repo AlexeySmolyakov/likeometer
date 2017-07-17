@@ -3,7 +3,6 @@ import { sortPhotos } from '../helpers'
 import {
 	FETCH_PHOTOS,
 	FETCH_PHOTOS_STATE,
-	FETCH_PHOTOS_BY_ID,
 	FETCH_PHOTOS_BY_ID_STATE
 } from '../constants'
 
@@ -93,19 +92,25 @@ export const fetchAllPhotos = (options = {}) => {
 					}
 				});
 
-				if (loadMore) return fetch();
+				if (start.isCancelled)
+					console.warn('Cancelling promise...');
+
+				if (loadMore && !start.isCancelled) return fetch();
 			})
 		};
 
-		return fetch()
-		.then(response => {
-			//console.warn('resolved', offset);
+		let start = fetch();
+		start.isCancelled = false;
+
+		start.then(response => {
 			dispatch({
 				type: FETCH_PHOTOS_STATE,
 				payload: false,
 			});
 			return response;
-		})
+		});
+
+		return start;
 	}
 };
 
