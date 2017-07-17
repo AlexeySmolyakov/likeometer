@@ -17,10 +17,7 @@ class Viewer extends React.PureComponent {
 	}
 
 	componentDidMount () {
-		const { photos, ownerId, albumId, photoId } = this.props;
-		const items = photos[`${ownerId}_${albumId}`].items;
-		this.currentPhotoIndex = items.findIndex(photo => photo.id === photoId);
-		const photo = items[this.currentPhotoIndex];
+		const photo = this.getCurrentPhoto(this.props);
 		this.preloadPhoto(photo);
 
 		document.addEventListener('keyup', this.onKeyPress, false);
@@ -31,32 +28,17 @@ class Viewer extends React.PureComponent {
 	}
 
 	componentWillReceiveProps (nextProps) {
-		const { photos, ownerId, albumId, photoId } = nextProps;
-		if (photoId === this.props.photoId) return;
+		if (this.props.photoId === nextProps.photoId) return;
 
+		const photo = this.getCurrentPhoto(nextProps);
+		this.preloadPhoto(photo);
+	}
+
+	getCurrentPhoto (props) {
+		const { photos, ownerId, albumId, photoId } = props;
 		const items = photos[`${ownerId}_${albumId}`].items;
 		this.currentPhotoIndex = items.findIndex(photo => photo.id === photoId);
-		const photo = items[this.currentPhotoIndex];
-		console.warn('PRELOAD')
-		this.preloadPhoto(photo);
-
-
-		//console.warn('componentWillReceiveProps');
-
-		//this.fetchAlbumIdIfNeeded(nextProps);
-
-		//const { photos } = nextProps;
-		//const albumId = this.state.albumId;
-		//const ownerId = +nextProps.match.params.ownerId;
-		//const photoId = +nextProps.match.params.photoId;
-		//const items = (photos[`${ownerId}_${albumId}`] || { items: [] }).items;
-		//this.currentPhotoIndex = this.state.photos.findIndex(photo => photo.id === photoId);
-		//const photo = this.state.photos[this.currentPhotoIndex];
-		//this.setState({
-		//	photos: items,
-		//	isPreloading: true,
-		//});
-		//this.preloadPhoto(photo)
+		return items[this.currentPhotoIndex];
 	}
 
 	preloadPhoto (photo) {
@@ -94,7 +76,6 @@ class Viewer extends React.PureComponent {
 	}
 
 	render () {
-		console.warn('render')
 		const { photos, ownerId, albumId, photoId } = this.props;
 
 		const key = `${ownerId}_${albumId}`;

@@ -27,6 +27,17 @@ class PhotosWithViewer extends Component {
 		if (!isSamePath) this.update();
 	}
 
+	shouldFetchPhotosById (props = this.props) {
+		const { photos } = props;
+		const { ownerId, objectId: photoId } = props.match.params;
+
+		const albumId = this.state.albumId;
+		const key = `${ownerId}_${albumId}`;
+		const items = (photos[key] || { items: [] }).items;
+
+		return !items.find(item => item.id === +photoId);
+	}
+
 	update () {
 		let { page, ownerId: owner_id, objectId } = this.props.match.params;
 		const { fetchAllPhotos, fetchPhotosById, fetchAlbums } = this.props;
@@ -42,16 +53,17 @@ class PhotosWithViewer extends Component {
 		}
 
 		if (page === 'photo') {
-			fetchPhotosById({ photos: `${owner_id}_${objectId}` })
-			.then(([{ owner_id, album_id }]) => {
-				this.setState({ albumId: album_id });
-				const p1 = fetchAlbums({ owner_id });
-				const p2 = fetchAllPhotos({ owner_id, album_id });
+			if (this.shouldFetchPhotosById())
+				fetchPhotosById({ photos: `${owner_id}_${objectId}` })
+				.then(([{ owner_id, album_id }]) => {
+					this.setState({ albumId: album_id });
+					const p1 = fetchAlbums({ owner_id });
+					const p2 = fetchAllPhotos({ owner_id, album_id });
 
-				if (this.state.isFetching)
-					Promise.all([p1, p2])
-					.then(() => this.setState({ isFetching: false }));
-			});
+					if (this.state.isFetching)
+						Promise.all([p1, p2])
+						.then(() => this.setState({ isFetching: false }));
+				});
 		}
 	}
 
@@ -59,7 +71,7 @@ class PhotosWithViewer extends Component {
 		const { photos, albums, isFetching } = this.props;
 		const { page, ownerId, objectId } = this.props.match.params;
 
-		const key = (page !== 'photo') ?
+		const key = (page === 'photo') ?
 			`${ownerId}_${this.state.albumId}` :
 			`${ownerId}_${objectId}`;
 
