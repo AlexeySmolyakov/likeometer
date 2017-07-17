@@ -107,10 +107,10 @@ class Viewer extends React.PureComponent {
 						<i className="fa fa-comment"/>
 					</div>}
 
-					<div className="likes">
+					{photo.likes.count > 0 && <div className="likes">
 						<span>{photo.likes.count}</span>
 						<i className="fa fa-heart" data-user-likes={photo.likes.user_likes}/>
-					</div>
+					</div>}
 				</div>
 
 				<img
