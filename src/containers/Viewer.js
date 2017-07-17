@@ -55,6 +55,10 @@ class Viewer extends React.PureComponent {
 		this.props.history.goBack()
 	}
 
+	onClick () {
+		this.onKeyPress({ keyCode: KEY_CODE_RIGHT_ARROW });
+	}
+
 	onKeyPress (e) {
 		const { history, photos, ownerId, albumId } = this.props;
 		let index = this.currentPhotoIndex;
@@ -109,7 +113,12 @@ class Viewer extends React.PureComponent {
 					</div>
 				</div>
 
-				<img className="nice-photo" src={getPhotoSrcFromSizes(photo.sizes)} alt="Image"/>
+				<img
+					className="nice-photo"
+					src={getPhotoSrcFromSizes(photo.sizes)}
+					alt="Image"
+					onClick={::this.onClick}
+				/>
 				{this.state.isPreloading && <div className="loader white"/>}
 			</div>
 		);
