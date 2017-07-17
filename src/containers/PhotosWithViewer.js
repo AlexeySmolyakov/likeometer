@@ -7,14 +7,14 @@ import Photos from './Photos'
 import Loader from '../components/Loader'
 import { fetchAlbums } from '../actions/AlbumsActions'
 import { fetchAllPhotos, fetchPhotosById } from '../actions/PhotosActions'
-import { sortPhotos } from '../helpers'
 
 class PhotosWithViewer extends Component {
 	constructor (props) {
 		super(props);
-		this.albumId = 0;
+
 		this.state = {
-			offset: 30,
+			albumId: 0,
+			isFetching: true,
 		}
 	}
 
@@ -31,20 +31,26 @@ class PhotosWithViewer extends Component {
 		let { page, ownerId: owner_id, objectId } = this.props.match.params;
 		const { fetchAllPhotos, fetchPhotosById, fetchAlbums } = this.props;
 
-		this.albumId = 0;
-
 		if (page === 'album') {
-			this.albumId = +objectId;
-			fetchAlbums({ owner_id });
-			fetchAllPhotos({ owner_id, album_id: objectId });
+			this.setState({ albumId: +objectId });
+			const p1 = fetchAlbums({ owner_id });
+			const p2 = fetchAllPhotos({ owner_id, album_id: objectId });
+
+			if (this.state.isFetching)
+				Promise.all([p1, p2])
+				.then(() => this.setState({ isFetching: false }));
 		}
 
 		if (page === 'photo') {
 			fetchPhotosById({ photos: `${owner_id}_${objectId}` })
 			.then(([{ owner_id, album_id }]) => {
-				this.albumId = album_id;
-				fetchAlbums({ owner_id });
-				fetchAllPhotos({ owner_id, album_id });
+				this.setState({ albumId: album_id });
+				const p1 = fetchAlbums({ owner_id });
+				const p2 = fetchAllPhotos({ owner_id, album_id });
+
+				if (this.state.isFetching)
+					Promise.all([p1, p2])
+					.then(() => this.setState({ isFetching: false }));
 			});
 		}
 	}
@@ -53,22 +59,34 @@ class PhotosWithViewer extends Component {
 		const { photos, albums, isFetching } = this.props;
 		const { page, ownerId, objectId } = this.props.match.params;
 
-		let photosKey = `${ownerId}_${objectId}`;
-		if (page === 'photo') photosKey = `${ownerId}_${this.albumId}`;
+		const key = (page !== 'photo') ?
+			`${ownerId}_${this.state.albumId}` :
+			`${ownerId}_${objectId}`;
 
-		const albumPhotos = sortPhotos((photos[photosKey] || { items: [] }).items);
-		const photosLoaded = albumPhotos.length;
-		const photosTotal = photos[photosKey] ? photos[photosKey].count : 0;
+		const photoItems = (photos[key] || { items: [] }).items;
+		const photoTotal = photos[key] ? photos[key].count : 0;
+		const photoLoadedCount = photoItems.length;
 
-		if (isFetching || !this.albumId)
-			return <Loader photosTotal={photosTotal} photosLoaded={photosLoaded}/>;
+		if (isFetching || !this.state.albumId || this.state.isFetching)
+			return <Loader photosTotal={photoTotal} photosLoaded={photoLoadedCount}/>;
 
 		return (
 			<div>
-				<Viewer
-					photos={albumPhotos}
+				<Photos
+					albums={albums}
+					photos={photos}
+					ownerId={+ownerId}
+					albumId={this.state.albumId}
+				/>
+
+				{page === 'photo' && <Viewer
+					albums={albums}
+					photos={photos}
+					albumId={this.state.albumId}
+					ownerId={+ownerId}
+					photoId={+objectId}
 					history={this.props.history}
-					pathname={this.props.location.pathname}/>
+				/>}
 			</div>
 		);
 	}
@@ -87,7 +105,6 @@ const mapStateToProps = (state) => {
 
 	const isFetching =
 		state.photos.isFetching ||
-		state.photos.isFetchingById ||
 		state.albums.isFetching;
 
 	return {
@@ -98,27 +115,11 @@ const mapStateToProps = (state) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-	fetchAllPhotos (options) {
-		return dispatch(fetchAllPhotos(options))
-	},
 	fetchAlbums (options) {
 		return dispatch(fetchAlbums(options))
 	},
-	fetchPhotosById (options) {
-		return dispatch(fetchPhotosById(options))
-	},
-});
-
-
-const mapDispatchToProps = (dispatch) => ({
 	fetchAllPhotos (options) {
 		return dispatch(fetchAllPhotos(options))
-	},
-	fetchPhotos (options) {
-		return dispatch(fetchPhotos(options))
-	},
-	fetchAlbums (options) {
-		return dispatch(fetchAlbums(options))
 	},
 	fetchPhotosById (options) {
 		return dispatch(fetchPhotosById(options))

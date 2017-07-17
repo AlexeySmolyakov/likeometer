@@ -7,10 +7,9 @@ import Landing from './Landing'
 import Header from "../components/Header";
 import Albums from './Albums'
 import Groups from './Groups'
-import Photos from './Photos'
-import Viewer from './Viewer'
 import Friends from './Friends'
 import NotFound from '../components/NotFound'
+import PhotosWithViewer from './PhotosWithViewer'
 import { checkAuth }from '../actions/AuthActions'
 
 import createBrowserHistory from 'history/createBrowserHistory'
@@ -35,17 +34,15 @@ class Root extends Component {
 						<Switch>
 							<Redirect exact={true} from='/' to={`/albums${user.id}`}/>
 							<PrivateRoute path="/albums:ownerId" component={Albums}/>
-							<PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={Photos}/>
+							<PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={PhotosWithViewer}/>
 							<PrivateRoute path="/friends:userId?" component={Friends}/>
 							<PrivateRoute path="/groups:userId?" component={Groups}/>
 							<Route component={NotFound}/>
 						</Switch>
-						<Route path="/photo:ownerId([\d\-]+)_:photoId([\d\-]+)" component={Viewer}/>
 					</div>
 				</div>
 			</Router>
 		);
-
 	}
 }
 
