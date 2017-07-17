@@ -8,7 +8,9 @@ class Viewer extends React.PureComponent {
 	constructor (props) {
 		super(props);
 
+		this.image = null;
 		this.currentPhotoIndex = 0;
+
 		this.state = {
 			isPreloading: true,
 		};
@@ -24,6 +26,7 @@ class Viewer extends React.PureComponent {
 	}
 
 	componentWillUnmount () {
+		this.image.onload = null;
 		document.removeEventListener('keyup', this.onKeyPress, false);
 	}
 
@@ -43,12 +46,12 @@ class Viewer extends React.PureComponent {
 
 	preloadPhoto (photo) {
 		this.setState({ isPreloading: true });
-		const image = new Image();
-		image.onload = () => this.setState({ isPreloading: false });
-		image.src = getPhotoSrcFromSizes(photo.sizes);
+		this.image = new Image();
+		this.image.onload = () => this.setState({ isPreloading: false });
+		this.image.src = getPhotoSrcFromSizes(photo.sizes);
 	}
 
-	onClick () {
+	onCloseClick () {
 		this.props.history.goBack()
 	}
 
@@ -88,8 +91,25 @@ class Viewer extends React.PureComponent {
 		const photo = items[this.currentPhotoIndex];
 
 		return (
-			<div className={classes.join(' ')} onClick={::this.onClick}>
-				<img src={getPhotoSrcFromSizes(photo.sizes)} alt="Image"/>
+			<div className={classes.join(' ')}>
+				<div className="close">
+					<div className="counter">{`${this.currentPhotoIndex + 1} / ${items.length}`}</div>
+					<i className="fa fa-times" onClick={::this.onCloseClick}/>
+				</div>
+
+				<div className="bottom-buttons">
+					{photo.comments.count > 0 && <div className="comments">
+						<span>{photo.comments.count}</span>
+						<i className="fa fa-comment"/>
+					</div>}
+
+					<div className="likes">
+						<span>{photo.likes.count}</span>
+						<i className="fa fa-heart" data-user-likes={photo.likes.user_likes}/>
+					</div>
+				</div>
+
+				<img className="nice-photo" src={getPhotoSrcFromSizes(photo.sizes)} alt="Image"/>
 				{this.state.isPreloading && <div className="loader white"/>}
 			</div>
 		);
