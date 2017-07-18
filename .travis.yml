@@ -12,9 +12,6 @@ cache:
 git:
   depth: 10
 
-env:
-  - [[ $TRAVIS_BRANCH = "master" ]] && DIR="$TIMEWEB_PRODUCTION_DIR" || DIR="$TIMEWEB_DEVELOP_DIR"
-
 branches:
   only:
   - master
@@ -30,4 +27,5 @@ after_success:
   - sudo apt-get install ssh sshpass -y
   - ssh-keygen -f ~/.ssh/id_rsa -t rsa -N ''
   - ssh-keyscan -H $TIMEWEB_HOST >> ~/.ssh/known_hosts
+  - '[[ $TRAVIS_BRANCH == "master" ]] && DIR="$TIMEWEB_PRODUCTION_DIR" || DIR="$TIMEWEB_DEVELOP_DIR"'
   - sshpass -p "$TIMEWEB_SSH_PASSWORD" scp -r ./public/* $TIMEWEB_SSH_LOGIN@$TIMEWEB_HOST:~/$DIR
