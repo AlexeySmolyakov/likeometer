@@ -28,7 +28,7 @@ class PhotosWithViewer extends Component {
 	}
 
 	componentWillUnmount () {
-		this.fetchAllPhotosPromise.isCancelled = true;
+		this.taskPool.cancel();
 	}
 
 	shouldFetchPhotosById (props = this.props) {
@@ -64,12 +64,12 @@ class PhotosWithViewer extends Component {
 
 		this.setState({ albumId: album_id });
 		const p1 = fetchAlbums({ owner_id });
-		this.fetchAllPhotosPromise = fetchAllPhotos({ owner_id, album_id });
+		this.taskPool = fetchAllPhotos({ owner_id, album_id });
 
 		if (this.state.isFetching)
-			Promise.all([p1, this.fetchAllPhotosPromise])
+			Promise.all([p1, this.taskPool.promise])
 			.then(() => {
-				if (!this.fetchAllPhotosPromise.isCancelled)
+				if (!this.taskPool.isCancelled)
 					this.setState({ isFetching: false })
 			});
 	}

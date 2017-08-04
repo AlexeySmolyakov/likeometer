@@ -6,6 +6,9 @@ import {
 	FETCH_PHOTOS_BY_ID_STATE
 } from '../constants'
 
+import Task from "../api/Task";
+import TaskPool from "../api/TaskPool";
+
 export const fetchPhotos = (options) => {
 	return (dispatch, getState) => {
 		const state = getState();
@@ -49,6 +52,77 @@ export const fetchPhotos = (options) => {
 };
 
 export const fetchAllPhotos = (options = {}) => {
+	return (dispatch, getState) => {
+		const { owner_id, album_id } = options;
+		const key = `${owner_id}_${album_id}`;
+
+		const initialTask = new Task(options);
+		const taskPool = new TaskPool();
+
+		// Should make API request?
+		if (getState().photos.photos[key]) {
+			taskPool.resolve();
+			return taskPool;
+		}
+
+		dispatch({
+			type: FETCH_PHOTOS_STATE,
+			payload: true,
+		});
+
+		// in order to get total photo count
+		initialTask.start();
+		initialTask.promise.then(response => {
+			dispatch({
+				type: FETCH_PHOTOS,
+				payload: {
+					album_id: options.album_id,
+					owner_id: options.owner_id,
+					photos: response,
+				}
+			});
+
+			if (response.items.length < 1000) {
+				dispatch({
+					type: FETCH_PHOTOS_STATE,
+					payload: false,
+				});
+				taskPool.resolve();
+				return;
+			}
+
+			taskPool.set(options, response.count - response.items.length);
+
+			taskPool.start();
+			taskPool.onProgress = response => {
+				const photos = getState().photos.photos[key];
+				if (photos) response.items = [...photos.items, ...response.items];
+				response.items = sortPhotos(response.items);
+
+				dispatch({
+					type: FETCH_PHOTOS,
+					payload: {
+						album_id: options.album_id,
+						owner_id: options.owner_id,
+						photos: response,
+					}
+				})
+			};
+
+			taskPool.promise.then(response => {
+				//console.warn('TASK POOL END', response.length);
+				dispatch({
+					type: FETCH_PHOTOS_STATE,
+					payload: false,
+				});
+			});
+		});
+
+		return taskPool;
+	}
+};
+
+export const fetchAllPhotos1 = (options = {}) => {
 	return (dispatch, getState) => {
 		const state = getState();
 		const { owner_id, album_id } = options;
