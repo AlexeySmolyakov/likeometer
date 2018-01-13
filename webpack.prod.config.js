@@ -7,49 +7,49 @@ const configuration = require('./webpack.config');
 
 // Plugins
 configuration.plugins = configuration.plugins.concat([
-	new webpack.optimize.UglifyJsPlugin(),
-	new webpack.DefinePlugin({
-		'process.env': {
-			NODE_ENV: JSON.stringify('production')
-		}
-	}),
-	new ExtractTextPlugin('[name].css'),
-	new FaviconsWebpackPlugin({
-		logo: './src/assets/favicon.png',
-		background: 'transparent',
-	}),
+  new webpack.optimize.UglifyJsPlugin(),
+  new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: JSON.stringify('production')
+    }
+  }),
+  new ExtractTextPlugin('[name].css'),
+  new FaviconsWebpackPlugin({
+    logo: './src/assets/favicon.png',
+    background: 'transparent',
+  }),
 ]);
 
 // Rules
 let rules = configuration.module.rules;
 rules = rules.map(function (rule) {
-	if (rule.test.toString() === /\.scss$/.toString()) {
-		rule.use = ExtractTextPlugin.extract({
-			fallback: 'style-loader',
-			use: [
-				{
-					loader: 'css-loader',
-					options: {
-						minimize: true
-					}
-				},
-				{
-					loader: 'postcss-loader',
-					options: {
-						sourceMap: true
-					}
-				},
-				'resolve-url-loader',
-				{
-					loader: 'sass-loader',
-					options: {
-						sourceMap: true
-					}
-				},
-			]
-		})
-	}
-	return rule;
+  if (rule.test.toString() === /\.scss$/.toString()) {
+    rule.use = ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: [
+        {
+          loader: 'css-loader',
+          options: {
+            minimize: true
+          }
+        },
+        {
+          loader: 'postcss-loader',
+          options: {
+            sourceMap: true
+          }
+        },
+        'resolve-url-loader',
+        {
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true
+          }
+        },
+      ]
+    })
+  }
+  return rule;
 });
 
 // Devtools
