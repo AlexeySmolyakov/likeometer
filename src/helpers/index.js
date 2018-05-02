@@ -34,7 +34,7 @@ export function declensionLikes (number) {
 	return declension(number, 'понравилась', 'понравились', 'понравились');
 }
 
-const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'x', 'm', 's'];
+const types = ['x', 'w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
 export function getPhotoSrcFromSizes (sizes = [], typeIndex = 0) {
 	const image = sizes.find(size => size.type === types[typeIndex]);
 	if (!image) return getPhotoSrcFromSizes(sizes, typeIndex + 1);
