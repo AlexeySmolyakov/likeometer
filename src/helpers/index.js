@@ -1,17 +1,17 @@
 export function declension (number, one, two, five) {
-	number = Math.abs(number);
-	number %= 100;
-	if (number >= 5 && number <= 20) {
-		return five;
-	}
-	number %= 10;
-	if (number === 1) {
-		return one;
-	}
-	if (number >= 2 && number <= 4) {
-		return two;
-	}
-	return five;
+  number = Math.abs(number);
+  number %= 100;
+  if (number >= 5 && number <= 20) {
+    return five;
+  }
+  number %= 10;
+  if (number === 1) {
+    return one;
+  }
+  if (number >= 2 && number <= 4) {
+    return two;
+  }
+  return five;
 }
 
 export function declensionPhotos (number) {
@@ -35,6 +35,7 @@ export function declensionLikes (number) {
 }
 
 const types = ['x', 'w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
+
 export function getPhotoSrcFromSizes (sizes = [], typeIndex = 0) {
 	const image = sizes.find(size => size.type === types[typeIndex]);
 	if (!image) return getPhotoSrcFromSizes(sizes, typeIndex + 1);

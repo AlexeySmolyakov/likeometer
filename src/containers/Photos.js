@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 
 import withImageOnLoad from '../decorators/withImageOnLoad'
 import PhotoComponent from '../components/Photo'
+
 const Photo = withImageOnLoad(PhotoComponent);
 
 import { declensionPhotos, createPlaceholder, getPhotoSrcFromSizes } from '../helpers'
@@ -24,6 +25,19 @@ class Photos extends React.PureComponent {
 	componentDidMount () {
 		this.$views = document.querySelector('.views');
 		this.$views.addEventListener('scroll', this.onScrollToBottom, false);
+
+		//const options = {
+		//	root: document.querySelector('.views'),
+		//	rootMargin: '0px',
+		//	threshold: 1.0
+		//};
+		//const callback = function (entries, observer) {
+		//	console.warn('callback')
+		//};
+		//window.observer = new IntersectionObserver(callback, options);
+    //
+		//const target = document.querySelector('.photo');
+		//window.observer.observe(target);
 	}
 
 	componentWillUnmount () {

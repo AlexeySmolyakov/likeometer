@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux';
 
 import PrivateRoute from '../components/PrivateRoute'
@@ -12,8 +12,8 @@ import NotFound from '../components/NotFound'
 import PhotosWithViewer from './PhotosWithViewer'
 import { checkAuth }from '../actions/AuthActions'
 
-import createBrowserHistory from 'history/createBrowserHistory'
-const history = createBrowserHistory();
+//import createBrowserHistory from 'history/createBrowserHistory'
+//const history = createBrowserHistory();
 
 class Root extends Component {
 	componentDidMount () {
@@ -29,7 +29,7 @@ class Root extends Component {
 		if (checkingAuth) return null;
 
 		return (
-			<Router history={history} basename={basename}>
+			<BrowserRouter history={history} basename={basename}>
 				<div className="layout">
 					<div className="views">
 						<Header user={user}/>
@@ -43,7 +43,7 @@ class Root extends Component {
 						</Switch>
 					</div>
 				</div>
-			</Router>
+			</BrowserRouter>
 		);
 	}
 }
