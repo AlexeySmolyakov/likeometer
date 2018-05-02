@@ -17,6 +17,8 @@ configuration.plugins = configuration.plugins.concat([
 	new FaviconsWebpackPlugin({
 		logo: './src/assets/favicon.png',
 		background: 'transparent',
+		inject: true,
+    prefix: ''
 	}),
 ]);
 
@@ -54,5 +56,5 @@ rules = rules.map(function (rule) {
 
 // Devtools
 configuration.devtool = 'cheap-module-source-map';
-
+configuration.output.publicPath = '/likeometer-redux/';
 module.exports = configuration;

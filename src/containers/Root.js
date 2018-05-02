@@ -23,11 +23,13 @@ class Root extends Component {
 	render () {
 		const { user, checkingAuth } = this.props;
 
+		const basename = process.env.NODE_ENV === 'production' ? '/likeometer-redux' : '/';
+
 		if (!checkingAuth && !user.id) return <Landing/>;
 		if (checkingAuth) return null;
 
 		return (
-			<Router history={history}>
+			<Router history={history} basename={basename}>
 				<div className="layout">
 					<div className="views">
 						<Header user={user}/>
