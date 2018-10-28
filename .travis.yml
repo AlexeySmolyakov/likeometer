@@ -5,6 +5,11 @@ node_js:
 dist: trusty
 sudo: required
 
+addons:
+  apt:
+    packages:
+      - sshpass
+
 cache:
   yarn: true
   directories:
