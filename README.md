@@ -1,6 +1,6 @@
 # Likeometer-redux
-[![Build Status](https://travis-ci.org/AlexeySmolyakov/likeometer-redux.svg?branch=master)](https://travis-ci.org/AlexeySmolyakov/likeometer-redux)
-[![Build Status](https://david-dm.org/AlexeySmolyakov/likeometer-redux.svg)](https://travis-ci.org/AlexeySmolyakov/likeometer-redux)
+[![Build Status](https://travis-ci.org/smoliakov/likeometer-redux.svg?branch=master)](https://travis-ci.org/smoliakov/likeometer-redux)
+[![Build Status](https://david-dm.org/smoliakov/likeometer-redux.svg)](https://travis-ci.org/smoliakov/likeometer-redux)
 
 VK client for albums and photos sorted by likes built with React / Redux. 
 Build from scratch, no boilerplate used.
@@ -17,9 +17,9 @@ Build from scratch, no boilerplate used.
 
 ### Run 
 
-- `git clone git@github.com:AlexeySmolyakov/likeometer-redux.git`
-- `yarn install`
-- `yarn start`
+- `git clone git@github.com:smoliakov/likeometer-redux.git`
+- `npm i`
+- `npm start`
 - visit http://localhost:8080
 
 ### Contribute

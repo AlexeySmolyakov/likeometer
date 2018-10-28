@@ -1,59 +1,87 @@
+const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-// Import development configuration
-const configuration = require('./webpack.config');
+module.exports = {
+  mode: 'production',
+  devtool: 'source-map',
 
-// Plugins
-configuration.plugins = configuration.plugins.concat([
-  new webpack.optimize.UglifyJsPlugin(),
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production')
-    }
-  }),
-  new ExtractTextPlugin('[name].css'),
-  new FaviconsWebpackPlugin({
-    logo: './src/assets/favicon.png',
-    background: 'transparent',
-    prefix: '',
-  }),
-]);
+  entry: [
+    './src/index.js',
+  ],
 
-// Rules
-let rules = configuration.module.rules;
-rules = rules.map(function (rule) {
-  if (rule.test.toString() === /\.scss$/.toString()) {
-    rule.use = ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [
-        {
-          loader: 'css-loader',
+  output: {
+    path: path.join(__dirname, 'public'),
+    filename: '[name].[hash:5].js',
+    publicPath: '/',
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.jsx?$/,
+        use: 'babel-loader',
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+        ],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          'postcss-loader',
+          'resolve-url-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
+        use: [{
+          loader: 'file-loader',
           options: {
-            minimize: true
-          }
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: true
-          }
-        },
-        'resolve-url-loader',
-        {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: true
-          }
-        },
-      ]
-    })
-  }
-  return rule;
-});
+            name: '[name].[hash:5].[ext]',
+          },
+        }],
+      },
+    ],
+  },
 
-// Devtools
-configuration.devtool = 'cheap-module-source-map';
-configuration.output.publicPath = '/likeometer-redux/';
-module.exports = configuration;
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/pages/index.html',
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].[hash:5].css',
+      chunkFilename: '[id].css',
+    }),
+    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
+  ],
+
+  watchOptions: {
+    aggregateTimeout: 300,
+  },
+
+  devServer: {
+    hot: true,
+    port: 8080,
+    disableHostCheck: true,
+    historyApiFallback: true,
+  },
+
+  externals: {
+    VK: 'VK',
+  },
+};

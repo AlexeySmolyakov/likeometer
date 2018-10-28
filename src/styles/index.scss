@@ -1,11 +1,11 @@
-@import "~normalize.css";
+@import "~normalize.css/normalize.css";
 
 @import "context";
 @import "common";
 @import "components/scrollbar";
 
 /* Components */
-@import "components/header";
+//@import "components/header";
 @import "components/loader";
 @import "components/inputs";
 @import "components/buttons";

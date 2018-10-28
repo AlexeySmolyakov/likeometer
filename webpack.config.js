@@ -3,9 +3,12 @@ const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: {
-    application: './src/index.js',
-  },
+  mode: 'development',
+  devtool: 'eval',
+
+  entry: [
+    './src/index.js',
+  ],
 
   output: {
     path: path.join(__dirname, 'public'),
@@ -18,7 +21,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         use: 'babel-loader',
-        exclude: /node_modules/
+        exclude: /node_modules/,
       },
       {
         test: /\.css$/,
@@ -26,7 +29,7 @@ module.exports = {
           'style-loader',
           'css-loader',
           'postcss-loader',
-        ]
+        ],
       },
       {
         test: /\.scss$/,
@@ -38,10 +41,10 @@ module.exports = {
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
-        ]
+        ],
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -51,32 +54,31 @@ module.exports = {
             name: '[name]-[sha512:hash:base64:7].[ext]',
           },
         }],
-      }
-    ]
+      },
+    ],
   },
 
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/pages/index.html',
-      chunks: ['application']
     }),
 
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
   ],
 
-  devtool: 'eval',
 
   watchOptions: {
-    aggregateTimeout: 300
+    aggregateTimeout: 300,
   },
 
   devServer: {
     hot: true,
     port: 8080,
-    historyApiFallback: true
+    disableHostCheck: true,
+    historyApiFallback: true,
   },
 
   externals: {
     VK: 'VK',
-  }
+  },
 };

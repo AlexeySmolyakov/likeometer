@@ -1,38 +1,21 @@
-// React hot loader imports
-// from webpack config file
-// https://github.com/webpack/webpack/issues/406
-import "react-hot-loader/patch";
-import { AppContainer } from 'react-hot-loader';
-
-// React & root container
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Root from './containers/Root'
-
-import VK from 'VK'
-
-import { Provider } from 'react-redux'
-import configureStore from './store/configureStore'
-const store = configureStore();
-
-// Import styles
-import './styles/index.scss';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+import VK from 'VK';
 
 import './settings';
+import App from './App';
+import configureStore from './store/configureStore';
+import './styles/index.scss';
 
-const render = (Component) => {
-	ReactDOM.render(
-		<AppContainer>
-			<Provider store={store}>
-				<Component/>
-			</Provider>
-		</AppContainer>,
-		document.getElementById('root')
-	);
-};
-
+// INIT VK CLIENT
 VK.init({ apiId: 3188729 });
 
-render(Root);
+const store = configureStore();
 
-if (module.hot) module.hot.accept('./containers/Root', () => render(Root));
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'),
+);
