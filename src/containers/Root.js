@@ -27,12 +27,12 @@ class Root extends Component {
     if (checkingAuth) return null;
 
     return (
-      <BrowserRouter history={history} basename={basename}>
+      <BrowserRouter basename={basename}>
         <div className="layout">
           <div className="views">
             <Header user={user} />
             <Switch>
-              <Redirect exact={true} from='/' to={`/albums${user.id}`} />
+              <Redirect exact from='/' to={`/albums${user.id}`} />
               <PrivateRoute path="/albums:ownerId" component={Albums} />
               <PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={PhotosWithViewer} />
               <PrivateRoute path="/friends:userId?" component={Friends} />
@@ -51,10 +51,8 @@ const mapStateToProps = (state) => ({
   checkingAuth: state.user.checkingAuth,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-  checkAuth() {
-    return dispatch(checkAuth());
-  },
-});
+const mapDispatchToProps = {
+  checkAuth,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(Root);
