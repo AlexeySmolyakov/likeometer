@@ -1,6 +1,6 @@
 @import "../../styles/context";
 
-header {
+.Header {
   background-color: rgba(255, 255, 255, 0.9);
   z-index: 100;
   position: fixed;
@@ -8,34 +8,54 @@ header {
   left: 0;
   width: 100%;
   height: $header-height;
+  //background-color: lightblue;
+
+  * {
+    transform: translateZ(0);
+  }
 
   .wrap {
     max-width: $max-width;
     display: flex;
     margin: auto;
     justify-content: center;
+    height: 100%;
   }
 
   .likeometer {
     display: flex;
     align-items: center;
     width: 115px;
+    padding-left: 10px;
+    margin-right: 50px;
 
     img {
-      height: 14px;
-      margin-top: -2px;
+      height: 20px;
+      margin-top: -8px;
     }
   }
 
   .links {
     display: flex;
     align-items: center;
-    font-size: 13px;
-    font-weight: 600;
     padding: 0px 20px;
-    border-bottom: solid 2px transparent;
+    //border-bottom: solid 2px transparent;
     transition: all 0.1s ease-in-out;
     position: relative;
+    opacity: 0.9;
+
+    i {
+      font-size: 15px;
+      transition: all 0.1s ease-in-out;
+    }
+
+    span {
+      font-size: 9px;
+      margin-left: 10px;
+      font-weight: 500;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
 
     &:after {
       content: '';
@@ -53,7 +73,23 @@ header {
     }
 
     &.active:after {
-      opacity: 1;
+      //opacity: 1;
+    }
+
+    &.active {
+      i {
+        &.fa-camera {
+          color: $color-primary;
+        }
+
+        &.fa-user {
+          color: $color-green;
+        }
+
+        &.fa-user-friends {
+          color: $color-yellow;
+        }
+      }
     }
   }
 
@@ -61,8 +97,7 @@ header {
     display: flex;
     align-items: center;
     font-size: 13px;
-    font-weight: 600;
-    padding: 10px 20px;
+    font-weight: 500;
     margin-left: auto;
 
     .image {
