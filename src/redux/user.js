@@ -64,5 +64,5 @@ export default typeToReducer({
 }, {
   isFetching: false,
   checkingAuth: true,
-  user: { uid: void(0) },
+  user: { id: null },
 });

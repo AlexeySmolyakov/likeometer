@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Header from '../../components/Header/Header';
@@ -8,6 +8,9 @@ import API from '../../api';
 import './styles.scss';
 import Photos from '../Photos/index';
 import { fetchUser, userSelector } from '../../redux/user';
+import PrivateRoute from '../../components/PrivateRoute';
+import Albums from '../Albums/index';
+import Friends from '../Friends';
 
 class Layout extends Component {
   state = {
@@ -49,7 +52,8 @@ class Layout extends Component {
             <Header user={user} />
           </div>
           <div className={'LayoutContent'}>
-            <Route path={'/photos'} component={Photos} />
+            <PrivateRoute path={'/albums:ownerId'} component={Albums} />
+            <PrivateRoute path={'/friends:userId?'} component={Friends} />
           </div>
         </div>
       </BrowserRouter>

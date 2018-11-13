@@ -5,7 +5,7 @@ import VK from 'VK';
 
 import './settings';
 import App from './App';
-import configureStore from './store/configureStore';
+import configureStore from './redux/configureStore';
 import './styles/index.scss';
 
 // INIT VK CLIENT
