@@ -1,7 +1,13 @@
 import React from 'react';
 import { hot } from 'react-hot-loader';
+import { BrowserRouter } from 'react-router-dom';
 
-import Root from './containers/Root';
 import Layout from './containers/Layout';
 
-export default hot(module)(Layout);
+const App = () => (
+  <BrowserRouter>
+    <Layout />
+  </BrowserRouter>
+);
+
+export default hot(module)(App);

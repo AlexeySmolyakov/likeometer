@@ -18,7 +18,7 @@ class Album extends React.Component {
   }
 
   componentWillUnmount() {
-    this.image.onload = null;
+    //this.image.onload = null;
   }
 
   render() {

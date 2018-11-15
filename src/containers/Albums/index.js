@@ -26,7 +26,7 @@ class Albums extends Component {
     const { isFetching, albums, owner } = this.props;
     const { ownerId } = this.props.match.params;
 
-    console.warn(this.props);
+    //console.warn(this.props);
 
     const b = block('Albums');
 
@@ -74,10 +74,10 @@ const mapStateToProps = (state, ownProps) => {
   //const friends = state.friends.friends;
   //const groups = state.groups.groups;
 
-  console.warn(albums);
+  //console.warn(albums);
   
   const albumItems = albums[ownerId] ? albums[ownerId].items : [];
-  console.warn(albumItems)
+  //console.warn(albumItems)
   let owner = null;
 
   //if (ownerId > 0) {

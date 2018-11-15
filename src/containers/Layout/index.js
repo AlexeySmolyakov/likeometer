@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { BrowserRouter, Switch, withRouter } from 'react-router-dom';
+import { BrowserRouter, Switch, withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import Header from '../../components/Header/Header';
@@ -45,18 +45,18 @@ class Layout extends Component {
 
     if (isLoading || hasErrors || !user) return null;
 
+    console.warn(this.props)
+
     return (
-      <BrowserRouter>
-        <div className={'Layout'}>
-          <div className={'LayoutHeader'}>
-            <Header user={user} />
-          </div>
-          <div className={'LayoutContent'}>
-            <PrivateRoute path={'/albums:ownerId'} component={Albums} />
-            <PrivateRoute path={'/friends:userId?'} component={Friends} />
-          </div>
+      <div className={'Layout'}>
+        <div className={'LayoutHeader'}>
+          <Header user={user} />
         </div>
-      </BrowserRouter>
+        <div className={'LayoutContent'}>
+          <Route path={'/albums:ownerId'} component={Albums} />
+          <Route path={'/friends:userId?'} component={Friends} />
+        </div>
+      </div>
     );
   }
 }
@@ -72,4 +72,4 @@ const mapDispatchToProps = {
   fetchUser,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout));

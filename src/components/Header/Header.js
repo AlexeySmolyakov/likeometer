@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
-import likeometer from '../../assets/likeometer2-02.svg';
+import likeometer from '../../assets/likeometer2-02-02.svg';
 import './styles.scss';
 
 class Header extends Component {
