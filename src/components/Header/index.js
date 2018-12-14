@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { NavLink, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
-import likeometer from '../../assets/likeometer2-02-02.svg';
+import likeometer from '../../assets/likeometer2-02-02-05.svg';
 import './styles.scss';
 
 class Header extends Component {
@@ -15,25 +15,22 @@ class Header extends Component {
 
     return (
       <div className={b()}>
-        <div className="wrap">
-          <Link to={`/albums${user.id}`} className={'likeometer'}>
+        <div className={b('wrap')}>
+          <Link to={`/albums${user.id}`} className={b('likeometer')}>
             <img src={likeometer} alt="Likeometer" />
           </Link>
-          <NavLink className="links" to={`/albums${user.id}`}>
-            <i className="fas fa-camera" />
+          <NavLink className={b('links')} to={`/albums${user.id}`}>
             <span>фото</span>
           </NavLink>
-          <NavLink className="links" to='/friends'>
-            <i className="fas fa-user" />
+          <NavLink className={b('links')} to='/friends'>
             <span>друзья</span>
           </NavLink>
-          <NavLink className="links" to='/groups'>
-            <i className="fas fa-user-friends" />
+          <NavLink className={b('links')} to='/groups'>
             <span>группы</span>
           </NavLink>
-          <div className="user">
+          <div className={b('user')}>
             <div>{user.first_name}</div>
-            <div className="image" style={image} />
+            <div className={b('userPhoto')} style={image} />
           </div>
         </div>
       </div>

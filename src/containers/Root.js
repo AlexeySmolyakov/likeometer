@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 
 import PrivateRoute from '../components/PrivateRoute';
 import Landing from './Landing';
-import Header from '../components/Header/Header';
+import Header from '../components/Header/index';
 import Albums from './Albums/index';
 import Groups from './Groups';
 import Friends from './Friends';

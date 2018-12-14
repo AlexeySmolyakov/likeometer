@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { BrowserRouter, Switch, withRouter, Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Header from '../../components/Header/Header';
+import Header from '../../components/Header/index';
 import API from '../../api';
 import './styles.scss';
 import Photos from '../Photos/index';
@@ -45,7 +45,7 @@ class Layout extends Component {
 
     if (isLoading || hasErrors || !user) return null;
 
-    console.warn(this.props)
+    console.warn(this.props);
 
     return (
       <div className={'Layout'}>

@@ -1,21 +1,17 @@
 @import "../../styles/context";
 
 .Header {
-  background-color: rgba(255, 255, 255, 1);
+  background-color: rgba(255, 255, 255, 0.9);
   z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: $header-height;
-  //box-shadow: 0 0 4px rgba(0, 0, 0, 0.09);
-  //background-color: lightblue;
+  padding: 0 20px;
+  transform: translateZ(0);
 
-  * {
-    transform: translateZ(0);
-  }
-
-  .wrap {
+  &__wrap {
     max-width: $max-width;
     display: flex;
     margin: auto;
@@ -23,94 +19,69 @@
     height: 100%;
   }
 
-  .likeometer {
+  &__likeometer {
     display: flex;
     align-items: center;
     width: 115px;
-    padding-left: 10px;
     margin-right: 100px;
 
     img {
-      height: 20px;
-      margin-top: -5px;
+      height: 14px;
     }
   }
 
-  .links {
+  &__links {
     display: flex;
     align-items: center;
-    padding: 0px 20px;
-    //border-bottom: solid 2px transparent;
+    padding: 0 20px;
     transition: all 0.1s ease-in-out;
     position: relative;
     opacity: 0.9;
 
-    i {
-      font-size: 15px;
-      transition: all 0.1s ease-in-out;
-    }
-
     span {
-      font-size: 9px;
-      margin-left: 10px;
-      font-weight: 500;
-      text-transform: uppercase;
-      margin-top: 1px;
+      font-size: 12px;
+      font-weight: 600;
     }
 
     &:after {
       content: '';
+      top: 50%;
       $size: 6px;
       width: $size;
       height: $size;
-      left: 50%;
-      margin-left: -$size/2;
-      bottom: 4px;
-      border-radius: 50%;
-      background-color: $color-primary;
-      position: absolute;
       opacity: 0;
+      right: 12px;
+      bottom: 4px;
+      margin-top: -6px;
+      border-radius: 50%;
+      position: absolute;
+      background-color: $color-primary-2;
       transition: opacity 0.1s ease-in-out;
     }
 
     &.active:after {
-      //opacity: 1;
-    }
-
-    &.active {
-      i {
-        &.fa-camera {
-          color: $color-primary-2;
-        }
-
-        &.fa-user {
-          color: $color-green;
-        }
-
-        &.fa-user-friends {
-          color: $color-yellow;
-        }
-      }
+      opacity: 1;
     }
   }
 
-  .user {
+  &__user {
     display: flex;
     align-items: center;
-    font-size: 13px;
-    font-weight: 500;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: -0.4px;
     margin-left: auto;
+  }
 
-    .image {
-      $size: 32px;
-      width: $size;
-      height: $size;
-      margin-left: 10px;
-      border-radius: 50%;
-      overflow: hidden;
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
-    }
+  &__userPhoto {
+    $size: 26px;
+    width: $size;
+    height: $size;
+    margin-left: 10px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
   }
 }
