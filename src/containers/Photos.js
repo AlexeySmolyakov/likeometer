@@ -6,7 +6,7 @@ import PhotoComponent from '../components/Photo';
 
 const Photo = withImageOnLoad(PhotoComponent);
 
-import { declensionPhotos, createPlaceholder, getPhotoSrcFromSizes } from '../helpers';
+import { inflectionPhotos, createPlaceholder, getPhotoSrcFromSizes } from '../helpers';
 
 class Photos extends React.PureComponent {
   constructor(props) {
@@ -87,10 +87,10 @@ class Photos extends React.PureComponent {
       <div>
         <h1>{album.title}</h1>
         <h3>
-          {photosItems.length} {declensionPhotos(photosItems.length)}
+          {photosItems.length} {inflectionPhotos(photosItems.length)}
           {myLikesCount > 0 && [
             <span key={'Dot1'}> &middot; </span>,
-            `Нравится ${myLikesCount} ${declensionPhotos(myLikesCount)}`,
+            `Нравится ${myLikesCount} ${inflectionPhotos(myLikesCount)}`,
           ]}
         </h3>
         <div className="photos">

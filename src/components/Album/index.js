@@ -1,49 +1,54 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { declensionPhotos } from '../../helpers/index';
 import { Link } from 'react-router-dom';
+import block from 'bem-cn-lite';
+
+import { inflectionPhotos, getAlbumImageSrc } from '../../helpers/index';
+import './styles.scss';
 
 class Album extends React.Component {
   state = {
-    isLoaded: 'is-loaded',
+    isImageLoaded: false,
   };
 
   componentDidMount() {
     const { album } = this.props;
-    const imageSrc = album.sizes.slice(-1)[0].src;
 
-    //this.image = new Image();
-    //this.image.onload = () => this.setState({ isLoaded: 'is-loaded' });
-    //this.image.src = imageSrc;
+    this.image = new Image();
+    this.image.onload = () => this.setState({ isImageLoaded: true });
+    this.image.src = getAlbumImageSrc(album);
   }
 
   componentWillUnmount() {
-    //this.image.onload = null;
+    this.image.onload = null;
   }
 
   render() {
-    const { album } = this.props;
+    const { album, album: { size, id, title, owner_id } } = this.props;
+    const { isImageLoaded } = this.state;
 
-    const imageSrc = album.sizes.slice(-1)[0].src;
-    const imageStyle = { backgroundImage: `url(${imageSrc})` };
+    const b = block('Album');
 
-    const size = `${album.size} ${declensionPhotos(album.size)}`;
+    const subtitle = `${size} ${inflectionPhotos(size)}`;
+    const style = { backgroundImage: `url(${getAlbumImageSrc(album)})` };
 
     return (
-      <Link className="album" to={`/album${album.owner_id}_${album.id}`}>
-        <div className="wrap">
-          <div className="thumb">
-            <div className={`image ${this.state.isLoaded}`} style={imageStyle} />
+      <Link className={b()} to={`/album${owner_id}_${id}`}>
+        <div className={b('wrap')}>
+          <div className={b('thumb')}>
+            <div className={b('image', { isImageLoaded })} style={style} />
           </div>
-          <div className="title" title={album.title}>{album.title}</div>
-          <div className="size">{size}</div>
+          <div className={b('title')} title={title}>{title}</div>
+          <div className={b('subtitle')}>{subtitle}</div>
         </div>
       </Link>
     );
   }
 }
 
-Album.propTypes = {};
+Album.propTypes = {
+  album: PropTypes.object,
+};
 Album.defaultProps = {};
 
 export default Album;

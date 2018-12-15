@@ -1,25 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import block from 'bem-cn-lite';
 
-import withImageOnLoad from '../decorators/withImageOnLoad';
-import Friend from '../components/Friend';
+import withImageOnLoad from '../../decorators/withImageOnLoad';
+import Friend from '../../components/Friend';
 
 const FriendHOC = withImageOnLoad(Friend);
 
-import Loader from '../components/Loader';
-import { fetchFriends } from '../redux/friends';
-import { declensionFriends, createPlaceholder } from '../helpers';
+import Loader from '../../components/Loader';
+import { fetchFriends } from '../../redux/friends';
+import { declensionFriends, createPlaceholder } from '../../helpers/index';
+
+import './styles.scss';
 
 class Friends extends Component {
   state = {
-    filter: '',
+    search: '',
   };
 
   componentDidMount() {
-    this.props.fetchFriends();
-    document.addEventListener('keydown', this.addEvent, false);
-    document.title = 'Мои друзья';
+    const { fetchFriends } = this.props;
+
+    fetchFriends();
+
+    //document.addEventListener('keydown', this.addEvent, false);
   }
 
   componentWillUnmount() {
@@ -34,16 +39,23 @@ class Friends extends Component {
       this.setState({ filter: this.state.filter.substr(0, this.state.filter.length - 1) });
   };
 
+  onSearchChange = e => {
+    this.setState({ search: e.target.value.trim() });
+  };
+
   render() {
-    if (this.props.isFetching) return <Loader />;
+    const { isFetching, friends } = this.props;
+    const { search } = this.state;
 
-    let { friends } = this.props;
+    const b = block('Friends');
 
-    if (this.state.filter) friends = friends.filter(friend => {
-      return friend.first_name.toLowerCase().includes(this.state.filter.toLowerCase()) ||
-        friend.last_name.toLowerCase().includes(this.state.filter.toLowerCase());
-    });
-    const list = friends.map(friend =>
+    if (isFetching) return <Loader />;
+
+    const filter = i =>
+      i.first_name.toLowerCase().includes(search.toLowerCase()) ||
+      i.last_name.toLowerCase().includes(search.toLowerCase());
+
+    const list = friends.filter(filter).slice(0, 30).map(friend =>
       <Friend
         isLoaded
         key={friend.id}
@@ -54,15 +66,19 @@ class Friends extends Component {
 
     let placeholders = createPlaceholder(11, (i) => <div key={i} className="friend" />);
     return (
-      <div>
-        <div className="search">{this.state.filter}</div>
+      <div className={b()}>
+        <h1>Мои друзья</h1>
+        <h3>{friends.length} {declensionFriends(friends.length)}</h3>
 
-        {/*<h1>Мои друзья</h1>*/}
-        {/*<h3>*/}
-        {/*{friends.length} {declensionFriends(friends.length)}*/}
-        {/*</h3>*/}
+        <input
+          className={b('searchInput')}
+          type="text"
+          value={search}
+          onChange={this.onSearchChange}
+          placeholder={'Начните вводить имя друга'}
+        />
 
-        <div className="friends">
+        <div className={b('list')}>
           {list}
           {placeholders}
         </div>
@@ -77,7 +93,6 @@ Friends.defaultProps = {};
 const mapStateToProps = (state, ownProps) => {
   const uid = ownProps.match.params.userId || state.user.user.id;
   const friends = state.friends.friends.items || [];
-  console.warn(state);
 
   return {
     friends,

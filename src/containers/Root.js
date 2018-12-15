@@ -7,7 +7,7 @@ import Landing from './Landing';
 import Header from '../components/Header/index';
 import Albums from './Albums/index';
 import Groups from './Groups';
-import Friends from './Friends';
+import Friends from './Friends/index';
 import NotFound from '../components/NotFound';
 import PhotosWithViewer from './PhotosWithViewer';
 import { checkAuth } from '../actions/AuthActions';

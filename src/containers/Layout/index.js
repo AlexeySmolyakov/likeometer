@@ -5,12 +5,13 @@ import { connect } from 'react-redux';
 
 import Header from '../../components/Header/index';
 import API from '../../api';
-import './styles.scss';
 import Photos from '../Photos/index';
 import { fetchUser, userSelector } from '../../redux/user';
 import PrivateRoute from '../../components/PrivateRoute';
 import Albums from '../Albums/index';
-import Friends from '../Friends';
+import Friends from '../Friends/index';
+
+import './styles.scss';
 
 class Layout extends Component {
   state = {

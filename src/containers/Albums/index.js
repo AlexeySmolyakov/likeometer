@@ -26,18 +26,16 @@ class Albums extends Component {
     const { isFetching, albums, owner } = this.props;
     const { ownerId } = this.props.match.params;
 
-    //console.warn(this.props);
-
     const b = block('Albums');
 
     if (isFetching) return <Loader />;
 
     const albumsWithPhotos = albums.filter(album => album.size > 0);
-    const list = albumsWithPhotos.map(album =>
-      <Album key={album.id} album={album} />,
-    );
+    const list = albumsWithPhotos.map(album => <Album key={album.id} album={album} />);
+    const placeholders = createPlaceholder(11, (i) => <div key={i} className="Album" />);
 
     let ownerName = <span>&nbsp;</span>;
+
     if (owner) {
       if (ownerId > 0) ownerName = `${owner.first_name} ${owner.last_name}`;
       else ownerName = owner.name;
@@ -46,15 +44,10 @@ class Albums extends Component {
     }
     document.title = ownerName;
 
-    let placeholders = createPlaceholder(11, (i) => <div key={i} className="album" />);
     return (
       <div className={b()}>
-        {/*<div className={'Title'}>{ownerName}</div>*/}
-        {/*<div className={'Subtitle'}>{albumsWithPhotos.length} {declensionAlbums(albumsWithPhotos.length)}</div>*/}
-        <div className="albums">
-          {list}
-          {placeholders}
-        </div>
+        {list}
+        {placeholders}
       </div>
     );
   }
@@ -75,7 +68,7 @@ const mapStateToProps = (state, ownProps) => {
   //const groups = state.groups.groups;
 
   //console.warn(albums);
-  
+
   const albumItems = albums[ownerId] ? albums[ownerId].items : [];
   //console.warn(albumItems)
   let owner = null;
