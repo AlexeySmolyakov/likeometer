@@ -74,6 +74,7 @@ class Friends extends Component {
           className={b('searchInput')}
           type="text"
           value={search}
+          autoFocus
           onChange={this.onSearchChange}
           placeholder={'Начните вводить имя друга'}
         />
