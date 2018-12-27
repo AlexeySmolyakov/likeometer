@@ -3,35 +3,33 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Viewer from './Viewer';
-import Photos from './Photos';
+import Photos from './Photos_old';
 import Loader from '../components/Loader';
 import { fetchAlbums } from '../actions/AlbumsActions';
 import { fetchAllPhotos, fetchPhotosById } from '../actions/PhotosActions';
 
 class PhotosWithViewer extends Component {
-  constructor (props) {
-    super(props);
+  state = {
+    albumId: 0,
+    isFetching: true,
+  };
 
-    this.state = {
-      albumId: 0,
-      isFetching: true,
-    };
+  componentDidMount() {
+    //this.update();
+
+    console.warn('did mount')
   }
 
-  componentDidMount () {
-    this.update();
-  }
-
-  componentDidUpdate (prevProps) {
+  componentDidUpdate(prevProps) {
     const isSamePath = prevProps.location.pathname === this.props.location.pathname;
     if (!isSamePath) this.update();
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     this.taskPool.cancel();
   }
 
-  shouldFetchPhotosById (props = this.props) {
+  shouldFetchPhotosById(props = this.props) {
     const { photos } = props;
     const { ownerId, objectId: photoId } = props.match.params;
 
@@ -42,12 +40,12 @@ class PhotosWithViewer extends Component {
     return !items.find(item => item.id === +photoId);
   }
 
-  update () {
+  update() {
     let { page, ownerId: owner_id, objectId } = this.props.match.params;
     const { fetchPhotosById } = this.props;
 
     if (page === 'album') {
-      this.fetchAll({ owner_id, album_id: +objectId, });
+      this.fetchAll({ owner_id, album_id: +objectId });
     }
 
     if (page === 'photo') {
@@ -59,7 +57,7 @@ class PhotosWithViewer extends Component {
     }
   }
 
-  fetchAll ({ owner_id, album_id }) {
+  fetchAll({ owner_id, album_id }) {
     const { fetchAlbums, fetchAllPhotos } = this.props;
 
     this.setState({ albumId: album_id });
@@ -74,7 +72,7 @@ class PhotosWithViewer extends Component {
       });
   }
 
-  render () {
+  render() {
     const { photos, albums, isFetching } = this.props;
     const { page, ownerId, objectId } = this.props.match.params;
 

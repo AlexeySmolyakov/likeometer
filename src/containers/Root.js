@@ -31,10 +31,10 @@ class Root extends Component {
         <div className="layout">
           <div className="views">
             <Header user={user} />
+            <Redirect exact from='/' to={`/albums${user.id}`} />
             <Switch>
-              <Redirect exact from='/' to={`/albums${user.id}`} />
               <PrivateRoute path="/albums:ownerId" component={Albums} />
-              <PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={PhotosWithViewer} />
+              <PrivateRoute path="/:page:ownerId([\d\-]+)_:objectId" component={NotFound} />
               <PrivateRoute path="/friends:userId?" component={Friends} />
               <PrivateRoute path="/groups:userId?" component={Groups} />
               <Route component={NotFound} />

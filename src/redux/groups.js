@@ -5,26 +5,26 @@ import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 import API from '../api';
 
 // Cache
-let FRIENDS_CACHE = null;
+let GROUPS_CACHE = null;
 
-const shouldFetchFriends = () => {
-  if (FRIENDS_CACHE) return Promise.resolve(FRIENDS_CACHE);
+const shouldFetchGroups = () => {
+  if (GROUPS_CACHE) return Promise.resolve(GROUPS_CACHE);
 
-  return API.friends.fetchFriends()
+  return API.groups.fetchGroups()
   .then(response => {
-    FRIENDS_CACHE = response;
+    GROUPS_CACHE = response;
     return response;
   });
 };
 
 // Actions
-export const FETCH = createAction('friends/FETCH', shouldFetchFriends);
+export const FETCH = createAction('groups/FETCH', shouldFetchGroups);
 
 // Action creators
-export const fetchFriends = options => dispatch => dispatch(FETCH(options));
+export const fetchGroups = options => dispatch => dispatch(FETCH(options));
 
 // Selectors
-export const friendsSelector = state => state.friends.friends.items || [];
+export const groupsSelector = state => state.groups.groups.items || [];
 
 // Reducer
 export default typeToReducer({
@@ -38,7 +38,7 @@ export default typeToReducer({
     [FULFILLED]: (state, { payload }) => {
       return {
         ...state,
-        friends: payload,
+        groups: payload,
         isFetching: false,
       };
     },
@@ -52,6 +52,6 @@ export default typeToReducer({
     },
   },
 }, {
-  friends: {},
+  groups: {},
   isFetching: false,
 });

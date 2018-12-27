@@ -3,26 +3,26 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import block from 'bem-cn-lite';
 
+import Group from '../../components/Group';
 import withImageOnLoad from '../../decorators/withImageOnLoad';
-import Friend from '../../components/Friend';
 
-const FriendHOC = withImageOnLoad(Friend);
+const GroupHOC = withImageOnLoad(Group);
 
 import Loader from '../../components/Loader';
-import { fetchFriends, friendsSelector } from '../../redux/friends';
-import { declensionFriends, createPlaceholder } from '../../helpers/index';
+import { fetchGroups, groupsSelector } from '../../redux/groups';
+import { declensionFriends, createPlaceholder, declensionGroups } from '../../helpers/index';
 
 import './styles.scss';
 
-class Friends extends Component {
+class Groups extends Component {
   state = {
     search: '',
   };
 
   componentDidMount() {
-    const { fetchFriends } = this.props;
+    const { fetchGroups } = this.props;
 
-    fetchFriends();
+    fetchGroups();
 
     //document.addEventListener('keydown', this.addEvent, false);
   }
@@ -44,7 +44,7 @@ class Friends extends Component {
   };
 
   render() {
-    const { isFetching, friends } = this.props;
+    const { isFetching, groups } = this.props;
     const { search } = this.state;
 
     const b = block('Friends');
@@ -52,23 +52,22 @@ class Friends extends Component {
     if (isFetching) return <Loader />;
 
     const filter = i =>
-      i.first_name.toLowerCase().includes(search.toLowerCase()) ||
-      i.last_name.toLowerCase().includes(search.toLowerCase());
+      i.name.toLowerCase().includes(search.toLowerCase());
 
-    const list = friends.filter(filter).slice(0, 30).map(friend =>
-      <Friend
+    const list = groups.filter(filter).slice(0, 30).map(group =>
+      <Group
         isLoaded
-        key={friend.id}
-        friend={friend}
-        imageSrc={friend.photo_100}
+        key={group.id}
+        group={group}
+        imageSrc={group.photo_100}
       />,
     );
 
     let placeholders = createPlaceholder(11, (i) => <div key={i} className="friend" />);
     return (
       <div className={b()}>
-        <h1>Мои друзья</h1>
-        <h3>{friends.length} {declensionFriends(friends.length)}</h3>
+        <h1>Мои группы</h1>
+        <h3>{groups.length} {declensionGroups(groups.length)}</h3>
 
         <input
           className={b('searchInput')}
@@ -76,7 +75,7 @@ class Friends extends Component {
           value={search}
           autoFocus
           onChange={this.onSearchChange}
-          placeholder={'Начните вводить имя друга'}
+          placeholder={'Поиск по сообществам'}
         />
 
         <div className={b('list')}>
@@ -88,20 +87,20 @@ class Friends extends Component {
   }
 }
 
-Friends.propTypes = {};
-Friends.defaultProps = {};
+Groups.propTypes = {};
+Groups.defaultProps = {};
 
 const mapStateToProps = (state, ownProps) => {
   const uid = ownProps.match.params.userId || state.user.user.id;
 
   return {
-    friends: friendsSelector(state),
-    isFetching: state.friends.isFetching,
+    groups: groupsSelector(state),
+    isFetching: state.groups.isFetching,
   };
 };
 
 const mapDispatchToProps = {
-  fetchFriends,
+  fetchGroups,
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Friends);
+export default connect(mapStateToProps, mapDispatchToProps)(Groups);

@@ -1,30 +1,21 @@
+/**
+ * Photos.
+ */
+
 import { createSelector } from 'reselect';
 import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 import API from '../api';
 
-// Cache
-let FRIENDS_CACHE = null;
-
-const shouldFetchFriends = () => {
-  if (FRIENDS_CACHE) return Promise.resolve(FRIENDS_CACHE);
-
-  return API.friends.fetchFriends()
-  .then(response => {
-    FRIENDS_CACHE = response;
-    return response;
-  });
-};
-
 // Actions
-export const FETCH = createAction('friends/FETCH', shouldFetchFriends);
+export const FETCH = createAction('photos/FETCH', API.photos.fetchPhotos);
 
 // Action creators
-export const fetchFriends = options => dispatch => dispatch(FETCH(options));
+export const fetchPhotos = options => dispatch => dispatch(FETCH(options));
 
 // Selectors
-export const friendsSelector = state => state.friends.friends.items || [];
+export const photosSelector = state => state.photos;
 
 // Reducer
 export default typeToReducer({
@@ -38,7 +29,6 @@ export default typeToReducer({
     [FULFILLED]: (state, { payload }) => {
       return {
         ...state,
-        friends: payload,
         isFetching: false,
       };
     },
@@ -52,6 +42,6 @@ export default typeToReducer({
     },
   },
 }, {
-  friends: {},
+  photos: {},
   isFetching: false,
 });

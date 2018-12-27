@@ -1,3 +1,8 @@
-.Photos {
+@import "../../styles/context";
 
+.Photos {
+  display: flex;
+  flex-wrap: wrap;
+  margin: auto;
+  max-width: $max-width;
 }

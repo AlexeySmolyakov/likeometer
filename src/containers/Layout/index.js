@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { BrowserRouter, Switch, withRouter, Route } from 'react-router-dom';
+import { Switch, withRouter, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import Header from '../../components/Header/index';
 import API from '../../api';
-import Photos from '../Photos/index';
-import { fetchUser, userSelector } from '../../redux/user';
-import PrivateRoute from '../../components/PrivateRoute';
 import Albums from '../Albums/index';
+import Header from '../../components/Header/index';
+import Photos from '../Photos/index';
+import Groups from '../Groups/index';
 import Friends from '../Friends/index';
+import { fetchUser, userSelector } from '../../redux/user';
 
 import './styles.scss';
 
@@ -46,16 +45,19 @@ class Layout extends Component {
 
     if (isLoading || hasErrors || !user) return null;
 
-    console.warn(this.props);
-
     return (
       <div className={'Layout'}>
         <div className={'LayoutHeader'}>
           <Header user={user} />
         </div>
         <div className={'LayoutContent'}>
-          <Route path={'/albums:ownerId'} component={Albums} />
-          <Route path={'/friends:userId?'} component={Friends} />
+          <Switch>
+            <Redirect exact from='/' to={`/albums${user.id}`} />
+            <Route path={'/albums:ownerId'} component={Albums} />
+            <Route path={'/friends:userId?'} component={Friends} />
+            <Route path={'/groups:userId?'} component={Groups} />
+            <Route path={'/:page:ownerId([\\d\\-]+)_:objectId'} component={Photos} />
+          </Switch>
         </div>
       </div>
     );
