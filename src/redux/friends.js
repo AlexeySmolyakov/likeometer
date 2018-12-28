@@ -3,6 +3,7 @@ import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 import API from '../api';
+import { groupsSelector } from './groups';
 
 // Cache
 let FRIENDS_CACHE = null;
@@ -25,6 +26,11 @@ export const fetchFriends = options => dispatch => dispatch(FETCH(options));
 
 // Selectors
 export const friendsSelector = state => state.friends.friends.items || [];
+
+export const friendByIdSelector = friendId => createSelector(
+  friendsSelector,
+  friends => friends.find(i => i.id === friendId),
+);
 
 // Reducer
 export default typeToReducer({

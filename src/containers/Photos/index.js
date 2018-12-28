@@ -5,11 +5,12 @@ import block from 'bem-cn-lite';
 import API from '../../api';
 import Photo from '../../components/Photo';
 import { userSelector } from '../../redux/user';
-import { fetchAlbums } from '../../actions/AlbumsActions';
+import { fetchAlbums } from '../../redux/albums';
 import { fetchAllPhotos } from '../../actions/PhotosActions';
+import { fetchPhotos, photosSelector } from '../../redux/photos';
 import withImageLoader from '../../decorators/withImageOnLoad';
-import './styles.scss';
 import { getPhotoSrcFromSizes } from '../../helpers';
+import './styles.scss';
 
 const WrapperPhoto = withImageLoader(Photo);
 
@@ -19,14 +20,17 @@ class Photos extends Component {
   };
 
   componentDidMount() {
-    const { user, fetchAllPhotos } = this.props;
+    const { user, fetchAllPhotos, fetchPhotos, fetchAlbums } = this.props;
 
     const { params } = this.props.match;
 
     const owner_id = Number(params.ownerId);
     const album_id = Number(params.objectId);
 
-    console.warn(owner_id, album_id);
+    //console.warn(owner_id, album_id);
+    //fetchPhotos({ owner_id, album_id });
+
+    fetchAlbums({ owner_id });
 
     API.photos.fetchPhotos({ owner_id, album_id })
     .then(response => {
@@ -68,6 +72,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchAlbums,
+  fetchPhotos,
   fetchAllPhotos,
 };
 

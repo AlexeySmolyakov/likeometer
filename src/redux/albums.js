@@ -4,6 +4,7 @@ import { createAction } from 'redux-actions';
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
 import API from '../api';
 import { userSelector } from './user';
+import { friendsSelector } from './friends';
 
 // Actions
 export const FETCH = createAction('albums/FETCH', API.photos.fetchAlbums);
@@ -13,6 +14,15 @@ export const fetchAlbums = options => dispatch => dispatch(FETCH(options));
 
 // Selectors
 export const albumsSelector = state => state.albums;
+
+export const albumByIdSelector = (ownerId, albumId) => createSelector(
+  albumsSelector,
+  albums => {
+    if (!albums[ownerId]) return null;
+
+    return albums[ownerId].items.find(i => i.id === albumId);
+  },
+);
 
 // Reducer
 export default typeToReducer({

@@ -26,6 +26,11 @@ export const fetchGroups = options => dispatch => dispatch(FETCH(options));
 // Selectors
 export const groupsSelector = state => state.groups.groups.items || [];
 
+export const groupByIdSelector = groupId => createSelector(
+  groupsSelector,
+  groups => groups.find(i => i.id === -groupId),
+);
+
 // Reducer
 export default typeToReducer({
   [FETCH]: {

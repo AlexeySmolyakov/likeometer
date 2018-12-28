@@ -9,6 +9,8 @@ import Photos from '../Photos/index';
 import Groups from '../Groups/index';
 import Friends from '../Friends/index';
 import { fetchUser, userSelector } from '../../redux/user';
+import { fetchGroups } from '../../redux/groups';
+import { fetchFriends } from '../../redux/friends';
 
 import './styles.scss';
 
@@ -20,10 +22,15 @@ class Layout extends Component {
   };
 
   componentDidMount() {
-    const { fetchUser } = this.props;
+    const { fetchUser, fetchGroups, fetchFriends } = this.props;
 
     API.auth.checkAuth()
-    .then(fetchUser)
+    .then(() => {
+      fetchGroups();
+      fetchFriends();
+
+      return fetchUser();
+    })
     .then(({ value: user }) => {
       this.setState({
         user,
@@ -73,6 +80,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = {
   fetchUser,
+  fetchGroups,
+  fetchFriends,
 };
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Layout));
