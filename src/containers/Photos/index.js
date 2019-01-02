@@ -3,13 +3,16 @@ import { connect } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import API from '../../api';
-import Photo from '../../components/Photo';
+import Photo from '../../components/Photo/index';
+import Album from '../../components/Album/index';
+
 import { userSelector } from '../../redux/user';
 import { fetchAlbums } from '../../redux/albums';
 import { fetchAllPhotos } from '../../actions/PhotosActions';
 import { fetchPhotos, photosSelector } from '../../redux/photos';
 import withImageLoader from '../../decorators/withImageOnLoad';
-import { getPhotoSrcFromSizes } from '../../helpers';
+import { createPlaceholder, getPhotoSrcFromSizes } from '../../helpers';
+
 import './styles.scss';
 
 const WrapperPhoto = withImageLoader(Photo);
@@ -45,19 +48,14 @@ class Photos extends Component {
     const { photos } = this.state;
 
     const b = block('Photos');
+    const list = photos.map(i =>
+      <Photo photo={i} isLoaded key={i.id} imageSrc={getPhotoSrcFromSizes(i.sizes, 7)} />);
+    const placeholders = createPlaceholder(7, (i) => <div key={i} className="Photo" />);
 
     return (
       <div className={b()}>
-        {
-          photos.map(i => {
-            return <Photo
-              photo={i}
-              key={i.id}
-              isLoaded
-              imageSrc={getPhotoSrcFromSizes(i.sizes, 7)}
-            />;
-          })
-        }
+        {list}
+        {placeholders}
       </div>
     );
   }

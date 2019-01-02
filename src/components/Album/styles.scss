@@ -2,6 +2,7 @@
   flex: 1;
   padding: 10px 16px;
   min-width: 260px;
+  will-change: transform;
 
   &:empty {
     padding: 0 16px;

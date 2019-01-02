@@ -32,7 +32,7 @@ class Albums extends Component {
 
     const albumsWithPhotos = albums.filter(album => album.size > 0);
     const list = albumsWithPhotos.map(album => <Album key={album.id} album={album} />);
-    const placeholders = createPlaceholder(11, (i) => <div key={i} className="Album" />);
+    const placeholders = createPlaceholder(5, (i) => <div key={i} className="Album" />);
 
     let ownerName = <span>&nbsp;</span>;
 

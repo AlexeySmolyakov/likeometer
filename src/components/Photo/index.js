@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
+import './styles.scss';
+
 class Photo extends React.PureComponent {
   render() {
     const { photo, isLoaded, imageSrc } = this.props;
@@ -12,12 +14,11 @@ class Photo extends React.PureComponent {
 
     const b = block('Photo');
 
+    const pathname = `/photo${photo.owner_id}_${photo.id}`;
+
     return (
-      <div className="photo">
-        <Link className="wrap" to={{
-          pathname: `/photo${photo.owner_id}_${photo.id}`,
-          state: { modal: true },
-        }}>
+      <Link className={b()} to={{ pathname }}>
+        <div className="wrap">
           <div className="thumb">
             <div className={`image ${isLoadedClass}`} style={imageStyle} />
           </div>
@@ -32,8 +33,8 @@ class Photo extends React.PureComponent {
               {photo.comments.count}
             </div>}
           </div>
-        </Link>
-      </div>
+        </div>
+      </Link>
     );
   }
 }
