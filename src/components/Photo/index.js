@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
+import heart from '../../assets/heart.svg';
 import './styles.scss';
 
 class Photo extends React.PureComponent {
@@ -24,14 +25,9 @@ class Photo extends React.PureComponent {
           </div>
           <div className="counters">
             <div className="likes">
-              <i className={`fa ${userLikes}`} aria-hidden="true" />
-              {photo.likes.count}
+              <img src={heart} alt="Likes" />
+              {new Intl.NumberFormat().format(photo.likes.count)}
             </div>
-            {photo.comments.count > 0 &&
-            <div className="comments">
-              <i className="fa fa-comment-o" aria-hidden="true" />
-              {photo.comments.count}
-            </div>}
           </div>
         </div>
       </Link>

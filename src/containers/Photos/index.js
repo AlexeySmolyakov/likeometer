@@ -5,6 +5,7 @@ import block from 'bem-cn-lite';
 import API from '../../api';
 import Photo from '../../components/Photo/index';
 import Album from '../../components/Album/index';
+import Loader from '../../components/Loader/index';
 
 import { userSelector } from '../../redux/user';
 import { fetchAlbums } from '../../redux/albums';
@@ -20,6 +21,7 @@ const WrapperPhoto = withImageLoader(Photo);
 class Photos extends Component {
   state = {
     photos: [],
+    isLoading: true,
   };
 
   componentDidMount() {
@@ -30,14 +32,15 @@ class Photos extends Component {
     const owner_id = Number(params.ownerId);
     const album_id = Number(params.objectId);
 
-    //console.warn(owner_id, album_id);
-    //fetchPhotos({ owner_id, album_id });
-
     fetchAlbums({ owner_id });
 
     API.photos.fetchPhotos({ owner_id, album_id })
     .then(response => {
-      this.setState({ photos: response.items });
+      const sortedPhotos = response.items.sort((a, b) => b.likes.count - a.likes.count);
+      this.setState({
+        photos: sortedPhotos,
+        isLoading: false,
+      });
     })
     .catch(error => {
       console.warn(error);
@@ -45,12 +48,14 @@ class Photos extends Component {
   }
 
   render() {
-    const { photos } = this.state;
+    const { photos, isLoading } = this.state;
 
     const b = block('Photos');
     const list = photos.map(i =>
-      <Photo photo={i} isLoaded key={i.id} imageSrc={getPhotoSrcFromSizes(i.sizes, 7)} />);
+      <WrapperPhoto photo={i} key={i.id} imageSrc={getPhotoSrcFromSizes(i.sizes, 5)} />);
     const placeholders = createPlaceholder(7, (i) => <div key={i} className="Photo" />);
+
+    if (isLoading) return <Loader />;
 
     return (
       <div className={b()}>

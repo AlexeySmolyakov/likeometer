@@ -1,0 +1,41 @@
+@import "../../styles/context";
+
+.Loader {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  &__spinner {
+    margin: 0;
+    display: inline-block;
+    font-size: 10px;
+    position: relative;
+    text-indent: -9999em;
+    border-top: 3px solid rgba(0, 0, 0, 0.05);
+    border-right: 3px solid rgba(0, 0, 0, 0.05);
+    border-bottom: 3px solid rgba(0, 0, 0, 0.05);
+    border-left: 3px solid $color-primary-2;
+    transform: translateZ(0);
+    animation: load8 1.1s infinite linear;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__info {
+    font-size: 13px;
+    margin: 20px 0;
+    color: $color-gray;
+  }
+}
+
+@keyframes load8 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

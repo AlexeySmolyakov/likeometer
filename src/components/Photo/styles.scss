@@ -51,9 +51,9 @@
 
   .likes, .comments {
     line-height: normal;
-    font-size: 12px;
+    font-size: 13px;
     padding: 5px 2px 0;
-    color: #888;
+    color: #6a6a6a;
     font-weight: 500;
 
     i.fa.fa-heart,
@@ -76,6 +76,18 @@
   }
 
   .comments {
-    margin-left: auto;
+    margin-left: 10px;
+  }
+
+  .likes, .comments {
+    display: flex;
+    align-items: center;
+
+    img {
+      height: 9px;
+      width: 10px;
+      margin-right: 4px;
+      opacity: 0.7;
+    }
   }
 }

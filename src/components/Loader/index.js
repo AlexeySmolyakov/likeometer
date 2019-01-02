@@ -1,15 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import block from 'bem-cn-lite';
+
+import './styles.scss';
 
 const Loader = ({ photosTotal, photosLoaded }) => {
-  const photosLoadedString = `${photosLoaded} / ${photosTotal}`;
+  const b = block('Loader');
 
   return (
-    <div className="loader-wrap">
-      <div className="loader" />
+    <div className={b()}>
+      <div className={b('spinner')} />
       {
         photosTotal > 0 &&
-        <div className="photos-loaded">{photosLoadedString}</div>
+        <div className={b('info')}>{photosLoaded} / {photosTotal}</div>
       }
     </div>
   );
@@ -19,6 +22,9 @@ Loader.propTypes = {
   photosTotal: PropTypes.number,
   photosLoaded: PropTypes.number,
 };
-Loader.defaultProps = {};
+Loader.defaultProps = {
+  photosTotal: 0,
+  photosLoaded: 0,
+};
 
 export default Loader;

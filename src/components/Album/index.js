@@ -29,7 +29,7 @@ class Album extends React.Component {
 
     const b = block('Album');
 
-    const subtitle = `${size} ${inflectionPhotos(size)}`;
+    const subtitle = `${new Intl.NumberFormat().format(size)} ${inflectionPhotos(size)}`;
     const style = { backgroundImage: `url(${getAlbumImageSrc(album)})` };
 
     return (
