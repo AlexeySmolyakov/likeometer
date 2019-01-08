@@ -1,5 +1,7 @@
 import { VK_API_VERSION } from '../constants';
 
+//import { fetchAllPhotos } from '../actions/PhotosActions';
+
 export function fetchAlbums(options = {}) {
   options = {
     ...options,
@@ -18,12 +20,15 @@ export function fetchAlbums(options = {}) {
   });
 }
 
-export function fetchPhotos(options = {}) {
-  if (!options.owner_id && !options.album_id)
+export function fetchPhotos({ owner_id, album_id, count = 100, offset = 0 }) {
+  if (!owner_id && !album_id)
     return Promise.reject('No owner/album id specified.');
 
-  options = {
-    ...options,
+  const options = {
+    owner_id,
+    album_id,
+    count,
+    offset,
     extended: 1,
     photo_sizes: 1,
     v: VK_API_VERSION,
@@ -55,3 +60,58 @@ export function fetchPhotosById(options = {}) {
     });
   });
 }
+
+export const fetchAllPhotos = ({ owner_id, album_id, onProgress }) => {
+  let count = 0;
+  let items = [];
+  let promises = [];
+  let resolve = null;
+
+  const promise = new Promise(r => resolve = r);
+
+  const delayedPromise = ({ owner_id, album_id, offset }) => () => {
+    return fetchPhotos({ owner_id, album_id, offset, limit: 1000 })
+    .then(r => {
+      items.push(...r.items);
+      if (onProgress) onProgress(items.length);
+      return r;
+    });
+  };
+
+  const get5Promises = () => {
+    let another5promises = [];
+
+    if (promises.length === 0) {
+      return resolve({ count, items });
+    }
+
+    for (let i = 0; i < 5; i++) if (promises[i])
+      another5promises.push(promises[i]());
+
+    return Promise.all(another5promises)
+    .then(() => {
+      promises = promises.slice(5);
+      console.warn('get5Promises', promises);
+      get5Promises();
+    });
+  };
+
+  // first fetch
+  return fetchPhotos({ album_id, owner_id })
+  .then(response => {
+    //items.push(...response.items);
+    //if (onProgress) onProgress(items.length);
+    //
+    //count = Math.ceil(response.count / 1000) - 1;
+    //for (let i = 0; i < count; i++)
+    //  promises.push(delayedPromise({ owner_id, album_id, offset: (i + 1) * 1000 }));
+
+    //get5Promises();
+
+    return response;
+  });
+
+  //return promise;
+};
+
+fetchAllPhotos.cancel = () => console.warn('Cancel');

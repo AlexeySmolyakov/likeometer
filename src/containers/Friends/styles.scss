@@ -3,6 +3,8 @@
 .Friends {
   max-width: $max-width;
   margin: auto;
+  padding-top: 22px;
+  will-change: transform;
 
   &__searchInput {
     border: solid 1px #cccccc;

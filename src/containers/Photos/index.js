@@ -34,7 +34,9 @@ class Photos extends Component {
 
     fetchAlbums({ owner_id });
 
-    API.photos.fetchPhotos({ owner_id, album_id })
+    if (params.section === 'photo') return;
+
+    API.photos.fetchAllPhotos({ owner_id, album_id })
     .then(response => {
       const sortedPhotos = response.items.sort((a, b) => b.likes.count - a.likes.count);
       this.setState({
@@ -45,6 +47,30 @@ class Photos extends Component {
     .catch(error => {
       console.warn(error);
     });
+  }
+
+  componentDidUpdate(prevProps, prevState, prevContext) {
+    if (prevProps.match.params !== this.props.match.params) {
+      if (this.props.match.params.section === 'album') {
+        if (this.state.photos.length === 0) {
+
+          const owner_id = Number(this.props.match.params.ownerId);
+          const album_id = Number(this.props.match.params.objectId);
+
+          API.photos.fetchAllPhotos({ owner_id, album_id })
+          .then(response => {
+            const sortedPhotos = response.items.sort((a, b) => b.likes.count - a.likes.count);
+            this.setState({
+              photos: sortedPhotos,
+              isLoading: false,
+            });
+          })
+          .catch(error => {
+            console.warn(error);
+          });
+        }
+      }
+    }
   }
 
   render() {

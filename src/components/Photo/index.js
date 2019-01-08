@@ -16,17 +16,18 @@ class Photo extends React.PureComponent {
     const b = block('Photo');
 
     const pathname = `/photo${photo.owner_id}_${photo.id}`;
+    const count = new Intl.NumberFormat().format(photo.likes.count);
 
     return (
       <Link className={b()} to={{ pathname }}>
         <div className="wrap">
           <div className="thumb">
             <div className={`image ${isLoadedClass}`} style={imageStyle} />
-          </div>
-          <div className="counters">
-            <div className="likes">
-              <img src={heart} alt="Likes" />
-              {new Intl.NumberFormat().format(photo.likes.count)}
+            <div className="counters">
+              <div className="likes">
+                <img src={heart} alt="Likes" />
+                {count}
+              </div>
             </div>
           </div>
         </div>

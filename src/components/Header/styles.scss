@@ -38,11 +38,6 @@
     position: relative;
     opacity: 0.9;
 
-    span {
-      font-size: 12px;
-      font-weight: 600;
-    }
-
     &:after {
       content: '';
       top: 50%;
@@ -61,6 +56,11 @@
 
     &.active:after {
       opacity: 1;
+    }
+
+    span {
+      font-size: 12px;
+      font-weight: 600;
     }
   }
 
@@ -92,12 +92,19 @@
     font-weight: 600;
     min-width: 0;
     padding: 0 10px;
+    opacity: 0;
+    transition: all 0.1s ease-in-out;
+
+    &_isVisible {
+      opacity: 1;
+    }
 
     span {
       white-space: nowrap;
       text-overflow: ellipsis;
       overflow: hidden;
     }
+
     img {
       height: 8px;
       width: 8px;

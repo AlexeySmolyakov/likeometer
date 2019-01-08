@@ -55,9 +55,8 @@ class Friends extends Component {
       i.first_name.toLowerCase().includes(search.toLowerCase()) ||
       i.last_name.toLowerCase().includes(search.toLowerCase());
 
-    const list = friends.filter(filter).slice(0, 30).map(friend =>
-      <Friend
-        isLoaded
+    const list = friends.filter(filter).slice(0, 100).map(friend =>
+      <FriendHOC
         key={friend.id}
         friend={friend}
         imageSrc={friend.photo_100}
@@ -67,8 +66,8 @@ class Friends extends Component {
     let placeholders = createPlaceholder(11, (i) => <div key={i} className="friend" />);
     return (
       <div className={b()}>
-        <h1>Мои друзья</h1>
-        <h3>{friends.length} {declensionFriends(friends.length)}</h3>
+        {/*<h1>Мои друзья</h1>*/}
+        {/*<h3>{friends.length} {declensionFriends(friends.length)}</h3>*/}
 
         <input
           className={b('searchInput')}

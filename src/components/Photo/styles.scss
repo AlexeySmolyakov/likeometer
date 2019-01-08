@@ -1,7 +1,7 @@
 @import "../../styles/context";
 
 .Photo {
-  min-width: 200px;
+  min-width: 250px;
   flex: 1;
   padding: 8px;
   will-change: transform;
@@ -19,7 +19,7 @@
 
   .thumb {
     position: relative;
-    height: 150px;
+    height: 190px;
 
     background: linear-gradient(to bottom, #D5DEE7 0%, #E8EBF2 50%, #E2E7ED 100%),
     linear-gradient(to bottom, rgba(0, 0, 0, 0.02) 50%, rgba(255, 255, 255, 0.02) 61%, rgba(0, 0, 0, 0.02) 73%),
@@ -47,14 +47,21 @@
 
   .counters {
     display: flex;
+    position: absolute;
+    z-index: 20;
+    left: 10px;
+    bottom: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
   }
 
   .likes, .comments {
-    line-height: normal;
-    font-size: 13px;
-    padding: 5px 2px 0;
-    color: #6a6a6a;
-    font-weight: 500;
+    line-height: 13px;
+    font-size: 11px;
+    //padding: 5px 2px 0;
+    color: white;
+    padding: 4px;
+    font-weight: normal;
 
     i.fa.fa-heart,
     i.fa.fa-heart-o,

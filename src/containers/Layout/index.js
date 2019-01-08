@@ -8,6 +8,7 @@ import Header from '../../components/Header/index';
 import Photos from '../Photos/index';
 import Groups from '../Groups/index';
 import Friends from '../Friends/index';
+import Viewer from '../Viewer/index';
 import { fetchUser, userSelector } from '../../redux/user';
 import { fetchGroups } from '../../redux/groups';
 import { fetchFriends } from '../../redux/friends';
@@ -52,6 +53,10 @@ class Layout extends Component {
 
     if (isLoading || hasErrors || !user) return null;
 
+    const photoRegExp = new RegExp(/\/photo([\d\-]+)_([\d]+)/);
+    const matches = photoRegExp.exec(this.props.location.pathname);
+    const isPhoto = !!matches;
+
     return (
       <div className={'Layout'}>
         <div className={'LayoutHeader'}>
@@ -63,9 +68,15 @@ class Layout extends Component {
             <Route path={'/albums:ownerId'} component={Albums} />
             <Route path={'/friends:userId?'} component={Friends} />
             <Route path={'/groups:userId?'} component={Groups} />
-            <Route path={'/:page:ownerId([\\d\\-]+)_:objectId'} component={Photos} />
+            <Route path={'/:section(album|photo):ownerId([\\d\\-]+)_:objectId'} component={Photos} />
           </Switch>
         </div>
+
+        <Viewer
+          isOpen={isPhoto}
+          history={this.props.history}
+          location={this.props.location}
+        />
       </div>
     );
   }

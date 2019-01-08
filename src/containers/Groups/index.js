@@ -54,7 +54,7 @@ class Groups extends Component {
     const filter = i =>
       i.name.toLowerCase().includes(search.toLowerCase());
 
-    const list = groups.filter(filter).slice(0, 30).map(group =>
+    const list = groups.filter(filter).slice(0, 100).map(group =>
       <Group
         isLoaded
         key={group.id}
@@ -66,8 +66,8 @@ class Groups extends Component {
     let placeholders = createPlaceholder(11, (i) => <div key={i} className="friend" />);
     return (
       <div className={b()}>
-        <h1>Мои группы</h1>
-        <h3>{groups.length} {declensionGroups(groups.length)}</h3>
+        {/*<h1>Мои группы</h1>*/}
+        {/*<h3>{groups.length} {declensionGroups(groups.length)}</h3>*/}
 
         <input
           className={b('searchInput')}
