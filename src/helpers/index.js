@@ -34,7 +34,19 @@ export function declensionLikes(number) {
   return declension(number, 'понравилась', 'понравились', 'понравились');
 }
 
-const types = ['x', 'w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
+const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
+const TYPES_MAP = {
+  'w': 10,
+  'z': 22,
+  'y': 30,
+  'x': 31,
+  'r': 40,
+  'q': 50,
+  'p': 60,
+  'o': 70,
+  'm': 80,
+  's': 90,
+};
 
 export function getPhotoSrcFromSizes(sizes = [], typeIndex = 0) {
   const image = sizes.find(size => size.type === types[typeIndex]);
@@ -62,13 +74,11 @@ export function sortPhotos(photos = []) {
 export const getAlbumImageSrc = ({ sizes }) => {
   if (!sizes.length) return '';
 
-  const src =
+  const processedSizes =
     sizes
-    .sort((a, b) => a.width - b.width)
-    .reverse();
+    .filter(i => i.width <= 605 && i.height <= 605)
+    .map(i => ({ ...i, typeIndex: TYPES_MAP[i.type] }))
+    .sort((a, b) => a.typeIndex - b.typeIndex);
 
-  const size = src.find(i => i.width < 300);
-
-
-  return size.src;
+  return processedSizes[0].src;
 };
