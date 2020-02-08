@@ -71,8 +71,7 @@ module.exports = {
 
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
   ],
-
-
+  
   watchOptions: {
     aggregateTimeout: 300,
   },

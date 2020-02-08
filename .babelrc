@@ -4,6 +4,12 @@
     "@babel/preset-react"
   ],
   "plugins": [
+    [
+      "emotion",
+      {
+        "sourceMap": true
+      }
+    ],
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-proposal-class-properties",
     "@babel/plugin-proposal-function-bind",

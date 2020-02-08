@@ -12,6 +12,9 @@
     "url": "git@github.com:smoliakov/likeometer-redux.git"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.16",
+    "@emotion/styled": "^10.0.15",
+    "babel-plugin-emotion": "^10.0.16",
     "bem-cn-lite": "^3.0.0",
     "moment": "^2.23.0",
     "normalize.css": "^8.0.1",
