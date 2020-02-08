@@ -5,7 +5,7 @@
 import { createSelector } from 'reselect';
 import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
-import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
+import { ActionType } from 'redux-promise-middleware';
 import API from '../api';
 
 // Actions
@@ -20,19 +20,19 @@ export const photosSelector = state => state.photos;
 // Reducer
 export default typeToReducer({
   [FETCH]: {
-    [PENDING]: state => {
+    [ActionType.Pending]: state => {
       return {
         ...state,
         isFetching: true,
       };
     },
-    [FULFILLED]: (state, { payload }) => {
+    [ActionType.Fulfilled]: (state, { payload }) => {
       return {
         ...state,
         isFetching: false,
       };
     },
-    [REJECTED]: (state, { payload }) => {
+    [ActionType.Rejected]: (state, { payload }) => {
       return {
         ...state,
         error: true,

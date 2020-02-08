@@ -6,9 +6,7 @@ module.exports = {
   mode: 'development',
   devtool: 'eval',
 
-  entry: [
-    './src/index.js',
-  ],
+  entry: ['react-hot-loader/patch', './src/index.js'],
 
   output: {
     path: path.join(__dirname, 'public'),
@@ -71,7 +69,7 @@ module.exports = {
 
     new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
   ],
-  
+
   watchOptions: {
     aggregateTimeout: 300,
   },

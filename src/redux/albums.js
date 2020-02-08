@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
-import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware';
+import { ActionType } from 'redux-promise-middleware';
 import API from '../api';
 import { userSelector } from './user';
 
@@ -33,13 +33,13 @@ export const albumByIdSelector = (ownerId, albumId) => createSelector(
 // Reducer
 export default typeToReducer({
   [FETCH]: {
-    [PENDING]: state => {
+    [ActionType.Pending]: state => {
       return {
         ...state,
         isFetching: true,
       };
     },
-    [FULFILLED]: (state, { payload }) => {
+    [ActionType.Fulfilled]: (state, { payload }) => {
       const ownerId = payload.count > 0 && payload.items ?
         payload.items[0].owner_id :
         userSelector(state).id;
@@ -50,7 +50,7 @@ export default typeToReducer({
         isFetching: false,
       };
     },
-    [REJECTED]: (state, { payload }) => {
+    [ActionType.Rejected]: (state, { payload }) => {
       return {
         ...state,
         error: true,
