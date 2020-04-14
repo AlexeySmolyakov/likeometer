@@ -2,13 +2,21 @@ import { VK_API_VERSION } from '../constants';
 
 //import { fetchAllPhotos } from '../actions/PhotosActions';
 
+/**
+ *
+ * @param {Object} options
+ * @param {Number} options.owner_id
+ * @param {Number} [options.album_ids]
+ * @param {Number} [options.offset=0]
+ * @param {Number} [options.count=50]
+ * @returns {Promise<any>}
+ */
 export function fetchAlbums(options = {}) {
   options = {
     ...options,
     need_covers: 1,
     need_system: 1,
     photo_sizes: 1,
-    album_ids: -7,
     v: VK_API_VERSION,
   };
 
@@ -71,11 +79,11 @@ export const fetchAllPhotos = ({ owner_id, album_id, onProgress }) => {
 
   const delayedPromise = ({ owner_id, album_id, offset }) => () => {
     return fetchPhotos({ owner_id, album_id, offset, limit: 1000 })
-    .then(r => {
-      items.push(...r.items);
-      if (onProgress) onProgress(items.length);
-      return r;
-    });
+      .then(r => {
+        items.push(...r.items);
+        if (onProgress) onProgress(items.length);
+        return r;
+      });
   };
 
   const get5Promises = () => {
@@ -89,27 +97,27 @@ export const fetchAllPhotos = ({ owner_id, album_id, onProgress }) => {
       another5promises.push(promises[i]());
 
     return Promise.all(another5promises)
-    .then(() => {
-      promises = promises.slice(5);
-      console.warn('get5Promises', promises);
-      get5Promises();
-    });
+      .then(() => {
+        promises = promises.slice(5);
+        console.warn('get5Promises', promises);
+        get5Promises();
+      });
   };
 
   // first fetch
   return fetchPhotos({ album_id, owner_id })
-  .then(response => {
-    //items.push(...response.items);
-    //if (onProgress) onProgress(items.length);
-    //
-    //count = Math.ceil(response.count / 1000) - 1;
-    //for (let i = 0; i < count; i++)
-    //  promises.push(delayedPromise({ owner_id, album_id, offset: (i + 1) * 1000 }));
+    .then(response => {
+      //items.push(...response.items);
+      //if (onProgress) onProgress(items.length);
+      //
+      //count = Math.ceil(response.count / 1000) - 1;
+      //for (let i = 0; i < count; i++)
+      //  promises.push(delayedPromise({ owner_id, album_id, offset: (i + 1) * 1000 }));
 
-    //get5Promises();
+      //get5Promises();
 
-    return response;
-  });
+      return response;
+    });
 
   //return promise;
 };

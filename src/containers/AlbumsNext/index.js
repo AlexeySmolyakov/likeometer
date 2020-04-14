@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { match } from 'path-to-regexp';
+import { withRouter } from 'react-router-dom';
 
-import API from '../../api';
-import AlbumNext from '../../components/AlbumNext';
-import { StyledAlbumsNext, Wrapper } from './styled';
+import API from 'api';
+import AlbumNext from 'components/AlbumNext';
+import { AlbumNext as StyledAlbumNext } from 'components/AlbumNext/styled';
+import { Title } from 'styles/common';
+import * as Styled from './styled';
 
 class AlbumsNext extends Component {
   state = {
     albums: [],
+    user: null,
   };
-  
+
   componentDidMount() {
+    API.auth.fetchCurrentUser()
+      .then(user => {
+        this.setState({ user });
+
+        console.warn('>>>', user);
+      });
+
     API.photos.fetchAlbums()
       .then(({ items }) => {
         console.warn(items);
@@ -19,26 +31,33 @@ class AlbumsNext extends Component {
         });
       });
   }
-  
+
+  getTitle = () => {
+    const { user } = this.state;
+
+    if (!user) {
+      return '';
+    }
+
+    const { first_name, last_name } = user || {};
+    return `${first_name} ${last_name}`;
+  };
+
   render() {
     const { albums } = this.state;
-    
+
     return (
-      <StyledAlbumsNext>
-        <Wrapper>
-          {albums.map(i => (
-            <AlbumNext key={i.id} data={i} />
-          ))}
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-          <AlbumNext/>
-        </Wrapper>
-      </StyledAlbumsNext>
+      <Styled.AlbumsNext>
+        <Title>{this.getTitle()}</Title>
+        <Styled.Wrapper>
+          {albums.map(album => <AlbumNext key={album.id} album={album} />)}
+          <StyledAlbumNext />
+          <StyledAlbumNext />
+          <StyledAlbumNext />
+          <StyledAlbumNext />
+          <StyledAlbumNext />
+        </Styled.Wrapper>
+      </Styled.AlbumsNext>
     );
   }
 }
@@ -46,4 +65,4 @@ class AlbumsNext extends Component {
 AlbumsNext.propTypes = {};
 AlbumsNext.defaultProps = {};
 
-export default AlbumsNext;
+export default withRouter(AlbumsNext);

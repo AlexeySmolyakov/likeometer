@@ -1,4 +1,4 @@
-export const VK_API_VERSION = 5.65;
+export const VK_API_VERSION = 5.103;
 
 export const CHECKING_AUTH = 'CHECKING_AUTH';
 
