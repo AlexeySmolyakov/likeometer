@@ -1,12 +1,14 @@
 import styled from '@emotion/styled';
 
 export const Title = styled.h1`
-  margin: 40px 0 20px;
+  padding-top: 40px;
+  margin: 0 0 20px;
   font-size: 50px;
   font-weight: 600;
   height: 62px;
   line-height: 62px;
   display: block;
+  box-sizing: content-box;
 
   &:empty:after {
     content: '';

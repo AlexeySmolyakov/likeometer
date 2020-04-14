@@ -13,6 +13,7 @@ const PhotosNext = props => {
   // photos = {count, items}
   const [photos, setPhotos] = useState({ count: 0, items: [] });
   const [album, setAlbum] = useState({ title: '' });
+  const [group, setGroup] = useState({ name: '' });
 
   const photosLength = photos.items.length;
 
@@ -30,12 +31,16 @@ const PhotosNext = props => {
         document.title = `${currentAlbum.title} | Likeometer`;
       })
       .catch(console.warn);
+
+    API.groups.fetchGroupsById({ group_ids: [-+ownerId] })
+      .then(groups => setGroup(groups[0]))
+      .catch(console.warn);
   }, [ownerId, albumId]);
 
   return (
     <Styled.PhotosNext>
       <Title>{album.title}</Title>
-      <Subtitle>{`${photosLength} ${inflectionPhotos(photosLength)}`}</Subtitle>
+      <Subtitle>{`${group.name} • ${photosLength} ${inflectionPhotos(photosLength)}`}</Subtitle>
       <Styled.Wrapper>
         {photos.items.map(photo => <Photo key={photo.id} photo={photo} />)}
         <StyledPhoto />
