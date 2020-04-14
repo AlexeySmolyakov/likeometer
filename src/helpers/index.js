@@ -36,28 +36,33 @@ export function declensionLikes(number) {
 
 const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
 const TYPES_MAP = {
-  'w': 10,
-  'z': 22,
-  'y': 30,
-  'x': 31,
-  'r': 40,
-  'q': 50,
-  'p': 60,
-  'o': 70,
-  'm': 80,
-  's': 90,
+  w: 10,
+  z: 22,
+  y: 30,
+  x: 31,
+  r: 40,
+  q: 50,
+  p: 60,
+  o: 70,
+  m: 80,
+  s: 90,
 };
 
 export function getPhotoSrcFromSizes(sizes = [], typeIndex = 0) {
   const image = sizes.find(size => size.type === types[typeIndex]);
-  if (!image) return getPhotoSrcFromSizes(sizes, typeIndex + 1);
-  else return image.src;
+
+  if (!image) {
+    return getPhotoSrcFromSizes(sizes, typeIndex + 1);
+  }
+
+  return image.url;
 }
 
 export function createPlaceholder(times, element) {
-  let placeholder = [];
-  for (let i = 0; i < times; i++)
+  const placeholder = [];
+  for (let i = 0; i < times; i++) {
     placeholder.push(element(i));
+  }
   return placeholder;
 }
 
@@ -74,8 +79,7 @@ export function sortPhotos(photos = []) {
 export const getAlbumImageSrc = ({ sizes }) => {
   if (!sizes.length) return '';
 
-  const processedSizes =
-    sizes
+  const processedSizes = sizes
     .filter(i => i.width <= 605 && i.height <= 605)
     .map(i => ({ ...i, typeIndex: TYPES_MAP[i.type] }))
     .sort((a, b) => a.typeIndex - b.typeIndex);

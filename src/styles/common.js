@@ -19,3 +19,10 @@ export const Title = styled.h1`
     display: block;
   }
 `;
+
+export const Subtitle = styled.div`
+  color: lightgray;
+  text-align: center;
+  margin-top: -10px;
+  margin-bottom: 10px;
+`;
