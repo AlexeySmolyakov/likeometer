@@ -1,6 +1,8 @@
+/* eslint-disable camelcase, no-undef */
+
 import { VK_API_VERSION } from '../constants';
 
-//import { fetchAllPhotos } from '../actions/PhotosActions';
+// import { fetchAllPhotos } from '../actions/PhotosActions';
 
 /**
  *
@@ -21,16 +23,28 @@ export function fetchAlbums(options = {}) {
   };
 
   return new Promise((resolve, reject) => {
-    VK.api('photos.getAlbums', options, (response) => {
+    VK.api('photos.getAlbums', options, response => {
       if (response.response) resolve(response.response);
       else reject(response.error);
     });
   });
 }
 
-export function fetchPhotos({ owner_id, album_id, count = 100, offset = 0 }) {
-  if (!owner_id && !album_id)
-    return Promise.reject('No owner/album id specified.');
+/**
+ * Fetch photos in album.
+ * @param {Object} params
+ * @param {number} params.owner_id
+ * @param {number} params.album_id
+ * @param {number} [params.count=100]
+ * @param {number} [params.offset=0]
+ * @returns {Promise<any>}
+ */
+export function fetchPhotos(params) {
+  const { owner_id, album_id, count = 100, offset = 0 } = params;
+
+  if (!owner_id && !album_id) {
+    return Promise.reject(new Error('No owner/album id specified.'));
+  }
 
   const options = {
     owner_id,
@@ -43,16 +57,15 @@ export function fetchPhotos({ owner_id, album_id, count = 100, offset = 0 }) {
   };
 
   return new Promise((resolve, reject) => {
-    VK.api('photos.get', options, (response) => {
+    VK.api('photos.get', options, response => {
       if (response.response) resolve(response.response);
-      else reject(response.error);
+      else reject(new Error(response.error));
     });
   });
 }
 
 export function fetchPhotosById(options = {}) {
-  if (!options.photos)
-    return Promise.reject('No photo id specified.');
+  if (!options.photos) return Promise.reject('No photo id specified.');
 
   options = {
     ...options,
@@ -62,7 +75,7 @@ export function fetchPhotosById(options = {}) {
   };
 
   return new Promise((resolve, reject) => {
-    VK.api('photos.getById', options, (response) => {
+    VK.api('photos.getById', options, response => {
       if (response.response) resolve(response.response);
       else reject(response.error);
     });
@@ -70,31 +83,35 @@ export function fetchPhotosById(options = {}) {
 }
 
 export const fetchAllPhotos = ({ owner_id, album_id, onProgress }) => {
-  let count = 0;
-  let items = [];
+  const count = 0;
+  const items = [];
   let promises = [];
   let resolve = null;
 
   const promise = new Promise(r => resolve = r);
 
-  const delayedPromise = ({ owner_id, album_id, offset }) => () => {
-    return fetchPhotos({ owner_id, album_id, offset, limit: 1000 })
-      .then(r => {
-        items.push(...r.items);
-        if (onProgress) onProgress(items.length);
-        return r;
-      });
-  };
+  const delayedPromise = ({ owner_id, album_id, offset }) => () => fetchPhotos({
+    owner_id,
+    album_id,
+    offset,
+    limit: 1000,
+  })
+    .then(r => {
+      items.push(...r.items);
+      if (onProgress) onProgress(items.length);
+      return r;
+    });
 
   const get5Promises = () => {
-    let another5promises = [];
+    const another5promises = [];
 
     if (promises.length === 0) {
       return resolve({ count, items });
     }
 
-    for (let i = 0; i < 5; i++) if (promises[i])
-      another5promises.push(promises[i]());
+    for (let i = 0; i < 5; i++) {
+      if (promises[i]) another5promises.push(promises[i]());
+    }
 
     return Promise.all(another5promises)
       .then(() => {
@@ -106,20 +123,19 @@ export const fetchAllPhotos = ({ owner_id, album_id, onProgress }) => {
 
   // first fetch
   return fetchPhotos({ album_id, owner_id })
-    .then(response => {
-      //items.push(...response.items);
-      //if (onProgress) onProgress(items.length);
+    .then(response =>
+      // items.push(...response.items);
+      // if (onProgress) onProgress(items.length);
       //
-      //count = Math.ceil(response.count / 1000) - 1;
-      //for (let i = 0; i < count; i++)
+      // count = Math.ceil(response.count / 1000) - 1;
+      // for (let i = 0; i < count; i++)
       //  promises.push(delayedPromise({ owner_id, album_id, offset: (i + 1) * 1000 }));
 
-      //get5Promises();
+      // get5Promises();
 
-      return response;
-    });
+      response);
 
-  //return promise;
+  // return promise;
 };
 
 fetchAllPhotos.cancel = () => console.warn('Cancel');
