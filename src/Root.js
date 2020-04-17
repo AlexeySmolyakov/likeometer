@@ -8,14 +8,21 @@ import API from './api';
 const Root = () => {
   const [user, setUser] = useState(null);
 
+  const onClick = () => {
+    API.auth.login();
+  };
+
   useEffect(() => {
     API.auth.fetchCurrentUser()
       .then(setUser)
       .catch(console.warn);
   }, []);
 
+  console.warn('>>>', user);
   if (!user) {
-    return null;
+    return (
+      <div onClick={onClick}>Login</div>
+    );
   }
 
   return (
