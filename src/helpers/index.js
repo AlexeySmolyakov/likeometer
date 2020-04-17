@@ -18,7 +18,7 @@ export function inflectionPhotos(number) {
   return declension(number, 'фотография', 'фотографии', 'фотографий');
 }
 
-export function declensionAlbums(number) {
+export function inflectionAlbums(number) {
   return declension(number, 'альбом', 'альбома', 'альбомов');
 }
 
@@ -34,7 +34,7 @@ export function declensionLikes(number) {
   return declension(number, 'понравилась', 'понравились', 'понравились');
 }
 
-const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'm', 's'];
+const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'x', 'm', 's'];
 const TYPES_MAP = {
   w: 10,
   z: 22,

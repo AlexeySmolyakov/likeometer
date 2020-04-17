@@ -1,68 +1,63 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import { match } from 'path-to-regexp';
-import { withRouter } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 
 import API from 'api';
-import AlbumNext from 'components/AlbumNext';
-import { AlbumNext as StyledAlbumNext } from 'components/AlbumNext/styled';
-import { Title } from 'styles/common';
+import { inflectionAlbums } from 'helpers';
+import { Title, Subtitle } from 'styles/common';
+import AlbumNext from './Album';
+import { AlbumNext as StyledAlbumNext } from './Album/styled';
 import * as Styled from './styled';
 
-class AlbumsNext extends Component {
-  state = {
-    albums: [],
-    user: null,
-  };
+const AlbumsNext = props => {
+  const { match: { params } } = props;
 
-  componentDidMount() {
-    API.auth.fetchCurrentUser()
-      .then(user => {
-        this.setState({ user });
+  // params
+  const ownerId = +params.ownerId;
+  const isGroup = ownerId < 0;
 
-        console.warn('>>>', user);
-      });
+  // states
+  const [title, setTitle] = useState('');
+  const [albums, setAlbums] = useState([]);
 
-    API.photos.fetchAlbums()
-      .then(({ items }) => {
-        console.warn(items);
-        this.setState({
-          albums: items,
-        });
-      });
-  }
-
-  getTitle = () => {
-    const { user } = this.state;
-
-    if (!user) {
-      return '';
+  useEffect(() => {
+    // fetch groups
+    if (isGroup) {
+      API.groups.fetchGroupsById({ group_ids: [-ownerId] })
+        .then(groups => {
+          if (groups[0]) {
+            setTitle(groups[0].name);
+          }
+        })
+        .catch(console.warn);
+    } else {
+      API.users.fetchUsers({ user_ids: [ownerId] })
+        .then(users => {
+          if (users[0]) {
+            const { last_name, first_name } = users[0];
+            setTitle(`${first_name} ${last_name}`);
+          }
+        })
+        .catch(console.warn);
     }
 
-    const { first_name, last_name } = user || {};
-    return `${first_name} ${last_name}`;
-  };
+    API.photos.fetchAlbums({ owner_id: ownerId })
+      .then(({ items }) => setAlbums(items))
+      .catch(console.warn);
+  }, [ownerId, isGroup]);
 
-  render() {
-    const { albums } = this.state;
+  return (
+    <Styled.AlbumsNext>
+      <Title>{title}</Title>
+      <Subtitle>{`${albums.length} ${inflectionAlbums(albums.length)}`}</Subtitle>
+      <Styled.Wrapper>
+        {albums.map(album => <AlbumNext key={album.id} album={album} />)}
+        <StyledAlbumNext />
+        <StyledAlbumNext />
+        <StyledAlbumNext />
+        <StyledAlbumNext />
+        <StyledAlbumNext />
+      </Styled.Wrapper>
+    </Styled.AlbumsNext>
+  );
+};
 
-    return (
-      <Styled.AlbumsNext>
-        <Title>{this.getTitle()}</Title>
-        <Styled.Wrapper>
-          {albums.map(album => <AlbumNext key={album.id} album={album} />)}
-          <StyledAlbumNext />
-          <StyledAlbumNext />
-          <StyledAlbumNext />
-          <StyledAlbumNext />
-          <StyledAlbumNext />
-        </Styled.Wrapper>
-      </Styled.AlbumsNext>
-    );
-  }
-}
-
-AlbumsNext.propTypes = {};
-AlbumsNext.defaultProps = {};
-
-export default withRouter(AlbumsNext);
+export default AlbumsNext;

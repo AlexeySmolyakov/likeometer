@@ -9,7 +9,7 @@ import { albumsSelector, fetchAlbums } from '../../redux/albums';
 
 import { fetchFriends } from '../../actions/FriendsActions';
 import { fetchGroups } from '../../actions/GroupsActions';
-import { declensionAlbums, createPlaceholder } from '../../helpers/index';
+import { createPlaceholder } from '../../helpers/index';
 
 import './styles.scss';
 

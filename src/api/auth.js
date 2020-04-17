@@ -1,10 +1,10 @@
-import { fetch as fetchUsers } from './users';
+import { fetchUsers } from './users';
 
 const settings = 262150;
 
 export function checkAuth() {
   return new Promise((resolve, reject) => {
-    VK.Auth.getLoginStatus((response) => {
+    VK.Auth.getLoginStatus(response => {
       if (response.status === 'connected') resolve(response);
       else reject(response);
     });
@@ -13,12 +13,12 @@ export function checkAuth() {
 
 export function fetchCurrentUser() {
   return fetchUsers()
-  .then((response) => response[0]);
+    .then(response => response[0]);
 }
 
 export function login() {
   return new Promise((resolve, reject) => {
-    VK.Auth.login((response) => {
+    VK.Auth.login(response => {
       console.warn(response);
       resolve(response);
     }, settings);

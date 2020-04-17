@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 
 import API from 'api';
 import { inflectionPhotos } from 'helpers';
@@ -24,7 +25,9 @@ const PhotosNext = props => {
 
   const photosRef = useRef();
 
-  // fetch initial data
+  /**
+   * Fetch initial data
+   */
   useEffect(() => {
     // scroll to top on new page
     window.scrollTo({ top: 0 });
@@ -43,7 +46,7 @@ const PhotosNext = props => {
       })
       .catch(console.warn);
 
-    // fetch groups
+    // fetch group
     if (isGroup) {
       API.groups.fetchGroupsById({ group_ids: [-ownerId] })
         .then(groups => setGroup(groups[0]))
@@ -51,7 +54,9 @@ const PhotosNext = props => {
     }
   }, [ownerId, albumId, isGroup]);
 
-  // infinite scroll
+  /**
+   * Infinite scroll
+   */
   useEffect(() => {
     const onScroll = () => {
       const height = photosRef.current.clientHeight;
@@ -71,7 +76,9 @@ const PhotosNext = props => {
     };
   }, [page, canFetchPhotos]);
 
-  // fetch photos
+  /**
+   * Fetch photos.
+   */
   useEffect(() => {
     const options = {
       album_id: albumId,
@@ -89,15 +96,16 @@ const PhotosNext = props => {
       .catch(console.warn);
   }, [ownerId, albumId, page]);
 
-  const pieces = [];
-  if (group.name) pieces.push(group.name);
-  pieces.push(`${album.size} ${inflectionPhotos(album.size)}`);
-  const subtitle = pieces.join(' • ');
+  // get subtitle
+  const subtitle = `${isGroup ? ' • ' : ''}${album.size} ${inflectionPhotos(album.size)}`;
 
   return (
     <Styled.PhotosNext ref={photosRef}>
       <Title>{album.title}</Title>
-      <Subtitle>{subtitle}</Subtitle>
+      <Subtitle>
+        {isGroup && <Link to={`/albums${ownerId}`}>{group.name}</Link>}
+        {subtitle}
+      </Subtitle>
       <Styled.Wrapper>
         {photos.map(photo => <Photo key={photo.id} photo={photo} />)}
         <StyledPhoto />

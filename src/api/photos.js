@@ -6,16 +6,16 @@ import { VK_API_VERSION } from '../constants';
 
 /**
  *
- * @param {Object} options
- * @param {Number} options.owner_id
- * @param {Number} [options.album_ids]
- * @param {Number} [options.offset=0]
- * @param {Number} [options.count=50]
+ * @param {Object} params
+ * @param {Number} params.owner_id
+ * @param {Number} [params.album_ids]
+ * @param {Number} [params.offset=0]
+ * @param {Number} [params.count=50]
  * @returns {Promise<any>}
  */
-export function fetchAlbums(options = {}) {
-  options = {
-    ...options,
+export function fetchAlbums(params = {}) {
+  const options = {
+    ...params,
     need_covers: 1,
     need_system: 1,
     photo_sizes: 1,
