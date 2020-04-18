@@ -1,11 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Helmet } from 'react-helmet';
 
 import API from 'api';
 import { inflectionPhotos } from 'helpers';
 import { Title, Subtitle } from 'styles/common';
-import { useGroup, useUser } from 'helpers/hooks';
+import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import { Photo as StyledPhoto } from './Photo/styled';
 import Photo from './Photo';
 import * as Styled from './styled';
@@ -63,7 +62,6 @@ const PhotosNext = props => {
       if ((height - 300 < innerHeight + pageYOffset) && !isFetching && !isCompleted) {
         setPage(page + 1);
         setIsFetching(true);
-        console.warn('>>> Load');
       }
     };
 
@@ -96,8 +94,8 @@ const PhotosNext = props => {
 
   useEffect(() => setIsCompleted(photos.length === album.size), [album, photos]);
 
-
   const title = isGroup ? group.name : `${user.first_name} ${user.last_name}`;
+  useDocumentTitle(`${album.title} - ${title} - Likeometer`);
 
   // get subtitle
   const link = <Link to={`/albums${ownerId}`}>{title}</Link>;
@@ -105,9 +103,6 @@ const PhotosNext = props => {
 
   return (
     <Styled.PhotosNext ref={photosRef}>
-      <Helmet>
-        <title>{`${album.title} - ${title} - Likeometer`}</title>
-      </Helmet>
       <Title>{album.title}</Title>
       <Subtitle>
         {link}

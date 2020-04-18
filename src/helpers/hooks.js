@@ -62,3 +62,9 @@ export const useImageLoaded = imageSrc => {
 
   return imageLoaded;
 };
+
+export const useDocumentTitle = title => {
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+};

@@ -35,9 +35,9 @@ export const Image = styled.div`
 
 export const Info = styled.div`
   position: absolute;
-  bottom: 18px;
-  left: 20px;
-  right: 20px;
+  bottom: 12px;
+  left: 15px;
+  right: 15px;
   display: flex;
   align-items: flex-end;
 `;

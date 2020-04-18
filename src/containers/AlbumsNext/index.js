@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet';
 
 import API from 'api';
 import { inflectionAlbums } from 'helpers';
-import { useGroup, useUser } from 'helpers/hooks';
+import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import { Title, Subtitle } from 'styles/common';
 import AlbumNext from './Album';
 import { Album as StyledAlbum } from './Album/styled';
@@ -30,11 +29,10 @@ const AlbumsNext = props => {
       .catch(console.warn);
   }, [ownerId, isGroup]);
 
+  useDocumentTitle(`${title} - Likeometer`);
+
   return (
     <Styled.AlbumsNext>
-      <Helmet>
-        <title>{`${title} - Likeometer`}</title>
-      </Helmet>
       <Title>{title}</Title>
       <Subtitle>{`${albums.length} ${inflectionAlbums(albums.length)}`}</Subtitle>
       <Styled.Wrapper>

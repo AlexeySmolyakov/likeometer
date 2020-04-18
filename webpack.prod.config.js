@@ -17,6 +17,29 @@ module.exports = {
     publicPath: '/',
   },
 
+  optimization: {
+    splitChunks: {
+      chunks: 'all',
+      minSize: 153600,
+      maxSize: 307200,
+      minChunks: 1,
+      maxAsyncRequests: 6,
+      maxInitialRequests: 4,
+      automaticNameDelimiter: '~',
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          minChunks: 2,
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+  },
+
   module: {
     rules: [
       {

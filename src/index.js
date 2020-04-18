@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import VK from 'VK';
 
-import './settings';
+// import './settings';
 import App from './App';
 import configureStore from './redux/configureStore';
 import './styles/index.scss';

@@ -1,23 +1,25 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import promise from 'redux-promise-middleware';
-import { createLogger } from 'redux-logger';
 import thunk from 'redux-thunk';
 
 import rootReducer from './reducers';
 
-const logger = createLogger({ collapsed: true });
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
+const middlewares = [thunk, promise];
+
+if (process.env.NODE_ENV === 'development') {
+  const { logger } = require('redux-logger');
+
+  middlewares.push(logger);
+}
 
 export default function configureStore(initialState) {
   const store = createStore(
     rootReducer,
     initialState,
     composeEnhancers(
-      applyMiddleware(
-        thunk,
-        promise,
-        logger,
-      ),
+      applyMiddleware(...middlewares),
     ),
   );
 
