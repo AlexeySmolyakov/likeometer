@@ -7,6 +7,7 @@ import { Title, Subtitle } from 'styles/common';
 import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import { Photo as StyledPhoto } from './Photo/styled';
 import Photo from './Photo';
+import Loader from './Loader';
 import * as Styled from './styled';
 
 const PhotosNext = props => {
@@ -116,6 +117,7 @@ const PhotosNext = props => {
         <StyledPhoto />
         <StyledPhoto />
       </Styled.Wrapper>
+      <Loader loading={!isCompleted && (album.size > 100)} />
     </Styled.PhotosNext>
   );
 };

@@ -8,8 +8,8 @@ const Loader = ({ photosTotal, photosLoaded }) => {
     <div className="loader-wrap">
       <div className="loader" />
       {
-        photosTotal > 0 &&
-        <div className="photos-loaded">{photosLoadedString}</div>
+        photosTotal > 0
+        && <div className={'photos-loaded'}>{photosLoadedString}</div>
       }
     </div>
   );
