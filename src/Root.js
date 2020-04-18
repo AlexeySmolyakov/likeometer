@@ -14,15 +14,20 @@ const Root = () => {
 
   useEffect(() => {
     API.auth.fetchCurrentUser()
-      .then(setUser)
+      .then(response => {
+        setUser(response || false);
+      })
       .catch(console.warn);
   }, []);
 
-  console.warn('>>>', user);
-  if (!user) {
+  if (user === false) {
     return (
       <div onClick={onClick}>Login</div>
     );
+  }
+
+  if (user === null) {
+    return null;
   }
 
   return (

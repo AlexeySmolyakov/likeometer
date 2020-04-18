@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import API from 'api';
 import { inflectionPhotos } from 'helpers';
@@ -21,7 +22,8 @@ const PhotosNext = props => {
   const [photos, setPhotos] = useState([]);
   const [album, setAlbum] = useState({ title: '', size: 0 });
   const [page, setPage] = useState(0);
-  const [canFetchPhotos, setCanFetchPhotos] = useState(false);
+  const [isFetching, setIsFetching] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
 
   const photosRef = useRef();
 
@@ -58,9 +60,9 @@ const PhotosNext = props => {
       const height = photosRef.current.clientHeight;
       const { innerHeight, pageYOffset } = window;
 
-      if ((height - 300 < innerHeight + pageYOffset) && canFetchPhotos) {
-        setCanFetchPhotos(true);
+      if ((height - 300 < innerHeight + pageYOffset) && !isFetching && !isCompleted) {
         setPage(page + 1);
+        setIsFetching(true);
         console.warn('>>> Load');
       }
     };
@@ -70,7 +72,7 @@ const PhotosNext = props => {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [page, canFetchPhotos]);
+  }, [page, isFetching, isCompleted]);
 
   /**
    * Fetch photos.
@@ -82,27 +84,30 @@ const PhotosNext = props => {
       offset: page * 100,
     };
 
-    setCanFetchPhotos(false);
+    setIsFetching(true);
 
     API.photos.fetchPhotos(options)
       .then(({ items }) => {
+        setIsFetching(false);
         setPhotos(p => [...p, ...items]);
-        setCanFetchPhotos(true);
       })
       .catch(console.warn);
   }, [ownerId, albumId, page]);
 
-  // get subtitle
-  const link = (
-    <Link to={`/albums${ownerId}`}>
-      {isGroup ? group.name : `${user.first_name} ${user.last_name}`}
-    </Link>
-  );
+  useEffect(() => setIsCompleted(photos.length === album.size), [album, photos]);
 
+
+  const title = isGroup ? group.name : `${user.first_name} ${user.last_name}`;
+
+  // get subtitle
+  const link = <Link to={`/albums${ownerId}`}>{title}</Link>;
   const subtitle = ` • ${album.size} ${inflectionPhotos(album.size)}`;
 
   return (
     <Styled.PhotosNext ref={photosRef}>
+      <Helmet>
+        <title>{`${album.title} - ${title} - Likeometer`}</title>
+      </Helmet>
       <Title>{album.title}</Title>
       <Subtitle>
         {link}

@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 import API from 'api';
 import { inflectionAlbums } from 'helpers';
+import { useGroup, useUser } from 'helpers/hooks';
 import { Title, Subtitle } from 'styles/common';
 import AlbumNext from './Album';
-import { AlbumNext as StyledAlbumNext } from './Album/styled';
+import { Album as StyledAlbum } from './Album/styled';
 import * as Styled from './styled';
-import { useGroup, useUser } from '../../helpers/hooks';
 
 const AlbumsNext = props => {
   const { match: { params } } = props;
@@ -31,15 +32,18 @@ const AlbumsNext = props => {
 
   return (
     <Styled.AlbumsNext>
+      <Helmet>
+        <title>{`${title} - Likeometer`}</title>
+      </Helmet>
       <Title>{title}</Title>
       <Subtitle>{`${albums.length} ${inflectionAlbums(albums.length)}`}</Subtitle>
       <Styled.Wrapper>
         {albums.map(album => <AlbumNext key={album.id} album={album} />)}
-        <StyledAlbumNext />
-        <StyledAlbumNext />
-        <StyledAlbumNext />
-        <StyledAlbumNext />
-        <StyledAlbumNext />
+        <StyledAlbum />
+        <StyledAlbum />
+        <StyledAlbum />
+        <StyledAlbum />
+        <StyledAlbum />
       </Styled.Wrapper>
     </Styled.AlbumsNext>
   );

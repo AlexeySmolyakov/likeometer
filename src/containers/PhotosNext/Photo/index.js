@@ -1,27 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
+import { useImageLoaded } from 'helpers/hooks';
 import { getPhotoSrcFromSizes } from 'helpers';
 import * as Styled from './styled';
 
 const Photo = ({ photo }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-
   const imageSrc = getPhotoSrcFromSizes(photo.sizes, 3);
   const backgroundImage = `url(${imageSrc})`;
-
-  useEffect(() => {
-    let image = new Image();
-    image.onload = () => {
-      setImageLoaded(true);
-    };
-    image.src = imageSrc;
-
-    return () => {
-      image.src = null;
-      image = null;
-    };
-  }, [imageSrc]);
+  const imageLoaded = useImageLoaded(imageSrc);
 
   return (
     <Styled.Photo>

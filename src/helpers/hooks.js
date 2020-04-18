@@ -43,3 +43,22 @@ export const useUser = ownerId => {
 
   return user;
 };
+
+export const useImageLoaded = imageSrc => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    let image = new Image();
+    image.onload = () => {
+      setImageLoaded(true);
+    };
+    image.src = imageSrc;
+
+    return () => {
+      image.src = null;
+      image = null;
+    };
+  }, [imageSrc]);
+
+  return imageLoaded;
+};
