@@ -51,6 +51,7 @@ export function fetchPhotos(params) {
     album_id,
     count,
     offset,
+    rev: 1,
     extended: 1,
     photo_sizes: 1,
     v: VK_API_VERSION,

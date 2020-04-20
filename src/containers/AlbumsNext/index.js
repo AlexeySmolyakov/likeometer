@@ -25,7 +25,10 @@ const AlbumsNext = props => {
 
   useEffect(() => {
     API.photos.fetchAlbums({ owner_id: ownerId })
-      .then(({ items }) => setAlbums(items))
+      .then(({ items }) => {
+        // remove system album `Photos where I am tagged`
+        setAlbums(items.filter(i => i.id !== -9000));
+      })
       .catch(console.warn);
   }, [ownerId, isGroup]);
 

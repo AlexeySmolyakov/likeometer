@@ -85,12 +85,12 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/pages/index.html',
+      favicon: './src/assets/favicon.png',
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[hash:5].css',
       chunkFilename: '[id].css',
     }),
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
   ],
 
   resolve: {

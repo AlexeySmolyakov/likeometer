@@ -65,9 +65,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/pages/index.html',
+      favicon: './src/assets/favicon.png',
     }),
-
-    new webpack.ContextReplacementPlugin(/moment[\/\\]locale$/, /ru|en/),
   ],
 
   watchOptions: {
