@@ -31,3 +31,12 @@ export const Image = styled.div`
 
   opacity: ${({ imageLoaded }) => imageLoaded ? 1 : 0};
 `;
+
+export const Icon = styled.img`
+  height: 14px;
+  width: auto;
+  position: absolute;
+  bottom: 12px;
+  right: 15px;
+  z-index: 100;
+`;
