@@ -1,4 +1,3 @@
-import { createSelector } from 'reselect';
 import typeToReducer from 'type-to-reducer';
 import { createAction } from 'redux-actions';
 import { ActionType } from 'redux-promise-middleware';

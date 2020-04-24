@@ -1,29 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
+import API from 'api';
+import Groups from 'containers/Groups/index';
+import Landing from 'containers/Landing';
 import AlbumsNext from 'containers/AlbumsNext';
 import PhotosNext from 'containers/PhotosNext';
-import API from './api';
 
 const Root = () => {
   const [user, setUser] = useState(null);
 
-  const onClick = () => {
-    API.auth.login();
-  };
-
   useEffect(() => {
-    API.auth.fetchCurrentUser()
-      .then(response => {
-        setUser(response || false);
-      })
-      .catch(console.warn);
+    API.auth.checkAuth()
+      .then(API.auth.fetchCurrentUser)
+      .then(setUser)
+      .catch(() => {
+        setUser(false);
+      });
   }, []);
 
   if (user === false) {
-    return (
-      <div onClick={onClick}>Login</div>
-    );
+    return <Landing />;
   }
 
   if (user === null) {
@@ -33,6 +30,7 @@ const Root = () => {
   return (
     <Switch>
       <Redirect exact from={'/'} to={`/albums${user.id}`} />
+      <Route path={'/groups'} component={Groups} />
       <Route path={'/albums:ownerId([\\d-]+)'} component={AlbumsNext} />
       <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={PhotosNext} />
     </Switch>

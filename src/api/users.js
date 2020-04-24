@@ -1,3 +1,4 @@
+import VK from 'VK';
 import { VK_API_VERSION } from '../constants';
 
 /**

@@ -96,17 +96,6 @@ module.exports = {
     modules: [path.resolve(__dirname, 'src'), 'node_modules'],
   },
 
-  watchOptions: {
-    aggregateTimeout: 300,
-  },
-
-  devServer: {
-    hot: true,
-    port: 8080,
-    disableHostCheck: true,
-    historyApiFallback: true,
-  },
-
   externals: {
     VK: 'VK',
   },

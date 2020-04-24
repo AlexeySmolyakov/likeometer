@@ -1,3 +1,4 @@
+import VK from 'VK';
 import { fetchUsers } from './users';
 
 const settings = 262150;
@@ -5,8 +6,11 @@ const settings = 262150;
 export function checkAuth() {
   return new Promise((resolve, reject) => {
     VK.Auth.getLoginStatus(response => {
-      if (response.status === 'connected') resolve(response);
-      else reject(response);
+      if (response.status === 'connected') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
     });
   });
 }
