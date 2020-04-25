@@ -1,3 +1,4 @@
+import VK from 'VK';
 import { VK_API_VERSION } from '../constants';
 
 /**
@@ -9,7 +10,7 @@ export function fetchGroups(options = {}) {
   const mergedOptions = {
     ...options,
     extended: 1,
-    fields: 'counters',
+    fields: 'counters,members_count',
     v: VK_API_VERSION,
   };
 

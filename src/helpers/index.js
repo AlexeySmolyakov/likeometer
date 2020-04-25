@@ -22,8 +22,8 @@ export function inflectionAlbums(number) {
   return declension(number, 'альбом', 'альбома', 'альбомов');
 }
 
-export function declensionGroups(number) {
-  return declension(number, 'группа', 'группы', 'групп');
+export function inflectionGroups(number) {
+  return declension(number, 'сообщество', 'сообщества', 'сообществ');
 }
 
 export function declensionFriends(number) {

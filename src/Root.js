@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import API from 'api';
-import Groups from 'containers/Groups/index';
 import Landing from 'containers/Landing';
+import GroupsNext from 'containers/GroupsNext';
 import AlbumsNext from 'containers/AlbumsNext';
 import PhotosNext from 'containers/PhotosNext';
 
@@ -29,10 +29,11 @@ const Root = () => {
 
   return (
     <Switch>
-      <Redirect exact from={'/'} to={`/albums${user.id}`} />
-      <Route path={'/groups'} component={Groups} />
+      <Redirect exact from="/" to={`/albums${user.id}`} />
+      <Route path="/groups" component={GroupsNext} />
       <Route path={'/albums:ownerId([\\d-]+)'} component={AlbumsNext} />
       <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={PhotosNext} />
+      <Redirect to="/" />
     </Switch>
   );
 };

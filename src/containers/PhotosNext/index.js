@@ -96,19 +96,25 @@ const PhotosNext = props => {
   useEffect(() => setIsCompleted(photos.length === album.size), [album, photos]);
 
   const title = isGroup ? group.name : `${user.first_name} ${user.last_name}`;
-  useDocumentTitle(`${album.title} - ${title} - Likeometer`);
 
-  // get subtitle
-  const link = <Link to={`/albums${ownerId}`}>{title}</Link>;
-  const subtitle = ` • ${album.size} ${inflectionPhotos(album.size)}`;
+  useDocumentTitle(`${album.title} - ${title}`);
+
+  const subtitle = (
+    <>
+      <Link to="/groups">Сообщества</Link>
+      {' › '}
+      <Link to={`/albums-${group.id}`}>{group.name}</Link>
+      {' › '}
+      <span>{album.title}</span>
+      {' • '}
+      <span>{`${album.size} ${inflectionPhotos(album.size)}`}</span>
+    </>
+  );
 
   return (
     <Styled.PhotosNext ref={photosRef}>
       <Title>{album.title}</Title>
-      <Subtitle>
-        {link}
-        {subtitle}
-      </Subtitle>
+      <Subtitle>{subtitle}</Subtitle>
       <Styled.Wrapper>
         {photos.map(photo => <Photo key={photo.id} photo={photo} />)}
         <StyledPhoto />

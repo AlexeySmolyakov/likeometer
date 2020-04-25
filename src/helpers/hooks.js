@@ -65,6 +65,6 @@ export const useImageLoaded = imageSrc => {
 
 export const useDocumentTitle = title => {
   useEffect(() => {
-    document.title = title;
+    document.title = `${title} - Likeometer`;
   }, [title]);
 };

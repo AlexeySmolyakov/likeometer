@@ -58,7 +58,7 @@ module.exports = {
         '_links',
       ],
     }],
-    'jsx-quotes': [error, 'prefer-single'],
+    'jsx-quotes': [error, 'prefer-double'],
     'import/prefer-default-export': [ignore],
     'import/no-unresolved': [ignore],
     'import/no-extraneous-dependencies': [warning, {
@@ -100,7 +100,7 @@ module.exports = {
     'react/jsx-filename-extension': [warning, { 'extensions': ['.js', '.jsx'] }],
     'jsx-a11y/label-has-associated-control': [ignore],
     'jsx-a11y/label-has-for': [ignore],
-    'react/jsx-curly-brace-presence': [error, { props: 'always', children: 'ignore' }],
+    'react/jsx-curly-brace-presence': [error, { props: 'never', children: 'ignore' }],
     'react/jsx-one-expression-per-line': [error, { allow: 'single-child' }],
     'react/jsx-closing-bracket-location': [warning, { selfClosing: 'line-aligned', nonEmpty: 'after-props' }],
     'import/extensions': [ignore],

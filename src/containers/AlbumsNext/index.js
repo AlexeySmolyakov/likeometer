@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import API from 'api';
 import { inflectionAlbums } from 'helpers';
@@ -21,7 +22,19 @@ const AlbumsNext = props => {
   const user = useUser(ownerId);
   const group = useGroup(ownerId);
 
-  const title = isGroup ? group.name : `${user.first_name} ${user.last_name}`;
+  const title = isGroup
+    ? `${group.name}`
+    : `${user.first_name} ${user.last_name}`;
+
+  const subtitle = (
+    <>
+      <Link to="/groups">Сообщества</Link>
+      {' • '}
+      <span>{title}</span>
+      {' • '}
+      <span>{`${albums.length} ${inflectionAlbums(albums.length)}`}</span>
+    </>
+  );
 
   useEffect(() => {
     API.photos.fetchAlbums({ owner_id: ownerId })
@@ -32,12 +45,12 @@ const AlbumsNext = props => {
       .catch(console.warn);
   }, [ownerId, isGroup]);
 
-  useDocumentTitle(`${title} - Likeometer`);
+  useDocumentTitle(title);
 
   return (
     <Styled.AlbumsNext>
       <Title>{title}</Title>
-      <Subtitle>{`${albums.length} ${inflectionAlbums(albums.length)}`}</Subtitle>
+      <Subtitle>{subtitle}</Subtitle>
       <Styled.Wrapper>
         {albums.map(album => <AlbumNext key={album.id} album={album} />)}
         <StyledAlbum />

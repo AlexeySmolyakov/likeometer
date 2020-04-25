@@ -9,6 +9,9 @@ export const Title = styled.h1`
   line-height: 62px;
   display: block;
   box-sizing: content-box;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
 
   &:empty:after {
     content: '';
@@ -27,4 +30,10 @@ export const Subtitle = styled.div`
   text-align: center;
   margin-top: -10px;
   margin-bottom: 10px;
+
+  a {
+    &:hover {
+      color: #777;
+    }
+  }
 `;
