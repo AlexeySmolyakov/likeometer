@@ -5,6 +5,7 @@ import API from 'api';
 import { inflectionAlbums } from 'helpers';
 import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import { Title, Subtitle } from 'styles/common';
+import Splitter from 'components/Splitter';
 import AlbumNext from './Album';
 import { Album as StyledAlbum } from './Album/styled';
 import * as Styled from './styled';
@@ -28,10 +29,22 @@ const AlbumsNext = props => {
 
   const subtitle = (
     <>
-      <Link to="/groups">Сообщества</Link>
-      {' • '}
-      <span>{title}</span>
-      {' • '}
+      {
+        isGroup
+          ? (
+            <Link to="/groups">Сообщества</Link>
+          )
+          : (
+            <span>Альбомы</span>
+          )
+      }
+      {isGroup && (
+        <>
+          <Splitter type="chevron" />
+          <span>{title}</span>
+        </>
+      )}
+      <Splitter />
       <span>{`${albums.length} ${inflectionAlbums(albums.length)}`}</span>
     </>
   );

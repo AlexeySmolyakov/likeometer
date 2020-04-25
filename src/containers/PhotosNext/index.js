@@ -5,9 +5,10 @@ import API from 'api';
 import { inflectionPhotos } from 'helpers';
 import { Title, Subtitle } from 'styles/common';
 import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
-import { Photo as StyledPhoto } from './Photo/styled';
+import Splitter from 'components/Splitter';
 import Photo from './Photo';
 import Loader from './Loader';
+import { Photo as StyledPhoto } from './Photo/styled';
 import * as Styled from './styled';
 
 const PhotosNext = props => {
@@ -101,12 +102,24 @@ const PhotosNext = props => {
 
   const subtitle = (
     <>
-      <Link to="/groups">Сообщества</Link>
-      {' › '}
-      <Link to={`/albums-${group.id}`}>{group.name}</Link>
-      {' › '}
+      {
+        isGroup
+          ? (
+            <Link to="/groups">Сообщества</Link>
+          )
+          : (
+            <Link to="/">Альбомы</Link>
+          )
+      }
+      {isGroup && (
+        <>
+          <Splitter type="chevron" />
+          <Link to={`/albums-${group.id}`}>{group.name}</Link>
+        </>
+      )}
+      <Splitter type="chevron" />
       <span>{album.title}</span>
-      {' • '}
+      <Splitter />
       <span>{`${album.size} ${inflectionPhotos(album.size)}`}</span>
     </>
   );

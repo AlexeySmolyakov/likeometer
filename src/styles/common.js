@@ -36,4 +36,8 @@ export const Subtitle = styled.div`
       color: #777;
     }
   }
+
+  .splitter {
+    margin: 0 10px;
+  }
 `;
