@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 import API from 'api';
-import { inflectionPhotos } from 'helpers';
+import { inflections } from 'helpers';
 import { Title, Subtitle } from 'styles/common';
 import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import Splitter from 'components/Splitter';
@@ -120,7 +120,7 @@ const PhotosNext = props => {
       <Splitter type="chevron" />
       <span>{album.title}</span>
       <Splitter />
-      <span>{`${album.size} ${inflectionPhotos(album.size)}`}</span>
+      <span>{`${album.size} ${inflections.photos(album.size)}`}</span>
     </>
   );
 

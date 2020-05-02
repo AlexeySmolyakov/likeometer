@@ -1,25 +1,5 @@
 export const VK_API_VERSION = 5.103;
 
-export const CHECKING_AUTH = 'CHECKING_AUTH';
-
-export const FETCH_USER = 'FETCH_USER';
-export const FETCH_USER_STATE = 'FETCH_USER_STATE';
-
-export const FETCH_ALBUMS = 'FETCH_ALBUMS';
-export const FETCH_ALBUMS_STATE = 'FETCH_ALBUMS_STATE';
-
-export const FETCH_PHOTOS = 'FETCH_PHOTOS';
-export const FETCH_PHOTOS_STATE = 'FETCH_PHOTOS_STATE';
-
-export const FETCH_PHOTOS_BY_ID = 'FETCH_PHOTOS_BY_ID';
-export const FETCH_PHOTOS_BY_ID_STATE = 'FETCH_PHOTOS_BY_ID_STATE';
-
-export const FETCH_FRIENDS = 'FETCH_FRIENDS';
-export const FETCH_FRIENDS_STATE = 'FETCH_FRIENDS_STATE';
-
-export const FETCH_GROUPS = 'FETCH_GROUPS';
-export const FETCH_GROUPS_STATE = 'FETCH_GROUPS_STATE';
-
 export const KEY_CODE_ESC = 27;
 export const KEY_CODE_LEFT_ARROW = 37;
 export const KEY_CODE_RIGHT_ARROW = 39;

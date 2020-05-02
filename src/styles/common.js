@@ -12,6 +12,7 @@ export const Title = styled.h1`
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  text-align: center;
 
   &:empty:after {
     content: '';

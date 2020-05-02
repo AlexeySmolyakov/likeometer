@@ -1,53 +1,75 @@
-export function declension(number, one, two, five) {
-  number = Math.abs(number);
-  number %= 100;
-  if (number >= 5 && number <= 20) {
+/**
+ * Inflect.
+ * @param {number} number
+ * @param {string} one
+ * @param {string} two
+ * @param {string} five
+ * @return {string}
+ */
+export function inflect(number, [one, two, five]) {
+  let nextNumber = Math.abs(number);
+  nextNumber %= 100;
+  if (nextNumber >= 5 && nextNumber <= 20) {
     return five;
   }
-  number %= 10;
-  if (number === 1) {
+  nextNumber %= 10;
+  if (nextNumber === 1) {
     return one;
   }
-  if (number >= 2 && number <= 4) {
+  if (nextNumber >= 2 && nextNumber <= 4) {
     return two;
   }
   return five;
 }
 
-export function inflectionPhotos(number) {
-  return declension(number, 'фотография', 'фотографии', 'фотографий');
-}
-
-export function inflectionAlbums(number) {
-  return declension(number, 'альбом', 'альбома', 'альбомов');
-}
-
-export function inflectionGroups(number) {
-  return declension(number, 'сообщество', 'сообщества', 'сообществ');
-}
-
-export function declensionFriends(number) {
-  return declension(number, 'друг', 'друга', 'друзей');
-}
-
-export function declensionLikes(number) {
-  return declension(number, 'понравилась', 'понравились', 'понравились');
-}
-
-const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'x', 'm', 's'];
-const TYPES_MAP = {
-  w: 10,
-  z: 22,
-  y: 30,
-  x: 31,
-  r: 40,
-  q: 50,
-  p: 60,
-  o: 70,
-  m: 80,
-  s: 90,
+/**
+ * Preset inflections.
+ */
+export const inflections = {
+  /**
+   * @param {number} n
+   * @return {string}
+   */
+  photos: n => inflect(n, ['фотография', 'фотографии', 'фотографий']),
+  /**
+   * @param {number} n
+   * @return {string}
+   */
+  albums: n => inflect(n, ['альбом', 'альбома', 'альбомов']),
+  /**
+   * @param {number} n
+   * @return {string}
+   */
+  groups: n => inflect(n, ['сообщество', 'сообщества', 'сообществ']),
+  /**
+   * @param {number} n
+   * @return {string}
+   */
+  friends: n => inflect(n, ['друг', 'друга', 'друзей']),
+  /**
+   * @param {number} n
+   * @return {string}
+   */
+  likes: n => inflect(n, ['понравилась', 'понравились', 'понравились']),
 };
 
+/**
+ * VK image types.
+ * @type {string[]}
+ */
+const types = ['w', 'z', 'y', 'r', 'q', 'p', 'o', 'x', 'm', 's'];
+
+/**
+ * VK image types mapping.
+ */
+const TYPES_MAP = { w: 10, z: 22, y: 30, x: 31, r: 40, q: 50, p: 60, o: 70, m: 80, s: 90 };
+
+/**
+ * Get image src from sizes array.
+ * @param {string[]} sizes
+ * @param {number} typeIndex
+ * @return {string}
+ */
 export function getPhotoSrcFromSizes(sizes = [], typeIndex = 0) {
   const image = sizes.find(size => size.type === types[typeIndex]);
 
@@ -58,6 +80,12 @@ export function getPhotoSrcFromSizes(sizes = [], typeIndex = 0) {
   return image.url;
 }
 
+/**
+ * Create placeholder.
+ * @param {number} times
+ * @param {Function} element
+ * @return {[]}
+ */
 export function createPlaceholder(times, element) {
   const placeholder = [];
   for (let i = 0; i < times; i++) {
@@ -66,16 +94,11 @@ export function createPlaceholder(times, element) {
   return placeholder;
 }
 
-export function sortPhotos(photos = []) {
-  return photos.sort((a, b) => {
-    if (a.likes.count > b.likes.count) return -1;
-    if (a.likes.count < b.likes.count) return 1;
-    if (a.id > b.id) return -1;
-    if (a.id < b.id) return 1;
-    return 0;
-  });
-}
-
+/**
+ * Get image src from sizes array.
+ * @param {{width: number, height: number, type: string}[]} sizes
+ * @return {string}
+ */
 export const getAlbumImageSrc = ({ sizes }) => {
   if (!sizes.length) return '';
 

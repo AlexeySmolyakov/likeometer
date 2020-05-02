@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import API from 'api';
-import { inflectionAlbums } from 'helpers';
+import { inflections } from 'helpers';
 import { useGroup, useUser, useDocumentTitle } from 'helpers/hooks';
 import { Title, Subtitle } from 'styles/common';
 import Splitter from 'components/Splitter';
@@ -35,7 +35,11 @@ const AlbumsNext = props => {
             <Link to="/groups">Сообщества</Link>
           )
           : (
-            <span>Альбомы</span>
+            <>
+              <Link to="/groups">Сообщества</Link>
+              <Splitter />
+              <span>Альбомы</span>
+            </>
           )
       }
       {isGroup && (
@@ -45,7 +49,7 @@ const AlbumsNext = props => {
         </>
       )}
       <Splitter />
-      <span>{`${albums.length} ${inflectionAlbums(albums.length)}`}</span>
+      <span>{`${albums.length} ${inflections.albums(albums.length)}`}</span>
     </>
   );
 

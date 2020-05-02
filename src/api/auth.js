@@ -3,6 +3,10 @@ import { fetchUsers } from './users';
 
 const settings = 262150;
 
+/**
+ * Check auth.
+ * @return {Promise<Object>}
+ */
 export function checkAuth() {
   return new Promise((resolve, reject) => {
     VK.Auth.getLoginStatus(response => {
@@ -15,6 +19,10 @@ export function checkAuth() {
   });
 }
 
+/**
+ * Fetch current user.
+ * @return {Promise<Object>}
+ */
 export function fetchCurrentUser() {
   return fetchUsers()
     .then(response => response[0]);
@@ -27,8 +35,4 @@ export function login() {
       resolve(response);
     }, settings);
   });
-}
-
-export function logout() {
-
 }

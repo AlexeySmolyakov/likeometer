@@ -32,17 +32,17 @@ const Landing = () => {
   };
 
   return (
-    <div className={'landing'}>
-      <div className={'likeometer'}>
-        <img src={likeometer} alt={''} />
+    <div className="landing">
+      <div className="likeometer">
+        <img src={likeometer} alt="" />
       </div>
-      <div className={'preview'}>
-        <img src={getRandomImage()} alt={'Likeometer'} />
+      <div className="preview">
+        <img src={getRandomImage()} alt="Likeometer" />
       </div>
-      <div className={'login-button'}>
-        <button type={'button'} onClick={onLoginClick}>
+      <div className="login-button">
+        <button type="button" onClick={onLoginClick}>
           Войти через
-          <i className={'fa fa-vk'} />
+          <i className="fa fa-vk" />
         </button>
       </div>
     </div>

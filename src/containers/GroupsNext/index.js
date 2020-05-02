@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 import API from 'api';
 import { useDocumentTitle } from 'helpers/hooks';
 import { Title, Subtitle } from 'styles/common';
-import { inflectionGroups } from 'helpers';
+import { inflections } from 'helpers';
+import Splitter from 'components/Splitter';
 import * as Styled from './styled';
 import Group from './Group';
 import { Group as StyledGroup } from './Group/styled';
@@ -32,7 +34,11 @@ const GroupsNext = () => {
   return (
     <Styled.GroupsNext>
       <Title>Сообщества</Title>
-      <Subtitle>{`${groups.count} ${inflectionGroups(groups.count)}`}</Subtitle>
+      <Subtitle>
+        <Link to="/">Альбомы</Link>
+        <Splitter />
+        {`${groups.count} ${inflections.groups(groups.count)}`}
+      </Subtitle>
 
       <Styled.Wrapper>
         {groups.items.map(group => <Group key={group.id} group={group} />)}
