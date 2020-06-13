@@ -19,7 +19,7 @@ const Group = ({ group }) => {
           <Styled.Image style={{ backgroundImage }} imageLoaded={imageLoaded} />
           <Styled.Info>
             <Styled.Name>{name}</Styled.Name>
-            <Styled.Members>{members_count.toLocaleString()}</Styled.Members>
+            <Styled.Members>{(members_count || 0).toLocaleString()}</Styled.Members>
           </Styled.Info>
         </Styled.Panel>
       </Link>

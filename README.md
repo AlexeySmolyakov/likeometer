@@ -1,6 +1,4 @@
-# Likeometer-redux
-[![Build Status](https://travis-ci.org/smoliakov/likeometer-redux.svg?branch=master)](https://travis-ci.org/smoliakov/likeometer-redux)
-[![Build Status](https://david-dm.org/smoliakov/likeometer-redux.svg)](https://travis-ci.org/smoliakov/likeometer-redux)
+# Likeometer
 
 VK client for albums and photos built with React / Redux.
 
