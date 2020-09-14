@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const AlbumsNext = styled.div`
+export const Groups = styled.div`
   max-width: 1500px;
   margin: auto;
 `;

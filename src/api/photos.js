@@ -63,3 +63,28 @@ export function fetchPhotos(params) {
     });
   });
 }
+
+/**
+ * Returns photo info.
+ * @param {string[]} photoIds
+ * @returns {Promise<Object[]>}
+ */
+export function fetchPhotoById(photoIds) {
+  if (!photoIds || !Array.isArray(photoIds) || photoIds.length === 0) {
+    return Promise.reject(new Error('No photo id specified.'));
+  }
+
+  const options = {
+    photos: photoIds.join(),
+    extended: 1,
+    photo_sizes: 1,
+    v: VK_API_VERSION,
+  };
+
+  return new Promise((resolve, reject) => {
+    VK.api('photos.getById', options, response => {
+      if (response.response) resolve(response.response);
+      else reject(new Error(response.error));
+    });
+  });
+}

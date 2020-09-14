@@ -73,7 +73,7 @@ const TYPES_MAP = { w: 10, z: 22, y: 30, x: 31, r: 40, q: 50, p: 60, o: 70, m: 8
 
 /**
  * Get image src from sizes array.
- * @param {string[]} sizes
+ * @param {Object[]} sizes
  * @param {number} typeIndex
  * @return {string}
  */

@@ -3,9 +3,10 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 import API from 'api';
 import Landing from 'containers/Landing';
-import GroupsNext from 'containers/GroupsNext';
-import AlbumsNext from 'containers/AlbumsNext';
-import PhotosNext from 'containers/PhotosNext';
+import Groups from 'containers/Groups';
+import Albums from 'containers/Albums';
+import Photos from 'containers/Photos';
+import Viewer from 'containers/Viewer';
 
 const Root = () => {
   const [user, setUser] = useState(null);
@@ -34,9 +35,10 @@ const Root = () => {
   return (
     <Switch>
       <Redirect exact from="/" to={`/albums${user.id}`} />
-      <Route path="/groups" component={GroupsNext} />
-      <Route path={'/albums:ownerId([\\d-]+)'} component={AlbumsNext} />
-      <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={PhotosNext} />
+      <Route path="/groups" component={Groups} />
+      <Route path={'/albums:ownerId([\\d-]+)'} component={Albums} />
+      <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={Photos} />
+      <Route path="/photo:ownerId([\d-]+)_:photoId" component={Photos} />
       <Redirect to="/" />
     </Switch>
   );

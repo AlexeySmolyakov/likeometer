@@ -10,7 +10,7 @@ import AlbumNext from './Album';
 import { Album as StyledAlbum } from './Album/styled';
 import * as Styled from './styled';
 
-const AlbumsNext = props => {
+const Albums = props => {
   const { match: { params } } = props;
 
   // params
@@ -65,7 +65,7 @@ const AlbumsNext = props => {
   useDocumentTitle(title);
 
   return (
-    <Styled.AlbumsNext>
+    <Styled.Albums>
       <Title>{title}</Title>
       <Subtitle>{subtitle}</Subtitle>
       <Styled.Wrapper>
@@ -76,8 +76,8 @@ const AlbumsNext = props => {
         <StyledAlbum />
         <StyledAlbum />
       </Styled.Wrapper>
-    </Styled.AlbumsNext>
+    </Styled.Albums>
   );
 };
 
-export default AlbumsNext;
+export default Albums;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import API from 'api';
 import { inflections } from 'helpers';
@@ -10,14 +10,13 @@ import Photo from './Photo';
 import Loader from './Loader';
 import { Photo as StyledPhoto } from './Photo/styled';
 import * as Styled from './styled';
+import Viewer from '../Viewer';
 
-const PhotosNext = props => {
+const Photos = props => {
   const { match: { params } } = props;
 
   // params
-  const ownerId = +params.ownerId;
-  const albumId = +params.albumId;
-  const isGroup = ownerId < 0;
+  const photoId = +params.photoId;
 
   // states
   const [photos, setPhotos] = useState([]);
@@ -25,16 +24,51 @@ const PhotosNext = props => {
   const [page, setPage] = useState(0);
   const [isFetching, setIsFetching] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [ownerId, setOwnerId] = useState(+params.ownerId);
+  const [albumId, setAlbumId] = useState(+params.albumId);
+  const [isGroup, setIsGroup] = useState(ownerId < 0);
+
+  const [modalPhoto, setModalPhoto] = useState(null);
+  const [isViewerOpened, setIsViewerOpened] = useState(!!photoId);
 
   const photosRef = useRef();
 
   const user = useUser(ownerId);
   const group = useGroup(ownerId);
+  const history = useHistory();
+
+  useEffect(() => {
+    if (!photoId) {
+      return;
+    }
+
+    API.photos.fetchPhotoById([`${ownerId}_${photoId}`])
+      .then(response => {
+        if (response.length) {
+          const photo = response[0];
+
+          setModalPhoto(photo);
+          setOwnerId(photo.owner_id);
+          setAlbumId(photo.album_id);
+          setIsGroup(photo.owner_id < 0);
+        }
+      });
+  }, [photoId, ownerId]);
+
+  useEffect(() => {
+    if (photoId) {
+      setIsViewerOpened(true);
+    }
+  }, [photoId]);
 
   /**
    * Fetch initial data
    */
   useEffect(() => {
+    if (!ownerId || !albumId) {
+      return;
+    }
+
     // scroll to top on new page
     window.scrollTo({ top: 0 });
 
@@ -78,6 +112,10 @@ const PhotosNext = props => {
    * Fetch photos.
    */
   useEffect(() => {
+    if (!ownerId || !albumId) {
+      return;
+    }
+
     const options = {
       album_id: albumId,
       owner_id: ownerId,
@@ -99,6 +137,12 @@ const PhotosNext = props => {
   const title = isGroup ? group.name : `${user.first_name} ${user.last_name}`;
 
   useDocumentTitle(`${album.title} - ${title}`);
+
+  const onViewerClose = () => {
+    history.push(`/album${ownerId}_${albumId}`);
+    setIsViewerOpened(false);
+    setModalPhoto(null)
+  };
 
   const subtitle = (
     <>
@@ -125,7 +169,7 @@ const PhotosNext = props => {
   );
 
   return (
-    <Styled.PhotosNext ref={photosRef}>
+    <Styled.Photos ref={photosRef}>
       <Title>{album.title}</Title>
       <Subtitle>{subtitle}</Subtitle>
       <Styled.Wrapper>
@@ -137,8 +181,13 @@ const PhotosNext = props => {
         <StyledPhoto />
       </Styled.Wrapper>
       <Loader loading={!isCompleted && (album.size > 100)} />
-    </Styled.PhotosNext>
+      <Viewer
+        photo={modalPhoto}
+        isOpened={isViewerOpened}
+        onClose={onViewerClose}
+      />
+    </Styled.Photos>
   );
 };
 
-export default PhotosNext;
+export default Photos;

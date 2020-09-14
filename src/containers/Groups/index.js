@@ -12,7 +12,7 @@ import { Group as StyledGroup } from './Group/styled';
 
 let GROUPS_STORAGE = null;
 
-const GroupsNext = () => {
+const Groups = () => {
   const [groups, setGroups] = useState({ count: 0, items: [] });
 
   useDocumentTitle('Сообщества');
@@ -32,7 +32,7 @@ const GroupsNext = () => {
   }, []);
 
   return (
-    <Styled.GroupsNext>
+    <Styled.Groups>
       <Title>Сообщества</Title>
       <Subtitle>
         <Link to="/">Альбомы</Link>
@@ -50,8 +50,8 @@ const GroupsNext = () => {
         <StyledGroup />
         <StyledGroup />
       </Styled.Wrapper>
-    </Styled.GroupsNext>
+    </Styled.Groups>
   );
 };
 
-export default GroupsNext;
+export default Groups;

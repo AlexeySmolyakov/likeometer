@@ -1,3 +1,5 @@
+/* eslint-disable camelcase */
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
@@ -32,7 +34,7 @@ Group.propTypes = {
     id: PropTypes.number,
     members_count: PropTypes.number,
     name: PropTypes.string,
-    photo_100: PropTypes.string,
+    photo_50: PropTypes.string,
   }).isRequired,
 };
 
