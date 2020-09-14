@@ -19,6 +19,7 @@ const Splitter = ({ type }) => {
 Splitter.propTypes = {
   type: PropTypes.oneOf(['chevron', 'dot']),
 };
+
 Splitter.defaultProps = {
   type: 'dot',
 };

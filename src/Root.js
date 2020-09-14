@@ -19,8 +19,12 @@ const Root = () => {
       });
   }, []);
 
+  const onLogin = _user => {
+    setUser(_user);
+  };
+
   if (user === false) {
-    return <Landing />;
+    return <Landing onLogin={onLogin} />;
   }
 
   if (user === null) {

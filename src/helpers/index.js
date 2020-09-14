@@ -1,3 +1,10 @@
+import splash02 from 'assets/splash-02.svg';
+import splash03 from 'assets/splash-03.svg';
+import splash04 from 'assets/splash-04.svg';
+import splash05 from 'assets/splash-05.svg';
+import splash06 from 'assets/splash-06.svg';
+import splash07 from 'assets/splash-07.svg';
+
 /**
  * Inflect.
  * @param {number} number
@@ -108,4 +115,25 @@ export const getAlbumImageSrc = ({ sizes }) => {
     .sort((a, b) => a.typeIndex - b.typeIndex);
 
   return processedSizes[0].src;
+};
+
+/**
+ * Returns random landing image.
+ * @returns {Object}
+ */
+export const getRandomImage = () => {
+  const images = [
+    splash02,
+    splash03,
+    splash04,
+    splash05,
+    splash06,
+    splash07,
+  ];
+
+  const min = 0;
+  const max = images.length - 1;
+  const previewIndex = Math.floor(Math.random() * (max - min + 1)) + min;
+
+  return images[previewIndex];
 };

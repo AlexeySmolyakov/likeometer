@@ -31,8 +31,11 @@ export function fetchCurrentUser() {
 export function login() {
   return new Promise((resolve, reject) => {
     VK.Auth.login(response => {
-      console.warn(response);
-      resolve(response);
+      if (response.status === 'connected') {
+        resolve(response);
+      } else {
+        reject(response);
+      }
     }, settings);
   });
 }

@@ -2,6 +2,11 @@ import { useEffect, useState } from 'react';
 
 import API from 'api';
 
+/**
+ * Returns group info.
+ * @param {number} ownerId
+ * @returns {Object}
+ */
 export const useGroup = ownerId => {
   const [group, setGroup] = useState({ name: '' });
 
@@ -23,6 +28,11 @@ export const useGroup = ownerId => {
   return group;
 };
 
+/**
+ * Returns user info.
+ * @param {number} ownerId
+ * @returns {{last_name: string, id: number, first_name: string}}
+ */
 export const useUser = ownerId => {
   const [user, setUser] = useState({ first_name: '', last_name: '', id: 0 });
 
@@ -44,6 +54,11 @@ export const useUser = ownerId => {
   return user;
 };
 
+/**
+ * Detects if image is loaded.
+ * @param {string} imageSrc
+ * @returns {boolean}
+ */
 export const useImageLoaded = imageSrc => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
@@ -63,6 +78,10 @@ export const useImageLoaded = imageSrc => {
   return imageLoaded;
 };
 
+/**
+ * Changes document title.
+ * @param {string} title
+ */
 export const useDocumentTitle = title => {
   useEffect(() => {
     document.title = `${title} - Likeometer`;
