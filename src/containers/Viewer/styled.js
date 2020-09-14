@@ -24,6 +24,6 @@ export const Overlay = styled.div`
 export const Image = styled.img`
   max-width: 100vw;
   max-height: 100vh;
-  z-index: 120;
+  z-index: 130;
   position: relative;
 `;
