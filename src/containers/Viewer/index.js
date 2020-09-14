@@ -10,9 +10,16 @@ const Viewer = props => {
     return null;
   }
 
+  console.log('>>>', photo);
+
   return (
     <Styled.Viewer onClick={onClose}>
-      <Styled.Image src={photo.sizes[4].url} alt="" />
+      <picture>
+        {photo.sizes.map(size => (
+          <source key={size.width} media={`(max-width: ${size.width}px)`} srcSet={size.url} />
+        ))}
+        <Styled.Image src={photo.sizes[4].url} alt="" />
+      </picture>
     </Styled.Viewer>
   );
 };
