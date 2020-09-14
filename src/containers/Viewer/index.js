@@ -10,23 +10,29 @@ const Viewer = props => {
     return null;
   }
 
-  console.log('>>>', photo);
-
   return (
-    <Styled.Viewer onClick={onClose}>
+    <Styled.Viewer>
       <picture>
-        {photo.sizes.map(size => (
-          <source key={size.width} media={`(max-width: ${size.width}px)`} srcSet={size.url} />
-        ))}
-        <Styled.Image src={photo.sizes[4].url} alt="" />
+        {photo.sizes.sort((a, b) => b.width - a.width)
+          .map(size => (
+            <source key={size.type} media={`(max-width: ${size.width}px)`} srcSet={size.url} />
+          ))}
+        <Styled.Image src={photo.sizes[0].url} alt="Photo" />
       </picture>
+      <Styled.Overlay onClick={onClose} />
     </Styled.Viewer>
   );
 };
 
 Viewer.propTypes = {
   isOpened: PropTypes.bool,
-  photo: PropTypes.shape({}),
+  photo: PropTypes.shape({
+    sizes: PropTypes.arrayOf(PropTypes.shape({
+      type: PropTypes.string,
+      url: PropTypes.string,
+      width: PropTypes.number,
+    })),
+  }),
   onClose: PropTypes.func,
 };
 
