@@ -6,7 +6,8 @@ import Landing from 'containers/Landing';
 import Groups from 'containers/Groups';
 import Albums from 'containers/Albums';
 import Photos from 'containers/Photos';
-import Viewer from 'containers/Viewer';
+import Header from 'components/Header';
+import UserContext from 'context';
 
 const Root = () => {
   const [user, setUser] = useState(null);
@@ -32,15 +33,20 @@ const Root = () => {
     return null;
   }
 
+  console.log('>>>', user)
+
   return (
-    <Switch>
-      <Redirect exact from="/" to={`/albums${user.id}`} />
-      <Route path="/groups" component={Groups} />
-      <Route path={'/albums:ownerId([\\d-]+)'} component={Albums} />
-      <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={Photos} />
-      <Route path="/photo:ownerId([\d-]+)_:photoId" component={Photos} />
-      <Redirect to="/" />
-    </Switch>
+    <UserContext.Provider value={user}>
+      <Header />
+      <Switch>
+        <Redirect exact from="/" to={`/albums${user.id}`} />
+        <Route path="/groups" component={Groups} />
+        <Route path={'/albums:ownerId([\\d-]+)'} component={Albums} />
+        <Route path={'/album:ownerId([\\d-]+)_:albumId'} component={Photos} />
+        <Route path="/photo:ownerId([\d-]+)_:photoId" component={Photos} />
+        <Redirect to="/" />
+      </Switch>
+    </UserContext.Provider>
   );
 };
 

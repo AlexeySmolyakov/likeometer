@@ -33,10 +33,19 @@ export const Image = styled.div`
 `;
 
 export const Icon = styled.img`
-  height: 14px;
+  height: 12px;
   width: auto;
+  margin-right: 6px;
+`;
+
+export const Likes = styled.div`
   position: absolute;
   bottom: 12px;
   right: 15px;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
 `;
